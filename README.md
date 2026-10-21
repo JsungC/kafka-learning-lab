@@ -50,7 +50,7 @@ Accessibility includes semantic headings, labels, visible focus, a skip link, na
 
 ## Deployment
 
-Build output is suitable for GitHub Pages. In repository settings select **GitHub Actions** as the Pages source, then manually run **Deploy GitHub Pages** after reviewing the repository. This project has not been published by the development task. CI checks tests, build, and browser flows on pushes and pull requests. No AWS infrastructure is needed.
+Build output is suitable for GitHub Pages. In repository settings select **GitHub Actions** as the Pages source, then run **Deploy GitHub Pages** or push to `main`. Subsequent pushes to `main` automatically build and deploy the site. The project URL is `https://jsungc.github.io/kafka-learning-lab/`; the repository does not need to be renamed. This project has not been published by the development task. CI checks tests, build, and browser flows on pushes and pull requests. No AWS infrastructure is needed.
 
 ## References, provenance, and contributions
 
