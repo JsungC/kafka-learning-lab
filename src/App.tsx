@@ -320,11 +320,11 @@ export default function App() {
             </button>
             <h2>Project status</h2>
             <p>
-              Chapter 1 is implemented. Chapters 2–10 are planned. Code and
-              educational-content licenses await the owner’s decision; no
-              open-source license has yet been granted. All visual assets are
-              original CSS and text; no external fonts or image assets are
-              loaded.
+              Chapter 1 is implemented. Chapters 2–10 are planned. Original code
+              and educational content are available under the MIT License.
+              Third-party dependencies retain their own licenses. All visual
+              assets are original CSS and text; no external fonts or image
+              assets are loaded.
             </p>
           </section>
         ) : (

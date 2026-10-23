@@ -15,7 +15,7 @@ The default npm cache path was not writable. Use `npm ci --cache /workspace/.npm
 
 ## Limits
 
-No live Kafka cluster is used or validated. Chapters 2–10 and their associated domain tests are not implemented. No Firefox, WebKit, real mobile device, screen reader, or deployed GitHub Pages instance has been inspected. Static-host subpath and refresh were tested against the built local preview. Deployment workflow execution remains unverified until the owner enables Pages and runs it. Licensing remains undecided.
+No live Kafka cluster is used or validated. Chapters 2–10 and their associated domain tests are not implemented. No Firefox, WebKit, real mobile device, screen reader, or deployed GitHub Pages instance has been inspected. Static-host subpath and refresh were tested against the built local preview. Deployment workflow execution remains unverified until the owner enables Pages and runs it. Licensing was undecided during this initial verification; the project has since adopted MIT for original code and educational content.
 
 ## UI and theme revision — 2026-10-23
 
