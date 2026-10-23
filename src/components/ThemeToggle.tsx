@@ -76,7 +76,6 @@ export function ThemeToggle() {
             <path d="M21 13a9 9 0 0 1-10-10A9 9 0 1 0 21 13Z" />
           )}
         </svg>
-        <span>{theme === "dark" ? "Light" : "Dark"}</span>
       </button>
       {!saved && (
         <span className="theme-warning" role="status">

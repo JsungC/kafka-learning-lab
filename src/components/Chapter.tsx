@@ -5,6 +5,7 @@ import { assess, type Result } from "../assessment/mission";
 import { complete, type Progress } from "../persistence/progress";
 import { Simulation } from "./Simulation";
 import { localJump } from "./navigation";
+import { lessonVisuals } from "./LessonVisuals";
 
 export function Chapter({
   progress,
@@ -183,12 +184,16 @@ export function Chapter({
               <a href="#/glossary">glossary</a>.
             </p>
           </div>
-          {lesson.map((section) => (
+          {lesson.map((section, index) => (
             <section key={section.title}>
               <h2>{section.title}</h2>
               {section.paragraphs.map((p) => (
                 <p key={p}>{p}</p>
               ))}
+              {(() => {
+                const Visual = lessonVisuals[index];
+                return Visual ? <Visual /> : null;
+              })()}
             </section>
           ))}
         </section>

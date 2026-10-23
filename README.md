@@ -35,6 +35,10 @@ The six fixed events use one educational log, separate service positions, one ev
 
 Playback is an optional timer dispatching the same pure step action used by manual stepping. Reduced motion disables CSS animation; this implementation uses static state diagrams. Pausing playback does not pause a consumer, and pausing analytics does not pause production. These are separate controls.
 
+## Visual learning aids
+
+Chapter 1 retains its full explanations and adds four adjacent concept figures: annotated event fields and service reactions; an interactive independent-reader matrix; engine-derived outage snapshots with a conceptual retention boundary; and a requirement-driven design comparison. The reader matrix and outage snapshots reuse the chapter's pure simulation transitions. Their controls support keyboard use and do not award experiment or mission progress. They explain the model before learners enter the graded mission. Retention expiration and queue semantics are conceptual comparisons, not additional simulated Kafka features.
+
 ## Appearance and reading experience
 
 The header theme button switches between light and dark modes. The first visit follows the operating system; an explicit choice is stored separately from learning progress and applied before the initial paint. The site remains usable if browser storage is blocked. Resetting learning progress preserves the theme preference. Theme changes do not change simulation rules or assessment outcomes.

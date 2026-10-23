@@ -162,10 +162,11 @@ header nav a[aria-current] {
   position: relative;
 }
 .theme-toggle {
-  gap: 8px;
-  font-size: 12px;
-  padding: 8px 12px;
-  min-width: 82px;
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  min-height: 36px;
+  padding: 8px;
   background: var(--subtle);
 }
 .theme-warning {
@@ -1182,9 +1183,11 @@ section:focus {
     font-size: 11px;
   }
   .theme-toggle {
-    min-width: 73px;
-    padding: 7px 10px;
-    min-height: 40px;
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    min-height: 36px;
+    padding: 8px;
   }
   .hero {
     grid-template-columns: 1fr;
@@ -1399,4 +1402,397 @@ section:focus {
 .diagram-footer > svg {
   color: var(--accent);
   flex-shrink: 0;
+}
+
+/* Explanatory visuals remain adjacent to the full, unchanged lesson text. */
+.lesson-visual {
+  margin: 28px 0 42px;
+  padding: 24px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+}
+.lesson-visual > .eyebrow {
+  margin-bottom: 10px;
+}
+.lesson-visual h3 {
+  font-size: 20px;
+  margin: 0 0 20px;
+}
+.chapter-body .lesson-visual > p,
+.chapter-body .lesson-visual figcaption {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.8;
+}
+.lesson-visual figcaption {
+  margin-top: 18px;
+}
+.concept-kicker {
+  display: block;
+  font:
+    9px ui-monospace,
+    monospace;
+  letter-spacing: 0.7px;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+.event-anatomy {
+  display: grid;
+  grid-template-columns: 0.8fr 24px 1.5fr;
+  gap: 12px;
+  align-items: center;
+}
+.concept-node {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 18px;
+  background: var(--bg);
+}
+.concept-node strong {
+  display: block;
+  font-size: 14px;
+}
+.concept-node > span:last-child {
+  display: block;
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.concept-arrow {
+  display: inline-block;
+  color: var(--accent);
+  text-align: center;
+}
+.fact-card {
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  padding: 18px;
+  background: var(--accent-soft);
+}
+.fact-card > strong {
+  font-size: 16px;
+}
+.fact-card dl {
+  margin: 15px 0 0;
+}
+.fact-card dl > div {
+  display: grid;
+  grid-template-columns: 65px 1fr;
+  gap: 10px;
+  padding: 8px 0;
+}
+.fact-card dt {
+  font:
+    11px ui-monospace,
+    monospace;
+  padding-top: 4px;
+  color: var(--muted);
+}
+.fact-card dd {
+  margin: 0;
+}
+.fact-card code {
+  font-size: 12px;
+  color: var(--text);
+}
+.fact-card dd > span {
+  display: block;
+  font-size: 10px;
+  color: var(--muted);
+}
+.reaction-branch {
+  display: flex;
+  justify-content: space-around;
+  color: var(--accent);
+  padding: 8px 0;
+}
+.reaction-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.visual-takeaway {
+  margin-top: 18px;
+  border-left: 3px solid var(--accent);
+  border-radius: 0 6px 6px 0;
+  background: var(--accent-soft);
+  padding: 13px 16px;
+  font-size: 12px;
+  line-height: 1.8;
+  color: var(--text);
+}
+.reader-matrix {
+  display: grid;
+  gap: 8px;
+  padding: 18px 0;
+}
+.matrix-row {
+  display: grid;
+  grid-template-columns: 100px repeat(6, minmax(0, 1fr));
+  gap: 7px;
+  align-items: stretch;
+}
+.matrix-row > span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+}
+.matrix-row > span:first-child {
+  justify-content: flex-start;
+  font-size: 11px;
+  color: var(--muted);
+}
+.matrix-record {
+  padding: 13px 0;
+  border: 1px solid var(--accent);
+  border-radius: 5px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font:
+    11px ui-monospace,
+    monospace;
+}
+.read-cell {
+  min-height: 35px;
+  border-radius: 5px;
+  background: var(--subtle);
+  border: 1px solid var(--border);
+  color: var(--muted);
+}
+.read-cell.processed {
+  color: var(--accent);
+  background: var(--accent-soft);
+  border-color: color-mix(in srgb, var(--accent) 40%, transparent);
+}
+.read-cell.waiting {
+  border-style: dashed;
+  font-size: 20px;
+}
+.visual-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  font-size: 10px;
+  color: var(--muted);
+}
+.bookmark-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  font-size: 11px;
+  background: var(--subtle);
+  border-radius: 6px;
+  padding: 13px;
+  margin-top: 16px;
+}
+.bookmark-summary strong {
+  color: var(--accent);
+}
+.timeline-stages {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  margin: 22px 0;
+}
+.timeline-stages button {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 7px;
+  text-align: left;
+  font-size: 11px;
+  padding: 12px;
+}
+.timeline-stages button > span {
+  font:
+    11px ui-monospace,
+    monospace;
+  color: var(--faint);
+}
+.timeline-stages button[aria-pressed="true"],
+.requirement-options button[aria-pressed="true"] {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+.snapshot-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+.snapshot-metrics > div {
+  border: 1px solid var(--border);
+  background: var(--bg);
+  border-radius: 7px;
+  padding: 13px;
+}
+.snapshot-metrics span {
+  display: block;
+  font-size: 10px;
+  color: var(--muted);
+}
+.snapshot-metrics strong {
+  font:
+    30px ui-monospace,
+    monospace;
+  margin-top: 9px;
+  display: block;
+}
+.snapshot-metrics .metric-paused {
+  border-style: dashed;
+  border-color: var(--amber);
+  background: var(--amber-soft);
+  color: var(--amber);
+}
+.snapshot-explanation {
+  margin-top: 16px;
+  background: var(--subtle);
+  border-radius: 7px;
+  padding: 16px;
+}
+.snapshot-explanation > strong {
+  font-size: 13px;
+}
+.chapter-body .snapshot-explanation p {
+  font-size: 12px;
+  margin: 8px 0 0;
+}
+.retention-boundary {
+  margin-top: 25px;
+  padding-top: 5px;
+  border-top: 1px solid var(--border);
+}
+.retention-boundary h4 {
+  font-size: 13px;
+  margin: 17px 0;
+}
+.retention-boundary > div {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 13px;
+}
+.retention-boundary > div > div {
+  border-top: 3px solid var(--accent);
+  background: var(--accent-soft);
+  padding: 14px;
+  border-radius: 0 0 7px 7px;
+}
+.retention-boundary > div > .expired {
+  border-color: var(--amber);
+  background: var(--amber-soft);
+}
+.retention-boundary span {
+  margin-right: 7px;
+}
+.retention-boundary strong {
+  font-size: 11px;
+}
+.chapter-body .retention-boundary p {
+  font-size: 11px;
+  margin: 8px 0 0;
+}
+.requirement-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.requirement-options button {
+  font-size: 11px;
+  padding: 10px 12px;
+}
+.design-result {
+  margin-top: 20px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 20px;
+  background: var(--bg);
+}
+.chapter-body .design-result p {
+  font-size: 12px;
+  margin-bottom: 16px;
+}
+.design-result > strong {
+  display: block;
+  color: var(--accent);
+  font-size: 16px;
+}
+.design-result > p:last-child {
+  margin-bottom: 0;
+}
+.design-path {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 10px;
+  margin: 22px 0;
+}
+.design-path > div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+.design-path > div > span:last-child {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  padding: 13px;
+  border-radius: 5px;
+  font-size: 11px;
+  text-align: center;
+}
+@media (max-width: 700px) {
+  .lesson-visual {
+    padding: 18px 13px;
+    margin: 25px 0 35px;
+  }
+  .lesson-visual h3 {
+    font-size: 19px;
+  }
+  .event-anatomy {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .event-anatomy > .concept-arrow {
+    transform: rotate(90deg);
+  }
+  .concept-node {
+    padding: 15px;
+  }
+  .matrix-row {
+    grid-template-columns: 73px repeat(6, minmax(0, 1fr));
+    gap: 3px;
+  }
+  .matrix-row > span:first-child {
+    font-size: 9px;
+  }
+  .matrix-row .matrix-record {
+    font-size: 8px;
+    padding: 10px 0;
+  }
+  .timeline-stages {
+    grid-template-columns: 1fr 1fr;
+  }
+  .snapshot-metrics {
+    grid-template-columns: 1fr 1fr;
+  }
+  .snapshot-metrics strong {
+    font-size: 25px;
+  }
+  .retention-boundary > div {
+    grid-template-columns: 1fr;
+  }
+  .design-path {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .design-path > div {
+    flex-direction: column;
+  }
+  .design-path > div > .concept-arrow {
+    transform: rotate(90deg);
+  }
+  .design-path > div > span:last-child {
+    width: 100%;
+  }
 }

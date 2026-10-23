@@ -27,3 +27,14 @@ The revised interface was reviewed using actual Chromium screenshots at desktop 
 - Light/dark colors and current-section navigation were visually inspected. Reduced-motion behavior remains enabled in the browser test configuration. Screen-reader and non-Chromium verification remain outstanding.
 
 These results concern the local revised build, not a deployment of this revision. No commit or push was performed for the design review.
+
+
+## Explanatory visuals and compact theme control — 2026-10-23
+
+- Original lesson explanations in `src/content/course.ts` remain unchanged.
+- `npm test`: 12 tests passed, including independent bookmark advancement, retained records, and reproducible outage snapshot counts.
+- `npm run build`: strict TypeScript and production build passed.
+- Chromium browser suite: 12 tests passed across desktop and mobile sizes. New flows cover keyboard reading, reset, caught-up disabling, snapshot interpretation, design selection, and separation from assessed progress.
+- Four figures were visually inspected in light mode at 1440px and dark mode at 390px. Screenshot inspection reported no runtime errors or mobile horizontal overflow. These checks were performed on the local build before committing; they do not establish deployment success.
+
+The theme switch is now a 36px icon-only control with an accessible toggle name, pressed state, and destination-theme tooltip. The existing theme browser flows passed after this change.
