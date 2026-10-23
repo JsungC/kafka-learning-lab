@@ -2,6 +2,13 @@ import type { State } from "../simulation/core";
 export function Simulation({ state }: { state: State }) {
   return (
     <div className="simulation" aria-label="Order event delivery state">
+      <div className="simulation-heading">
+        <span>DELIVERY MODEL</span>
+        <span>
+          Step {state.tick} ·{" "}
+          {state.mode === "log" ? "Retained log" : "Direct delivery"}
+        </span>
+      </div>
       <div className="flow">
         <div className="node">
           <span className="eyebrow">PRODUCER</span>

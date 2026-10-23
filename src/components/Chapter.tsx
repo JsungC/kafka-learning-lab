@@ -25,6 +25,23 @@ export function Chapter({
   );
   const [self, setSelf] = useState<string[]>([]);
   const settled = isSettled(state);
+  const [activeSection, setActiveSection] = useState("chapter-intro");
+  useEffect(() => {
+    const sections = ["chapter-intro", "experiment", "mission", "wrap-up"]
+      .map((id) => document.getElementById(id))
+      .filter((element): element is HTMLElement => Boolean(element));
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+        if (visible[0]) setActiveSection(visible[0].target.id);
+      },
+      { rootMargin: "0px 0px -65% 0px", threshold: 0 },
+    );
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
+  }, []);
   useEffect(() => {
     if (!playing) return;
     const timer = window.setInterval(
@@ -80,16 +97,48 @@ export function Chapter({
         <p className="eyebrow">CHAPTER 01</p>
         <strong>Events and why Kafka exists</strong>
         <nav aria-label="Chapter contents">
-          <a href="#chapter-intro" onClick={localJump}>
+          <a
+            href="#chapter-intro"
+            aria-current={
+              activeSection === "chapter-intro" ? "location" : undefined
+            }
+            onClick={(e) => {
+              localJump(e);
+              setActiveSection("chapter-intro");
+            }}
+          >
             01 · The problem
           </a>
-          <a href="#experiment" onClick={localJump}>
+          <a
+            href="#experiment"
+            aria-current={
+              activeSection === "experiment" ? "location" : undefined
+            }
+            onClick={(e) => {
+              localJump(e);
+              setActiveSection("experiment");
+            }}
+          >
             02 · Try it yourself
           </a>
-          <a href="#mission" onClick={localJump}>
+          <a
+            href="#mission"
+            aria-current={activeSection === "mission" ? "location" : undefined}
+            onClick={(e) => {
+              localJump(e);
+              setActiveSection("mission");
+            }}
+          >
             03 · Your mission
           </a>
-          <a href="#wrap-up" onClick={localJump}>
+          <a
+            href="#wrap-up"
+            aria-current={activeSection === "wrap-up" ? "location" : undefined}
+            onClick={(e) => {
+              localJump(e);
+              setActiveSection("wrap-up");
+            }}
+          >
             04 · Reflect & connect
           </a>
         </nav>

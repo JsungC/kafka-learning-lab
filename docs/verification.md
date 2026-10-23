@@ -16,3 +16,14 @@ The default npm cache path was not writable. Use `npm ci --cache /workspace/.npm
 ## Limits
 
 No live Kafka cluster is used or validated. Chapters 2–10 and their associated domain tests are not implemented. No Firefox, WebKit, real mobile device, screen reader, or deployed GitHub Pages instance has been inspected. Static-host subpath and refresh were tested against the built local preview. Deployment workflow execution remains unverified until the owner enables Pages and runs it. Licensing remains undecided.
+
+## UI and theme revision — 2026-10-23
+
+The revised interface was reviewed using actual Chromium screenshots at desktop (1440px) and mobile (390px) widths in both themes. Home, chapter, roadmap, glossary, and about routes showed no horizontal overflow at 390px and no browser runtime errors during inspection.
+
+- `npm test`: 10 domain and persistence tests passed.
+- `npm run build`: strict TypeScript and production build passed, including the static subpath theme initializer.
+- `PLAYWRIGHT_CHROMIUM_EXECUTABLE=/usr/bin/chromium npm run test:e2e`: 10 tests passed (five flows at each desktop/mobile size). New flows cover system dark preference, keyboard theme toggling, persistence across refresh and navigation, successful missions in dark mode, and blocked storage.
+- Light/dark colors and current-section navigation were visually inspected. Reduced-motion behavior remains enabled in the browser test configuration. Screen-reader and non-Chromium verification remain outstanding.
+
+These results concern the local revised build, not a deployment of this revision. No commit or push was performed for the design review.

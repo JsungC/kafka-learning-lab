@@ -9,6 +9,8 @@ import {
 } from "./persistence/progress";
 import { Chapter } from "./components/Chapter";
 import { localJump } from "./components/navigation";
+import { ThemeToggle } from "./components/ThemeToggle";
+import { EventFlow } from "./components/EventFlow";
 
 function useRoute() {
   const read = () => window.location.hash.slice(1) || "/";
@@ -52,20 +54,49 @@ export default function App() {
       <header>
         <a className="brand" href="#/">
           <span className="brand-icon" aria-hidden="true">
-            k.
+            <svg
+              width="25"
+              height="25"
+              viewBox="0 0 28 28"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              aria-hidden="true"
+            >
+              <path d="M8 7h7m-7 7h12M8 21h7M8 7v14" />
+              <circle cx="8" cy="7" r="3" fill="currentColor" />
+              <circle cx="8" cy="14" r="3" fill="currentColor" />
+              <circle cx="8" cy="21" r="3" fill="currentColor" />
+              <circle cx="19" cy="7" r="3" />
+              <circle cx="23" cy="14" r="3" />
+              <circle cx="19" cy="21" r="3" />
+            </svg>
           </span>
           {ui.brand}
         </a>
-        <nav aria-label="Main navigation">
-          <a
-            href="#/roadmap"
-            aria-current={route === "/roadmap" ? "page" : undefined}
-          >
-            Roadmap
-          </a>
-          <a href="#/glossary">Glossary</a>
-          <a href="#/about">About & references</a>
-        </nav>
+        <div className="header-actions">
+          <nav aria-label="Main navigation">
+            <a
+              href="#/roadmap"
+              aria-current={route === "/roadmap" ? "page" : undefined}
+            >
+              Roadmap
+            </a>
+            <a
+              href="#/glossary"
+              aria-current={route === "/glossary" ? "page" : undefined}
+            >
+              Glossary
+            </a>
+            <a
+              href="#/about"
+              aria-current={route === "/about" ? "page" : undefined}
+            >
+              About & references
+            </a>
+          </nav>
+          <ThemeToggle />
+        </div>
       </header>
       <main id="main" tabIndex={-1}>
         {storageWarning && (
@@ -78,7 +109,7 @@ export default function App() {
           <>
             <section className="hero">
               <div>
-                <p className="eyebrow">A HANDS-ON GUIDE TO EVENT STREAMING</p>
+                <p className="eyebrow">YOUR BROWSER. YOUR KAFKA LAB.</p>
                 <h1>
                   Understand the flow.
                   <br />
@@ -99,52 +130,35 @@ export default function App() {
                   Free to learn · In your browser · No installation
                 </p>
               </div>
-              <div className="hero-art">
-                <p className="eyebrow">THE IDEA IN A SMALL DIAGRAM</p>
-                <div className="art-order">
-                  Order placed <span>event #001</span>
-                </div>
-                <div className="art-line">↓</div>
-                <div className="art-topic">
-                  orders <span>retained event log</span>
-                  <div className="blocks" aria-hidden="true">
-                    <i />
-                    <i />
-                    <i />
-                    <i />
-                    <i />
-                  </div>
-                </div>
-                <div className="art-line" aria-hidden="true">
-                  <svg
-                    width="150"
-                    height="32"
-                    viewBox="0 0 150 32"
-                    fill="none"
-                    stroke="currentColor"
-                  >
-                    <path d="M75 0v10H30v17m45-17h45v17M25 22l5 5 5-5m80 0 5 5 5-5" />
-                  </svg>
-                </div>
-                <div className="art-readers">
-                  <span>
-                    Notifications
-                    <br />
-                    <small>Keep moving</small>
-                  </span>
-                  <span>
-                    Analytics
-                    <br />
-                    <small>Catch up later</small>
-                  </span>
-                </div>
-                <p>
-                  One shared stream.
-                  <br />
-                  Independent readers.
-                </p>
-              </div>
+              <EventFlow />
             </section>
+            <div className="learning-strip">
+              <div>
+                <span className="strip-icon" aria-hidden="true">
+                  01
+                </span>
+                <div>
+                  <strong>
+                    {complete(progress)
+                      ? "First chapter complete. Keep the ideas fresh."
+                      : progress.viewed
+                        ? "Pick up where your curiosity left off."
+                        : "New to Kafka? You’re in the right place."}
+                  </strong>
+                  <p>
+                    {progress.viewed
+                      ? `${progress.experiments.length}/2 models explored · ${progress.missionPassed ? "Mission passed" : "Mission ready to try"}`
+                      : "Start with a real problem. Leave with a working mental model."}
+                  </p>
+                </div>
+              </div>
+              <a href="#/chapter/1">
+                {progress.viewed
+                  ? "Continue learning"
+                  : "Begin the first chapter"}{" "}
+                <span aria-hidden="true">→</span>
+              </a>
+            </div>
             <section className="section">
               <div className="section-heading">
                 <div>
@@ -181,7 +195,8 @@ export default function App() {
               </div>
             </section>
             <section className="callout">
-              <h2>Your learning stays yours.</h2>
+              <p className="eyebrow">BUILT FOR UNDERSTANDING</p>
+              <h2>A clear path from concepts to confidence.</h2>
               <p>
                 No account, streaks, or invented scores. Your reading,
                 experiment attempts, and mission results are saved separately on

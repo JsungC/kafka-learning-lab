@@ -35,6 +35,12 @@ The six fixed events use one educational log, separate service positions, one ev
 
 Playback is an optional timer dispatching the same pure step action used by manual stepping. Reduced motion disables CSS animation; this implementation uses static state diagrams. Pausing playback does not pause a consumer, and pausing analytics does not pause production. These are separate controls.
 
+## Appearance and reading experience
+
+The header theme button switches between light and dark modes. The first visit follows the operating system; an explicit choice is stored separately from learning progress and applied before the initial paint. The site remains usable if browser storage is blocked. Resetting learning progress preserves the theme preference. Theme changes do not change simulation rules or assessment outcomes.
+
+The interface uses event-flow diagrams, a contextual learning continuation link, a current-section chapter outline, and distinct experiment and mission panels. Native controls remain keyboard accessible, and motion follows the reduced-motion preference. No external fonts or image assets are required.
+
 ## Verify
 
 ```sh
