@@ -68,3 +68,29 @@ describe("local progress", () => {
     );
   });
 });
+
+it("restores review answers while accepting existing progress without review data", () => {
+  const progress = {
+    ...emptyProgress(),
+    viewed: true,
+    review: { "independent-readers": { choice: "independent", checked: true } },
+  };
+  expect(loadProgress({ getItem: () => JSON.stringify(progress) })).toEqual(
+    progress,
+  );
+  expect(
+    loadProgress({ getItem: () => JSON.stringify(emptyProgress()) }),
+  ).toEqual(emptyProgress());
+});
+it("drops malformed review data without erasing valid chapter progress", () => {
+  const base = { ...emptyProgress(), missionPassed: true, attempts: 2 };
+  expect(
+    loadProgress({
+      getItem: () =>
+        JSON.stringify({
+          ...base,
+          review: { bad: { choice: 42, checked: true } },
+        }),
+    }),
+  ).toEqual(base);
+});

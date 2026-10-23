@@ -38,3 +38,12 @@ These results concern the local revised build, not a deployment of this revision
 - Four figures were visually inspected in light mode at 1440px and dark mode at 390px. Screenshot inspection reported no runtime errors or mobile horizontal overflow. These checks were performed on the local build before committing; they do not establish deployment success.
 
 The theme switch is now a 36px icon-only control with an accessible toggle name, pressed state, and destination-theme tooltip. The existing theme browser flows passed after this change.
+
+## Chapters 1–2 and recall practice — 2026-10-23
+
+- `npm test`: 21 tests passed. Added partition-local offsets, immutable append state, replay without read-deletion, expiration and unavailable history, non-reused offsets, end-position skipping, alternative valid mission configurations, changed-assumption evidence, and chapter-specific progress recovery.
+- `npm run build`: strict TypeScript and production build passed.
+- Chromium desktop/mobile browser suite: 20 tests passed. Covered saved recall feedback and reset, the runtime map, changed-condition predictions, Chapter 2 partition selection, replay, expiration, invalid and valid report designs, chapter-specific completion and restoration, playback pause/reset, optional guide disclosure, and static-subpath navigation.
+- Inspected Chapter 2 desktop light and desktop/mobile dark screenshots. Browser inspection reported no runtime errors or horizontal overflow at 390px. Controls stack vertically on mobile so selected settings remain readable.
+- Executed the optional guide against the official Docker image `apache/kafka:4.2.0` (image digest `sha256:9516fb7634bad307d17c33b589fde9023003b0cb761374f500002b980a3149b9`). Created a one-partition topic, produced three synthetic values, and read identical partition-0 records at offsets 0, 1, and 2 with two fresh consumer groups. The originally tested `--property` flag emitted a deprecation notice; the guide was corrected to `--formatter-property` and rerun from a fresh broker with no such warnings. Stopped only the temporary practice container after verification.
+- Browser-model verification and real-broker observations are separate. No production cluster, cross-browser coverage, committed-position restart exercise, or deployment of this local revision is claimed. Existing Chapter 1 progress remains readable.

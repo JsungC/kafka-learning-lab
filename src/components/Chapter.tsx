@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
-import { hints, lesson, questions, ui } from "../content/course";
+import { hints, lesson, ui } from "../content/course";
 import { initialState, isSettled, step, type Mode } from "../simulation/core";
 import { assess, type Result } from "../assessment/mission";
 import { complete, type Progress } from "../persistence/progress";
 import { Simulation } from "./Simulation";
 import { localJump } from "./navigation";
 import { lessonVisuals } from "./LessonVisuals";
+import { ConceptReview } from "./ConceptReview";
+import { RuntimeMap } from "./RuntimeMap";
+import { TransferLab } from "./TransferLab";
 
 export function Chapter({
   progress,
@@ -24,7 +27,6 @@ export function Chapter({
   const [announcement, setAnnouncement] = useState(
     "Ready. Choose a prediction, then advance the simulation.",
   );
-  const [self, setSelf] = useState<string[]>([]);
   const settled = isSettled(state);
   const [activeSection, setActiveSection] = useState("chapter-intro");
   useEffect(() => {
@@ -184,6 +186,7 @@ export function Chapter({
               <a href="#/glossary">glossary</a>.
             </p>
           </div>
+          <RuntimeMap />
           {lesson.map((section, index) => (
             <section key={section.title}>
               <h2>{section.title}</h2>
@@ -411,38 +414,8 @@ export function Chapter({
             every consumer has completed its work, and reading does not erase a
             retained event.
           </p>
-          <p>
-            Explain these ideas in your own words, then compare with the model
-            explanations. This self-check is for reflection; it is not
-            automatically graded.
-          </p>
-          {questions.map(([q, answer]) => (
-            <div className="reflection" key={q}>
-              <label>
-                {q}
-                <textarea
-                  placeholder="Your explanation (not saved or graded)"
-                  rows={3}
-                />
-              </label>
-              <details>
-                <summary>Compare with a model explanation</summary>
-                <p>{answer}</p>
-              </details>
-              <label className="checkbox">
-                <input
-                  type="checkbox"
-                  checked={self.includes(q)}
-                  onChange={(e) =>
-                    setSelf((s) =>
-                      e.target.checked ? [...s, q] : s.filter((x) => x !== q),
-                    )
-                  }
-                />{" "}
-                I can explain this principle.
-              </label>
-            </div>
-          ))}
+          <TransferLab progress={progress} update={update} />
+          <ConceptReview progress={progress} update={update} />
           <div className="callout">
             <h3>
               {complete(progress)
@@ -461,10 +434,16 @@ export function Chapter({
               chapter.
             </p>
             <p>
-              Next: Chapter 2 will unpack the event log—records, offsets,
-              partitions, and retention. It is planned and not yet a lesson.
+              Next: Chapter 2 unpacks the event log—records, partition-local
+              offsets, replay, and retention. Reading positions are introduced
+              there; commits and restart behavior are reserved for Chapter 5.
             </p>
-            <a href="#/roadmap">View the learning roadmap →</a>
+            <a className="button" href="#/chapter/2">
+              Continue to chapter 2 →
+            </a>
+            <p>
+              <a href="#/roadmap">View the learning roadmap →</a>
+            </p>
           </div>
         </section>
       </article>

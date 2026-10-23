@@ -6,14 +6,24 @@ export const chapters = [
   ["Topics and event logs", "Records · partitions · offsets · retention"],
   ["Keys and ordering", "Customer keys · local ordering · parallelism"],
   ["Consumer groups and scaling", "Shared work · independent subscriptions"],
-  ["Offsets and replay", "Read position · commits · restart behavior"],
-  ["Brokers and replication", "Leaders · replicas · acknowledgments"],
+  [
+    "Consumer positions and restart",
+    "Read position · processing · commits · replay after restart",
+  ],
+  ["Replication and broker failures", "Leaders · replicas · acknowledgments"],
   [
     "Delivery guarantees and idempotency",
     "Retries · duplicate effects · database boundaries",
   ],
   ["Lag and failure handling", "Backlogs · retries · poison events"],
-  ["Event contracts and integration", "Schemas · Connect · Streams · Outbox"],
+  [
+    "Event contracts and schema changes",
+    "Fields · compatibility · evolving consumers",
+  ],
+  [
+    "Databases and event publication",
+    "Failure windows · Outbox · reliable integration",
+  ],
   ["Capstone system design", "Requirements · recovery · trade-offs"],
 ];
 export const lesson = [
@@ -106,3 +116,36 @@ export const ui = {
   assumptions:
     "Educational model: six fixed events, one log, independent subscriptions, one event processed per step, no expiration, and successful producer writes. No real Kafka cluster, network, disks, retries, commits, or performance measurements.",
 };
+
+// Chapter 2 extends the beginner glossary without requiring later concepts.
+glossary.push(
+  [
+    "Broker",
+    "A Kafka server process that stores partition logs and handles client reads and writes.",
+  ],
+  [
+    "Kafka client",
+    "A library used by an application to communicate with Kafka brokers.",
+  ],
+  [
+    "Record",
+    "A stored entry with a value and optional key, timestamp, and headers.",
+  ],
+  ["Partition", "One ordered log within a topic, with its own offsets."],
+  [
+    "Offset",
+    "A record’s assigned position within a partition, not a topic-wide identifier or proof of completed processing.",
+  ],
+  [
+    "Read position",
+    "The location a reader will fetch from next. It is distinct from a committed restart position.",
+  ],
+  [
+    "Replay",
+    "Reading retained records again by choosing an earlier reading position.",
+  ],
+  [
+    "Compaction",
+    "A cleanup policy that can retain the latest record for each key, rather than every historical event.",
+  ],
+);

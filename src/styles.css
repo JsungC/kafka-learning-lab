@@ -1796,3 +1796,350 @@ section:focus {
     width: 100%;
   }
 }
+
+/* Keep focus indicators inside choice cards, clear of the question text. */
+.concept-review {
+  margin: 25px 0 35px;
+}
+.chapter-body .review-note {
+  font-size: 12px;
+  color: var(--faint);
+}
+.review-card {
+  padding: 24px;
+  margin: 20px 0;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+}
+.review-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  align-items: center;
+  margin-bottom: 18px;
+}
+.review-heading .eyebrow {
+  margin: 0;
+}
+.review-state {
+  font-size: 10px;
+  color: var(--muted);
+  background: var(--subtle);
+  padding: 4px 9px;
+  border-radius: 5px;
+}
+.review-state.understood {
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+.review-state.revisit {
+  color: var(--amber);
+  background: var(--amber-soft);
+}
+.review-card h3 {
+  margin: 0 0 15px;
+  font-size: 19px;
+}
+.chapter-body .review-scenario {
+  font-size: 13px;
+  line-height: 1.8;
+}
+.review-options {
+  border: 0;
+  padding: 0;
+  margin: 22px 0 0;
+  min-width: 0;
+}
+.review-options legend {
+  font-size: 14px;
+  font-weight: 650;
+  padding: 0;
+  margin-bottom: 18px;
+  line-height: 1.7;
+}
+.review-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  margin: 0 0 10px;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.8;
+  background: var(--bg);
+  cursor: pointer;
+}
+.review-option input {
+  flex-shrink: 0;
+  width: 17px;
+  height: 17px;
+  margin: 4px 0 0;
+  accent-color: var(--accent);
+}
+.review-option:has(input:checked) {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+.review-option:has(input:focus-visible) {
+  box-shadow: inset 0 0 0 2px var(--accent);
+}
+.review-option input:focus-visible {
+  outline: none;
+}
+.review-option:has(input:disabled) {
+  cursor: default;
+}
+.review-card .feedback p {
+  margin: 10px 0 0;
+  font-size: 13px;
+}
+.review-card .feedback a {
+  display: inline-block;
+  font-size: 12px;
+  margin-top: 12px;
+}
+@media (max-width: 700px) {
+  .review-card {
+    padding: 18px 14px;
+  }
+  .review-heading {
+    gap: 10px;
+  }
+  .review-state {
+    font-size: 9px;
+  }
+  .review-option {
+    padding: 13px 12px;
+    font-size: 12px;
+  }
+}
+
+.runtime-map {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 20px;
+  margin: 25px 0;
+  align-items: center;
+}
+.runtime-clients {
+  display: grid;
+  gap: 10px;
+}
+.runtime-connection {
+  font-size: 11px;
+  color: var(--accent);
+  padding: 0 8px;
+}
+.runtime-broker {
+  border: 1px solid var(--accent);
+  background: var(--accent-soft);
+  padding: 22px;
+  border-radius: 10px;
+}
+.runtime-broker > strong {
+  display: block;
+  font-size: 15px;
+  margin: 15px 0;
+}
+.runtime-broker small {
+  display: block;
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 18px;
+}
+.chapter-body .visual-takeaway p {
+  font-size: 12px;
+  margin: 12px 0 0;
+}
+.chapter-lab {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 26px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+.chapter-lab h2 {
+  margin-top: 0;
+}
+.lab-config {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  margin: 18px 0;
+}
+.lab-config label {
+  margin: 0;
+}
+.lab-config select {
+  display: block;
+  margin-top: 9px;
+}
+.record-anatomy {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.record-anatomy .concept-node {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.partition-example {
+  display: flex;
+  gap: 9px;
+  align-items: center;
+  margin: 18px 0;
+}
+.partition-example strong {
+  font-size: 12px;
+  margin-right: 10px;
+}
+.partition-example > span {
+  border: 1px solid var(--accent);
+  padding: 12px;
+  border-radius: 6px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font:
+    11px ui-monospace,
+    monospace;
+}
+.partition-log {
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 15px;
+  margin-top: 20px;
+  background: var(--bg);
+}
+.partition-heading {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 15px;
+  align-items: center;
+  justify-content: space-between;
+}
+.partition-heading strong {
+  font:
+    12px ui-monospace,
+    monospace;
+  color: var(--accent);
+}
+.partition-heading > span {
+  font-size: 10px;
+  color: var(--muted);
+}
+.log-records {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+  gap: 9px;
+  margin: 18px 0;
+}
+.log-record {
+  border: 1px solid var(--border);
+  border-top: 2px solid var(--accent);
+  padding: 13px;
+  border-radius: 6px;
+  background: var(--surface);
+  min-width: 0;
+}
+.log-record > strong {
+  font-size: 13px;
+}
+.log-record dl {
+  display: grid;
+  grid-template-columns: 30px 1fr;
+  gap: 6px;
+  margin: 12px 0;
+}
+.log-record dt,
+.log-record dd {
+  font-size: 10px;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.log-record dt {
+  color: var(--faint);
+}
+.log-record small {
+  font-size: 9px;
+  display: block;
+  color: var(--muted);
+}
+.record-read-state {
+  display: block;
+  font-size: 10px;
+  margin-top: 10px;
+  color: var(--accent);
+}
+.chapter-body .position-marker {
+  font-size: 12px;
+  margin: 10px 0 0;
+  color: var(--accent);
+}
+.position-marker > span {
+  color: var(--faint);
+  font-size: 10px;
+}
+.practice-guide {
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+}
+.practice-guide section {
+  margin: 30px 0;
+}
+.practice-guide pre {
+  overflow-x: auto;
+  padding: 18px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: var(--bg);
+  font-size: 11px;
+  line-height: 1.8;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.chapter-body .practice-guide p {
+  font-size: 13px;
+}
+.chapter-body section {
+  scroll-margin-top: 25px;
+}
+@media (max-width: 700px) {
+  .runtime-map,
+  .record-anatomy {
+    grid-template-columns: 1fr;
+  }
+  .chapter-lab {
+    padding: 18px 13px;
+  }
+  .partition-example {
+    flex-wrap: wrap;
+  }
+  .partition-example strong {
+    flex-basis: 100%;
+  }
+  .partition-log {
+    padding: 12px;
+  }
+  .log-records {
+    grid-template-columns: 1fr 1fr;
+  }
+  .log-record {
+    padding: 10px;
+  }
+  .log-record .concept-kicker {
+    font-size: 8px;
+  }
+  .practice-guide {
+    padding: 16px;
+  }
+}
+@media (max-width: 700px) {
+  .lab-config {
+    grid-template-columns: 1fr;
+  }
+}
