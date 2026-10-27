@@ -6,7 +6,7 @@ The required learning path runs entirely in the browser. Optional real-Kafka pra
 
 - Chapter 1 introduces events, independent readers, and asynchronous processing. Its execution map distinguishes application code, Kafka client libraries, brokers, topics, and the browser model. Changed-assumption activities cover expiration, durable retries in a direct-delivery design, and publication versus processing.
 - Chapter 2 separates four lessons: record fields; partition-local logs; record offsets and reading positions; and retention. It introduces replay of available history without modeling committed positions or restart recovery.
-- Chapter 3 will teach keys and partition selection under explicit partitioner and partition-count assumptions. Manual partition selection in Chapter 2 is not presented as the default Kafka partitioner.
+- Chapter 3 teaches key choice, partition selection, serial-per-partition completion, and cross-partition parallel work under explicit source-order, partitioner, and partition-count assumptions. Manual partition selection in Chapter 2 is not presented as the default Kafka partitioner.
 - Chapter 4 will teach group assignment and scaling. Chapter 5 will distinguish current position, completed processing, committed position, and restart behavior. A later optional client-code exercise belongs after that material.
 - Broker existence is introduced in Chapter 1; the reliability chapter concentrates on replication and broker failure.
 - Event contracts and schema evolution are separate from database/publication failure windows and Outbox. Connect and Streams are optional deeper tracks rather than one overloaded beginner chapter. The capstone remains last.
@@ -34,3 +34,14 @@ Checked on 2026-10-23 against Apache Kafka 4.2.0 tagged sources:
 - [Quickstart](https://github.com/apache/kafka/blob/4.2.0/docs/getting-started/quickstart.md)
 
 No claim is made that this is the latest Kafka version.
+
+
+## Chapter 3 model
+
+`src/simulation/ordering.ts` publishes nine customer events in a known source order before processing partition lanes. The teaching partitioner sums Unicode code points modulo a fixed count; it deliberately does not reproduce Kafka Java hashing. Keyless placement uses explicit illustrative round-robin, not the Kafka Java producer’s default keyless behavior. Changing configuration resets state; the mapping inspector compares hypothetical counts without relocating historical records.
+
+P0 requires three model ticks per record and other lanes require one. Each lane is serial, and lanes can work concurrently. Customer sequences are business source-order labels distinct from partition offsets. Simultaneous completions have no cross-partition order; strict customer completion order requires increasing ticks as well as increasing source sequence. The model excludes retries, failed writes, commits, external effects, and actual consumer-group assignments.
+
+The customer mission checks one partition per customer, strict per-customer completion sequence, all nine completions, and at least two lanes active in one tick. Customer keys with 2, 3, or 4 fixed partitions pass. Different customers may collide; neither collisions nor unused lanes imply failure. One partition or constant keys can preserve sequence without meeting parallelism. Completion requires a finished split-customer experiment, a finished customer-key experiment, and a passing mission. Existing chapter data is preserved by an optional, independently validated Chapter 3 progress field.
+
+Producer behavior and failure caveats were checked on 2026-10-27 against [Kafka 4.2.0 Java ProducerConfig](https://github.com/apache/kafka/blob/4.2.0/clients/src/main/java/org/apache/kafka/clients/producer/ProducerConfig.java) and the tagged design documentation. Kafka ordering claims remain conditional on client behavior, producer configuration, and application processing.

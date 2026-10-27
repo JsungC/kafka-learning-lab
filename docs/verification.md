@@ -47,3 +47,12 @@ The theme switch is now a 36px icon-only control with an accessible toggle name,
 - Inspected Chapter 2 desktop light and desktop/mobile dark screenshots. Browser inspection reported no runtime errors or horizontal overflow at 390px. Controls stack vertically on mobile so selected settings remain readable.
 - Executed the optional guide against the official Docker image `apache/kafka:4.2.0` (image digest `sha256:9516fb7634bad307d17c33b589fde9023003b0cb761374f500002b980a3149b9`). Created a one-partition topic, produced three synthetic values, and read identical partition-0 records at offsets 0, 1, and 2 with two fresh consumer groups. The originally tested `--property` flag emitted a deprecation notice; the guide was corrected to `--formatter-property` and rerun from a fresh broker with no such warnings. Stopped only the temporary practice container after verification.
 - Browser-model verification and real-broker observations are separate. No production cluster, cross-browser coverage, committed-position restart exercise, or deployment of this local revision is claimed. Existing Chapter 1 progress remains readable.
+
+
+## Chapter 3: keys and ordering — 2026-10-27
+
+- `npm test`: 28 tests passed, including keyed placement with collisions, per-partition serial completion, cross-partition reordering, single-lane parallelism failure, alternative valid mission configurations, teaching-key mapping, immutability/reproducibility, and independent Chapter 3 progress recovery.
+- `npm run build`: strict TypeScript and Vite production build passed.
+- Chromium browser suite: 24 tests passed at desktop and mobile sizes, with reduced motion. New flows complete both routing experiments, validate failure and success, activate controls by keyboard, restore/reset chapter-specific progress, pause/reset playback, and compare hypothetical counts without mutating experiment state. Roadmap navigation exposes three available chapters without completion gates.
+- Inspected desktop light introduction, desktop dark split-key lab, and 390px mobile dark mission screenshots. Browser inspection reported no runtime errors or horizontal overflow. No real Kafka performance or client partition-number equivalence is claimed; this chapter uses the documented teaching partitioner.
+- Reference content checked against Apache Kafka 4.2.0 tagged design and producer configuration. The README retains its concise project overview; no milestone log was added.

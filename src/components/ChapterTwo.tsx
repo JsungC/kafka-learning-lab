@@ -539,10 +539,16 @@ export function ChapterTwo({
               model activities, not production Kafka proficiency.
             </p>
             <p>
-              Next: keys and ordering will explain partition selection. Later,
-              Chapter 5 will explain committed positions and restarts.
+              Continue in Chapter 3 to connect keys, partition selection, and
+              customer ordering. Later, Chapter 5 will explain committed
+              positions and restarts.
             </p>
-            <a href="#/roadmap">View the learning roadmap →</a>
+            <a className="button" href="#/chapter/3">
+              Continue to chapter 3 →
+            </a>
+            <p>
+              <a href="#/roadmap">View the learning roadmap →</a>
+            </p>
           </div>
           <p className="caption">
             Concept reference:{" "}

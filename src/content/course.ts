@@ -149,3 +149,23 @@ glossary.push(
     "A cleanup policy that can retain the latest record for each key, rather than every historical event.",
   ],
 );
+
+// Ordering vocabulary extends the same English glossary.
+glossary.push(
+  [
+    "Key",
+    "Optional record data used by key-aware partitioning to keep related records together; it is not a uniqueness constraint.",
+  ],
+  [
+    "Partitioner",
+    "The producer-side rule that selects a partition, subject to the client, key encoding, configuration, and partition count.",
+  ],
+  [
+    "Hot key",
+    "A key with much more traffic than others, concentrating its ordered work on one partition under stable keyed routing.",
+  ],
+  [
+    "Partition-local ordering",
+    "The sequence of records within one partition, not a global order across the entire topic or automatic ordering of external effects.",
+  ],
+);
