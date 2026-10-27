@@ -127,3 +127,20 @@ it("restores chapter 3 separately and rejects malformed data without erasing ear
   );
   expect(loadProgress({ getItem: () => JSON.stringify(base) })).toEqual(base);
 });
+
+it("timeline snapshots reproduce live stepping and support safe backwards inspection", async () => {
+  const { orderingTimeline, explainOrderingStep } =
+    await import("./orderingTimeline");
+  const config = { partitions: 3, strategy: "event" as const };
+  const frames = orderingTimeline(config);
+  expect(frames[0].published).toBe(0);
+  expect(frames[9].published).toBe(9);
+  expect(frames[9].completed).toHaveLength(0);
+  expect(frames.at(-1)).toEqual(runOrdering(config));
+  const saved = structuredClone(frames[11]);
+  expect(explainOrderingStep(frames, 12).reason).toContain(
+    "later source event",
+  );
+  explainOrderingStep(frames, 3);
+  expect(frames[11]).toEqual(saved);
+});

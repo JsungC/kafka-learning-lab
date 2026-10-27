@@ -1,3 +1,4 @@
+import { LessonParagraph } from "./LessonParagraph";
 import { useEffect, useState } from "react";
 import { hints, lesson, ui } from "../content/course";
 import { initialState, isSettled, step, type Mode } from "../simulation/core";
@@ -191,7 +192,7 @@ export function Chapter({
             <section key={section.title}>
               <h2>{section.title}</h2>
               {section.paragraphs.map((p) => (
-                <p key={p}>{p}</p>
+                <LessonParagraph key={p} text={p} />
               ))}
               {(() => {
                 const Visual = lessonVisuals[index];

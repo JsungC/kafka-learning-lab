@@ -122,3 +122,42 @@ test("key playback pauses and resets; hypothetical mapping comparison preserves 
   await page.keyboard.press("Enter");
   await expect(page.locator("#key-lab .key-record")).toHaveCount(1);
 });
+
+test("timeline seeks backwards, pauses playback and keeps the explanation in one region", async ({
+  page,
+}) => {
+  await page.goto("./#/chapter/3");
+  await page
+    .getByLabel("Predict the ordering boundary")
+    .selectOption("customer");
+  const slider = page.getByRole("slider", { name: /Learning timeline/ });
+  await slider.fill("12");
+  await expect(
+    page.getByRole("region", {
+      name: "Explanation for the selected timeline step",
+    }),
+  ).toContainText("Processing tick 3");
+  const completed = await page.locator("#key-lab .ordering-view").innerText();
+  await slider.focus();
+  await page.keyboard.press("ArrowLeft");
+  await expect(
+    page.getByRole("region", {
+      name: "Explanation for the selected timeline step",
+    }),
+  ).toContainText("Processing tick 2");
+  await page.keyboard.press("ArrowRight");
+  expect(await page.locator("#key-lab .ordering-view").innerText()).toBe(
+    completed,
+  );
+  await page
+    .getByRole("button", { name: "Start key playback", exact: true })
+    .click();
+  await slider.fill("9");
+  await expect(
+    page.getByRole("button", { name: "Start key playback", exact: true }),
+  ).toBeVisible();
+  await expect(page.locator("#key-lab .bookmark-summary")).toContainText(
+    "Completed: 0/9",
+  );
+  await expect(page.locator(".step-explanation")).toHaveCount(1);
+});

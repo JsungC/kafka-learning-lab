@@ -56,3 +56,10 @@ The theme switch is now a 36px icon-only control with an accessible toggle name,
 - Chromium browser suite: 24 tests passed at desktop and mobile sizes, with reduced motion. New flows complete both routing experiments, validate failure and success, activate controls by keyboard, restore/reset chapter-specific progress, pause/reset playback, and compare hypothetical counts without mutating experiment state. Roadmap navigation exposes three available chapters without completion gates.
 - Inspected desktop light introduction, desktop dark split-key lab, and 390px mobile dark mission screenshots. Browser inspection reported no runtime errors or horizontal overflow. No real Kafka performance or client partition-number equivalence is claimed; this chapter uses the documented teaching partitioner.
 - Reference content checked against Apache Kafka 4.2.0 tagged design and producer configuration. The README retains its concise project overview; no milestone log was added.
+
+## Guided timeline and reading emphasis — 2026-10-27
+
+- Added immutable, deterministic Chapter 3 timeline snapshots with range/keyboard seeking, previous/next navigation, landmarks, and playback that pauses on manual seeking. Explanations share one fixed-location panel with consistent Changed / Look here / Why it matters fields. No floating annotations or modal overlays were added.
+- `npm test`: 29 tests passed. `npm run build`: passed. Chromium desktop/mobile suite: 26 tests passed, including backwards/forwards state equivalence, keyboard seeking, manual playback interruption, and one explanation region.
+- Inspected desktop dark and 390px mobile dark timeline captures. Sampled publication and processing states retained panel heights of 235px desktop and 330px mobile; no horizontal overflow was observed.
+- Chapters 1–3 retain their original paragraph text with selectively curated semantic emphasis, without highlighting whole paragraphs. No README progress log was added.

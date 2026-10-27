@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { LessonParagraph } from "./LessonParagraph";
+import { useEffect, useState, useMemo } from "react";
 import {
   orderingLessons,
   keyStrategies,
@@ -23,6 +24,8 @@ import {
 } from "../persistence/progress";
 import { localJump } from "./navigation";
 import { OrderingView } from "./OrderingView";
+import { OrderingTimeline } from "./OrderingTimeline";
+import { orderingTimeline } from "../simulation/orderingTimeline";
 export function ChapterThree({
   progress,
   update,
@@ -35,9 +38,13 @@ export function ChapterThree({
     partitions: 3,
     strategy: "event",
   });
-  const [state, setState] = useState(() =>
-    initialOrdering({ partitions: 3, strategy: "event" }),
-  );
+  const states = useMemo(() => orderingTimeline(config), [config]);
+  const [cursor, setCursor] = useState(0);
+  const state = states[cursor];
+  function seek(index: number) {
+    setPlaying(false);
+    setCursor(index);
+  }
   const [prediction, setPrediction] = useState(""),
     [playing, setPlaying] = useState(false);
   const [mission, setMission] = useState<OrderingConfig>({
@@ -84,26 +91,21 @@ export function ChapterThree({
   useEffect(() => {
     if (!playing) return;
     const timer = window.setInterval(
-      () =>
-        setState((s) =>
-          stepOrdering(s, { type: s.published < 9 ? "publish" : "process" }),
-        ),
-      500,
+      () => setCursor((i) => Math.min(i + 1, states.length - 1)),
+      900,
     );
     return () => clearInterval(timer);
-  }, [playing]);
+  }, [playing, states.length]);
   useEffect(() => {
-    if (state.completed.length === 9) setPlaying(false);
-  }, [state.completed.length]);
+    if (cursor === states.length - 1) setPlaying(false);
+  }, [cursor, states.length]);
   function reset(next = config) {
     setPlaying(false);
+    setCursor(0);
     setConfig(next);
-    setState(initialOrdering(next));
   }
   function singleStep() {
-    setState((s) =>
-      stepOrdering(s, { type: s.published < 9 ? "publish" : "process" }),
-    );
+    seek(Math.min(cursor + 1, states.length - 1));
   }
   function changeMission(next: OrderingConfig) {
     setMission(next);
@@ -200,7 +202,7 @@ export function ChapterThree({
           <section key={l.id} id={`keys-${l.id}`}>
             <h2>{l.title}</h2>
             {l.paragraphs.map((p) => (
-              <p key={p}>{p}</p>
+              <LessonParagraph key={p} text={p} />
             ))}
             {i === 0 && (
               <figure className="lesson-visual">
@@ -374,9 +376,12 @@ export function ChapterThree({
               Choose a prediction to enable playback and single-step controls.
             </p>
           )}
-          <p className="status" role="status">
-            {state.message}
-          </p>
+          <OrderingTimeline
+            states={states}
+            index={cursor}
+            onSeek={seek}
+            playing={playing}
+          />
           <OrderingView state={state} />
           {state.completed.length === 9 && (
             <div className="feedback">

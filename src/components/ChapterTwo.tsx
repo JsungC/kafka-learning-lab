@@ -1,3 +1,4 @@
+import { LessonParagraph } from "./LessonParagraph";
 import { useEffect, useState } from "react";
 import { chapter2Lessons, logLabCopy } from "../content/chapter2";
 import {
@@ -186,7 +187,7 @@ export function ChapterTwo({
           <section id={`log-${l.id}`} key={l.id}>
             <h2>{l.title}</h2>
             {l.paragraphs.map((p) => (
-              <p key={p}>{p}</p>
+              <LessonParagraph key={p} text={p} />
             ))}
             {i === 0 && (
               <figure className="lesson-visual">
