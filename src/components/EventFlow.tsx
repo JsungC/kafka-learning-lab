@@ -8,7 +8,7 @@ export function EventFlow() {
         <span>
           <i /> EVENT FLOW
         </span>
-        <span>Concept preview</span>
+        <span>Concept diagram</span>
       </div>
       <div className="diagram-content">
         <div className="art-order">
@@ -52,7 +52,7 @@ export function EventFlow() {
             <span>005</span>
             <span className="next-record">···</span>
           </div>
-          <p>Append once. Read independently.</p>
+          <p>Records remain available to independent readers while retained.</p>
         </div>
         <div className="art-branch" aria-hidden="true">
           <svg width="300" height="44" viewBox="0 0 300 44">
@@ -64,13 +64,13 @@ export function EventFlow() {
             <span className="reader-dot" />
             <small>CONSUMER A</small>
             <strong>Notifications</strong>
-            <span>Keep moving</span>
+            <span>Independent reader</span>
           </div>
           <div>
             <span className="reader-dot amber" />
             <small>CONSUMER B</small>
             <strong>Analytics</strong>
-            <span>Catch up later</span>
+            <span>Read retained events</span>
           </div>
         </div>
       </div>
@@ -85,7 +85,7 @@ export function EventFlow() {
         >
           <path d="M3 2v8h10m-3-3 3 3-3 3" />
         </svg>{" "}
-        Same events. Different reading positions.
+        Consumers maintain separate reading positions.
       </div>
     </div>
   );

@@ -1,8 +1,8 @@
 # Kafka Learning Lab
 
-An interactive learning site that explains Apache Kafka from first principles. Learn through detailed explanations, visual examples, and hands-on browser simulations—no Kafka installation or account required.
+Study notes and browser-based experiments for learning Apache Kafka. Chapters cover events, logs, partitioning, and processing through explanations, diagrams, and simulations.
 
-**[Start learning →](https://jsungc.github.io/kafka-learning-lab/)**
+**[Learning site](https://jsungc.github.io/kafka-learning-lab/)**
 
 ## Features
 

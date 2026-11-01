@@ -113,16 +113,16 @@ export default function App() {
           <>
             <section className="hero">
               <div>
-                <p className="eyebrow">YOUR BROWSER. YOUR KAFKA LAB.</p>
+                <p className="eyebrow">KAFKA STUDY NOTES</p>
                 <h1>
-                  Understand the flow.
+                  Apache Kafka
                   <br />
-                  <em>One event at a time.</em>
+                  <em>Concepts and experiments</em>
                 </h1>
                 <p className="lede">
-                  Kafka starts with a simple idea: record what happened, then
-                  let different systems work at their own pace. Learn why
-                  through stories, experiments, and decisions you can test.
+                  Study notes on Kafka events, logs, and processing. The
+                  chapters combine explanations, diagrams, and browser
+                  simulations to examine how records are stored and consumed.
                 </p>
                 <a className="button" href="#/chapter/1">
                   Start chapter 1 <span aria-hidden="true">→</span>
@@ -131,7 +131,8 @@ export default function App() {
                   Explore the roadmap →
                 </a>
                 <p className="muted">
-                  Free to learn · In your browser · No installation
+                  The simulations run in the browser. Optional Kafka exercises
+                  use Docker.
                 </p>
               </div>
               <EventFlow />
@@ -146,17 +147,17 @@ export default function App() {
                     {complete(progress)
                       ? completeChapter2(progress.chapter2)
                         ? completeChapter3(progress.chapter3)
-                          ? "Three chapters explored. Revisit what you learned."
-                          : "Two chapters explored. Follow keys and ordering next."
-                        : "Chapter 1 complete. Explore the event log next."
+                          ? "Chapters 1–3 complete."
+                          : "Next chapter: keys and ordering."
+                        : "Next chapter: topics and event logs."
                       : progress.viewed
-                        ? "Pick up where your curiosity left off."
-                        : "New to Kafka? You’re in the right place."}
+                        ? "Chapter 1: events and why Kafka exists"
+                        : "Chapter 1: events and why Kafka exists"}
                   </strong>
                   <p>
                     {progress.viewed
                       ? `${progress.experiments.length}/2 models explored · ${progress.missionPassed ? "Mission passed" : "Mission ready to try"}`
-                      : "Start with a real problem. Leave with a working mental model."}
+                      : "Events, producers, topics, and consumers."}
                   </p>
                 </div>
               </div>
@@ -178,15 +179,15 @@ export default function App() {
             <section className="section">
               <div className="section-heading">
                 <div>
-                  <p className="eyebrow">YOUR FIRST EXPLORATION</p>
-                  <h2>From a shop order to an event stream.</h2>
+                  <p className="eyebrow">CHAPTER 1</p>
+                  <h2>Events, producers, and consumers</h2>
                 </div>
                 <span className="pill">Chapter 01 · Available</span>
               </div>
               <div className="three-cards">
                 <article>
                   <span className="number">01 / UNDERSTAND</span>
-                  <h3>Begin with the problem</h3>
+                  <h3>Events and services</h3>
                   <p>
                     What happens when one service is unavailable? Learn events,
                     producers, topics, and consumers from scratch.
@@ -241,24 +242,20 @@ export default function App() {
               </div>
             </section>
             <section className="callout">
-              <p className="eyebrow">BUILT FOR UNDERSTANDING</p>
-              <h2>A clear path from concepts to confidence.</h2>
+              <p className="eyebrow">LEARNING PROGRESS</p>
+              <h2>Progress storage</h2>
               <p>
-                No account, streaks, or invented scores. Your reading,
-                experiment attempts, and mission results are saved separately on
-                this device.
+                Chapter views, experiment observations, and mission results are
+                stored in this browser. Clearing browser data removes this
+                progress.
               </p>
-              <p>
-                {complete(progress)
-                  ? "Chapter 1 complete."
-                  : "Chapter 1 is ready when you are."}
-              </p>
+              <p>Progress is not synchronized across devices.</p>
             </section>
           </>
         ) : route === "/roadmap" ? (
           <section className="page">
             <p className="eyebrow">THE LEARNING PATH</p>
-            <h1>Build understanding in layers.</h1>
+            <h1>Chapter outline</h1>
             <p className="lede">
               Explore Chapters 1–3 in order or jump straight to an available
               lesson. Later chapters are planned and are not locked by progress.
@@ -320,8 +317,8 @@ export default function App() {
           <ChapterThree progress={progress} update={setProgress} />
         ) : route === "/glossary" ? (
           <section className="page narrow">
-            <p className="eyebrow">PLAIN WORDS, FIRST</p>
-            <h1>A small Kafka glossary.</h1>
+            <p className="eyebrow">REFERENCE</p>
+            <h1>Kafka glossary</h1>
             <dl>
               {glossary.map(([term, definition]) => (
                 <div key={term}>
@@ -335,14 +332,14 @@ export default function App() {
         ) : route === "/about" ? (
           <section className="page narrow">
             <p className="eyebrow">ABOUT THIS PROJECT</p>
-            <h1>Learn by asking “what if?”</h1>
+            <h1>About Kafka Learning Lab</h1>
             <p>
-              Kafka Learning Lab documents personal learning, demonstrates
-              software design, and provides free educational material for people
-              new to Kafka. It is an independent project, not an official Apache
-              Kafka service or an endorsed project.
+              Kafka Learning Lab records personal study of Apache Kafka and
+              shares explanations and experiments for other learners. It is an
+              independent project, not an official Apache Kafka service or an
+              endorsed project.
             </p>
-            <h2>A model you can inspect</h2>
+            <h2>Simulation models</h2>
             <p>
               The simulator uses pure state transitions. Diagrams, event logs,
               counts, and grading all read the same state. Playback changes the
@@ -418,9 +415,7 @@ export default function App() {
         )}
       </main>
       <footer>
-        <span>
-          {ui.brand} <span className="muted">/ {ui.tagline}</span>
-        </span>
+        <span>{ui.brand}</span>
         <a href="#/about">Model limitations & references</a>
       </footer>
     </>

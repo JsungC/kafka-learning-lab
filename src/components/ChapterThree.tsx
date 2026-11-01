@@ -409,7 +409,7 @@ export function ChapterThree({
         </section>
         <section className="chapter-lab" id="key-mission">
           <p className="eyebrow">APPLY / CUSTOMER ACTIVITY</p>
-          <h2>Mission: preserve each customer’s story</h2>
+          <h2>Mission: preserve per-customer order</h2>
           <p>
             The activity service needs all nine events in source order for each
             customer, even when P0 is slower. Keep every customer’s records on

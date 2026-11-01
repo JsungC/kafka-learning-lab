@@ -109,8 +109,7 @@ export const questions = [
 ];
 export const ui = {
   brand: "Kafka Learning Lab",
-  tagline: "Small experiments. Durable understanding.",
-  mission: "Mission: keep the shop moving",
+  mission: "Mission: notifications and analytics recovery",
   scenario:
     "A promotion creates six order events. Analytics is offline during the first three. Choose a delivery design that keeps every notification flowing and lets analytics process all six orders after it recovers.",
   assumptions:

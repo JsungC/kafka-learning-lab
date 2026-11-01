@@ -113,13 +113,13 @@ test("home, roadmap and glossary links are functional", async ({ page }) => {
   await page.goto("./");
   await page.getByRole("link", { name: "Explore the roadmap" }).click();
   await expect(
-    page.getByRole("heading", { name: "Build understanding in layers." }),
+    page.getByRole("heading", { name: "Chapter outline" }),
   ).toBeVisible();
   await expect(
     page.getByText("Planned · lesson not yet available"),
   ).toHaveCount(8);
   await page.getByRole("link", { name: "Glossary", exact: true }).click();
   await expect(
-    page.getByRole("heading", { name: "A small Kafka glossary." }),
+    page.getByRole("heading", { name: "Kafka glossary" }),
   ).toBeVisible();
 });
