@@ -26,6 +26,14 @@ export function completeChapter3(p?: Chapter2Progress) {
     p.experiments.includes("split"),
   );
 }
+export const emptyChapter4 = emptyChapter2;
+export function completeChapter4(p?: Chapter2Progress) {
+  return Boolean(
+    p?.missionPassed &&
+    p.experiments.includes("shared") &&
+    p.experiments.includes("independent"),
+  );
+}
 export type Progress = {
   version: 1;
   viewed: boolean;
@@ -34,6 +42,7 @@ export type Progress = {
   missionPassed: boolean;
   chapter2?: Chapter2Progress;
   chapter3?: Chapter2Progress;
+  chapter4?: Chapter2Progress;
   review?: Record<string, { choice: string; checked: boolean }>;
 };
 export const emptyProgress = (): Progress => ({
@@ -87,6 +96,19 @@ export function loadProgress(storage: Pick<Storage, "getItem">): Progress {
         typeof chapter3.missionPassed !== "boolean")
     )
       delete base.chapter3;
+    const c4 = v.chapter4;
+    if (
+      c4 !== undefined &&
+      (!c4 ||
+        typeof c4 !== "object" ||
+        typeof c4.viewed !== "boolean" ||
+        !Array.isArray(c4.experiments) ||
+        !c4.experiments.every((x) => x === "shared" || x === "independent") ||
+        !Number.isSafeInteger(c4.attempts) ||
+        c4.attempts < 0 ||
+        typeof c4.missionPassed !== "boolean")
+    )
+      delete base.chapter4;
     if (
       v.review !== undefined &&
       (!v.review ||

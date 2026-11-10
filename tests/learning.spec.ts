@@ -117,7 +117,7 @@ test("home, roadmap and glossary links are functional", async ({ page }) => {
   ).toBeVisible();
   await expect(
     page.getByText("Planned · lesson not yet available"),
-  ).toHaveCount(8);
+  ).toHaveCount(7);
   await page.getByRole("link", { name: "Glossary", exact: true }).click();
   await expect(
     page.getByRole("heading", { name: "Kafka glossary" }),

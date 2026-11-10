@@ -578,11 +578,15 @@ export function ChapterThree({
               failure handling remain separate topics.
             </p>
             <p>
-              Next: Chapter 4 will explain how consumer groups assign partition
-              work and how scaling interacts with these lanes. It is planned,
-              not yet a lesson.
+              Continue in Chapter 4 to examine how consumer groups assign
+              partition work and how scaling interacts with these lanes.
             </p>
-            <a href="#/roadmap">View the learning roadmap →</a>
+            <a className="button" href="#/chapter/4">
+              Continue to chapter 4 →
+            </a>
+            <p>
+              <a href="#/roadmap">View the learning roadmap →</a>
+            </p>
             <p>
               <a href="#/chapter/2">Revisit topics and event logs</a>
             </p>

@@ -168,3 +168,18 @@ glossary.push(
     "The sequence of records within one partition, not a global order across the entire topic or automatic ordering of external effects.",
   ],
 );
+
+glossary.push(
+  [
+    "Group ID",
+    "The identity of a logical consumer subscription. Members with the same group ID share partition work in the basic consumer-group model.",
+  ],
+  [
+    "Partition assignment",
+    "The mapping from subscribed partitions to consumer members within a group.",
+  ],
+  [
+    "Rebalance",
+    "Group coordination that can change partition ownership as membership or subscriptions change; exact behavior depends on protocol and assignor.",
+  ],
+);

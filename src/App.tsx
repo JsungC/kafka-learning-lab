@@ -4,6 +4,7 @@ import {
   complete,
   completeChapter2,
   completeChapter3,
+  completeChapter4,
   emptyProgress,
   key,
   loadProgress,
@@ -12,6 +13,7 @@ import {
 import { Chapter } from "./components/Chapter";
 import { ChapterTwo } from "./components/ChapterTwo";
 import { ChapterThree } from "./components/ChapterThree";
+import { ChapterFour } from "./components/ChapterFour";
 import { localJump } from "./components/navigation";
 import { ThemeToggle } from "./components/ThemeToggle";
 import { EventFlow } from "./components/EventFlow";
@@ -147,7 +149,9 @@ export default function App() {
                     {complete(progress)
                       ? completeChapter2(progress.chapter2)
                         ? completeChapter3(progress.chapter3)
-                          ? "Chapters 1–3 complete."
+                          ? completeChapter4(progress.chapter4)
+                            ? "Chapters 1–4 complete."
+                            : "Next chapter: consumer groups and scaling."
                           : "Next chapter: keys and ordering."
                         : "Next chapter: topics and event logs."
                       : progress.viewed
@@ -165,7 +169,9 @@ export default function App() {
                 href={
                   complete(progress)
                     ? completeChapter2(progress.chapter2)
-                      ? "#/chapter/3"
+                      ? completeChapter3(progress.chapter3)
+                        ? "#/chapter/4"
+                        : "#/chapter/3"
                       : "#/chapter/2"
                     : "#/chapter/1"
                 }
@@ -241,6 +247,21 @@ export default function App() {
                 <a href="#/chapter/3">Open chapter 3 →</a>
               </div>
             </section>
+            <section className="section">
+              <div className="learning-strip">
+                <div>
+                  <span className="strip-icon">04</span>
+                  <div>
+                    <strong>Consumer groups and scaling</strong>
+                    <p>
+                      Compare shared partition work and independent
+                      subscriptions.
+                    </p>
+                  </div>
+                </div>
+                <a href="#/chapter/4">Open chapter 4 →</a>
+              </div>
+            </section>
             <section className="callout">
               <p className="eyebrow">LEARNING PROGRESS</p>
               <h2>Progress storage</h2>
@@ -257,7 +278,7 @@ export default function App() {
             <p className="eyebrow">THE LEARNING PATH</p>
             <h1>Chapter outline</h1>
             <p className="lede">
-              Explore Chapters 1–3 in order or jump straight to an available
+              Explore Chapters 1–4 in order or jump straight to an available
               lesson. Later chapters are planned and are not locked by progress.
               The browser path requires no installation; real Kafka practice is
               optional.
@@ -270,7 +291,7 @@ export default function App() {
                   </span>
                   <div>
                     <h2>
-                      {i < 3 ? (
+                      {i < 4 ? (
                         <a href={`#/chapter/${i + 1}`}>{title} →</a>
                       ) : (
                         title
@@ -278,14 +299,16 @@ export default function App() {
                     </h2>
                     <p>{description}</p>
                     <span className="pill">
-                      {i > 2
+                      {i > 3
                         ? "Planned · lesson not yet available"
                         : (
                               i === 0
                                 ? complete(progress)
                                 : i === 1
                                   ? completeChapter2(progress.chapter2)
-                                  : completeChapter3(progress.chapter3)
+                                  : i === 2
+                                    ? completeChapter3(progress.chapter3)
+                                    : completeChapter4(progress.chapter4)
                             )
                           ? "Complete"
                           : "Available now"}
@@ -315,6 +338,8 @@ export default function App() {
           <ChapterTwo progress={progress} update={setProgress} />
         ) : route === "/chapter/3" ? (
           <ChapterThree progress={progress} update={setProgress} />
+        ) : route === "/chapter/4" ? (
+          <ChapterFour progress={progress} update={setProgress} />
         ) : route === "/glossary" ? (
           <section className="page narrow">
             <p className="eyebrow">REFERENCE</p>
@@ -351,12 +376,13 @@ export default function App() {
               subscriptions. The Chapter 2 model adds manually selected
               partitions, read positions, replay, and simplified step-based
               expiration. Chapter 3 adds key routing and independently scheduled
-              serial partition lanes. Each experiment states its own
-              assumptions. None connects to a broker. Real Kafka has
-              partition-local ordering, operational failure modes, retention
-              limits, and delivery semantics beyond this chapter. Independent
-              service subscriptions correspond to separate consumer groups, not
-              multiple members of one group.
+              serial partition lanes. Chapter 4 adds consumer-group assignments,
+              independent subscriptions, and simplified membership changes. Each
+              experiment states its own assumptions. None connects to a broker.
+              Real Kafka has partition-local ordering, operational failure
+              modes, retention limits, and delivery semantics beyond this
+              chapter. Independent service subscriptions correspond to separate
+              consumer groups, not multiple members of one group.
             </p>
             <h2>References & verification</h2>
             <p>
@@ -365,8 +391,10 @@ export default function App() {
               source. Chapter 2 and the optional command guide were checked
               against the same version on October 23, 2026. Chapter 3
               key-routing and producer-ordering assumptions were checked against
-              Kafka 4.2.0 tagged sources on October 27, 2026. This is our
-              reference version, not a claim about the latest release.
+              Kafka 4.2.0 tagged sources on October 27, 2026. Chapter 4 group
+              ownership and membership assumptions were checked against the same
+              tagged design source on November 10, 2026. This is our reference
+              version, not a claim about the latest release.
             </p>
             <ul>
               <li>
@@ -400,7 +428,7 @@ export default function App() {
             </button>
             <h2>Project status</h2>
             <p>
-              Chapters 1–3 are available. Later chapters and the Connect and
+              Chapters 1–4 are available. Later chapters and the Connect and
               Streams tracks are planned. Original code and educational content
               are available under the MIT License. Third-party dependencies
               retain their own licenses. All visual assets are original CSS and

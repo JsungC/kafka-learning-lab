@@ -1,5 +1,10 @@
 // Curated learning principles: avoid highlighting entire paragraphs or every term.
 export const keySentences = [
+  "Within a group, consumers cooperate.",
+  "A member can own more than one partition.",
+  "More members do not automatically make a service faster.",
+  "Inventory reading a record does not move analytics’s position or remove that record from the shared log.",
+  "The group still represents the same logical subscription even when a different member handles a partition.",
   "An event is a record that something happened: “Order 001 was placed.”",
   "Publishing successfully does not mean a confirmation has already been sent or a dashboard updated.",
   "Consuming a record does not itself delete it.",

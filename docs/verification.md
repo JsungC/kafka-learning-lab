@@ -63,3 +63,12 @@ The theme switch is now a 36px icon-only control with an accessible toggle name,
 - `npm test`: 29 tests passed. `npm run build`: passed. Chromium desktop/mobile suite: 26 tests passed, including backwards/forwards state equivalence, keyboard seeking, manual playback interruption, and one explanation region.
 - Inspected desktop dark and 390px mobile dark timeline captures. Sampled publication and processing states retained panel heights of 235px desktop and 330px mobile; no horizontal overflow was observed.
 - Chapters 1–3 retain their original paragraph text with selectively curated semantic emphasis, without highlighting whole paragraphs. No README progress log was added.
+
+
+## Chapter 4: consumer groups and scaling — 2026-11-10
+
+- `npm test`: 36 tests passed. Added partition ownership/idle-member checks, independent full subscriptions, shared-work semantics, processing-pause membership retention, immutable reassignment with preserved positions, deterministic timelines, per-member capacity, 2–5 valid mission designs, and isolated fourth-chapter progress restoration.
+- `npm run build`: strict TypeScript and static production build passed.
+- Chromium desktop/mobile suite: 30 tests passed. New flows compare both subscription topologies, inspect membership changes, seek by keyboard, validate failure and success, restore/reset progress without completing prior chapters, navigate the static subpath, pause playback on seeking, and show idle consumers.
+- Inspected desktop light introduction and mobile dark timeline/mission captures. No runtime errors or horizontal overflow were reported. Sampled explanation frames retained a panel height of 270px desktop and 365px at 390px width. No real Kafka throughput, coordinator protocol execution, or committed restart behavior is claimed.
+- README remains a concise project overview without milestone updates. This is local validation; no deployment of this revision was performed.
