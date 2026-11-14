@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, lazy, Suspense } from "react";
 import { chapters, glossary, ui } from "./content/course";
 import {
   complete,
@@ -10,7 +10,11 @@ import {
   loadProgress,
   type Progress,
 } from "./persistence/progress";
-import { Chapter } from "./components/Chapter";
+const Chapter = lazy(() =>
+  import("./components/Chapter").then((module) => ({
+    default: module.Chapter,
+  })),
+);
 import { ChapterTwo } from "./components/ChapterTwo";
 import { ChapterThree } from "./components/ChapterThree";
 import { ChapterFour } from "./components/ChapterFour";
@@ -333,7 +337,9 @@ export default function App() {
             </div>
           </section>
         ) : route === "/chapter/1" ? (
-          <Chapter progress={progress} update={setProgress} />
+          <Suspense fallback={<p role="status">Loading chapter 1…</p>}>
+            <Chapter progress={progress} update={setProgress} />
+          </Suspense>
         ) : route === "/chapter/2" ? (
           <ChapterTwo progress={progress} update={setProgress} />
         ) : route === "/chapter/3" ? (

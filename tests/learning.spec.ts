@@ -1,3 +1,4 @@
+import { predictLog, chooseLog } from "./chapterOneControls";
 import { test, expect } from "@playwright/test";
 test("complete both experiments and mission, restore progress, reset it", async ({
   page,
@@ -9,7 +10,7 @@ test("complete both experiments and mission, restore progress, reset it", async 
   await expect(
     page.getByRole("button", { name: "Single step", exact: true }),
   ).toBeDisabled();
-  await page.getByLabel("Your prediction").selectOption("log");
+  await predictLog(page);
   await page
     .getByRole("button", { name: "Pause analytics", exact: true })
     .click();
@@ -21,7 +22,7 @@ test("complete both experiments and mission, restore progress, reset it", async 
   await page
     .getByRole("button", { name: "Resume analytics", exact: true })
     .click();
-  await page.getByLabel("Delivery model").selectOption("log");
+  await chooseLog(page);
   await page
     .getByRole("button", { name: "Pause analytics", exact: true })
     .click();
@@ -43,7 +44,7 @@ test("complete both experiments and mission, restore progress, reset it", async 
   await expect(
     page.getByRole("heading", { name: "One requirement still needs work" }),
   ).toBeVisible();
-  await page.getByLabel("Your design", { exact: true }).selectOption("log");
+  await chooseLog(page, "Your design");
   await page
     .getByRole("button", { name: "Validate design", exact: true })
     .click();
@@ -79,7 +80,7 @@ test("playback pause and reset; keyboard steps; corrupt storage and subpath refr
   );
   await page.goto("./#/chapter/1");
   await page.reload();
-  await page.getByLabel("Your prediction").selectOption("log");
+  await predictLog(page);
   await page.getByRole("button", { name: "Start playback" }).click();
   await expect(page.getByText("1 / 6 produced")).toBeVisible();
   await page.getByRole("button", { name: "Pause playback" }).click();
@@ -102,7 +103,7 @@ test("playback pause and reset; keyboard steps; corrupt storage and subpath refr
   await expect(
     page.getByRole("heading", { name: "One requirement still needs work" }),
   ).toBeVisible();
-  await page.getByLabel("Your design", { exact: true }).selectOption("log");
+  await chooseLog(page, "Your design");
   await page.getByRole("button", { name: "Validate design" }).focus();
   await page.keyboard.press("Enter");
   await expect(

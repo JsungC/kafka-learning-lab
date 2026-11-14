@@ -72,3 +72,18 @@ The theme switch is now a 36px icon-only control with an accessible toggle name,
 - Chromium desktop/mobile suite: 30 tests passed. New flows compare both subscription topologies, inspect membership changes, seek by keyboard, validate failure and success, restore/reset progress without completing prior chapters, navigate the static subpath, pause playback on seeking, and show idle consumers.
 - Inspected desktop light introduction and mobile dark timeline/mission captures. No runtime errors or horizontal overflow were reported. Sampled explanation frames retained a panel height of 270px desktop and 365px at 390px width. No real Kafka throughput, coordinator protocol execution, or committed restart behavior is claimed.
 - README remains a concise project overview without milestone updates. This is local validation; no deployment of this revision was performed.
+
+## Astryx Chapter 1 implementation — 2026-11-13
+
+- Pinned Astryx core/theme/CLI 0.7.15 and its StyleX 0.19.0 peer. Built a Neutral-derived reading theme and migrated Chapter 1 controls using documented component APIs.
+- `npm test`: 36 passed. Production build passed, with generated theme assets and lazy-loaded Chapter 1/selector chunks; no oversized-chunk warning remains.
+- Chromium suite: 32 passed at desktop and mobile widths. New checks preserve every lesson paragraph, exercise keyboard interaction with the new selector/segmented control, confirm theme continuity after navigation/reload, and prohibit remote Google Font requests. Existing experiment, assessment, persistence, and Chapters 2–4 flows remain covered.
+- Astryx built-output doctor: 20 passes, zero failures, two related optional-font warnings. System fonts are intentional; see `docs/astryx-design.md`.
+- Before/after light/dark captures were generated from the prior Git HEAD and local migrated build with the same experiment inputs. Review reported no browser errors or horizontal overflow. No commit, push, or deployment was performed for this review.
+
+### Chapter 1 Stone review
+
+- Added the official Stone package at the matching 0.7.15 version through the Astryx theme CLI; only Chapter 1 uses the Stone-based reading derivative. Existing routes retain Neutral initialization.
+- Followed installed CLI guidance for layout, theme nesting, typography, and RadioList. Chapter 1 uses Stack layout/spacing, semantic Text/Heading, flat section groupings, and library recall/transfer controls. Content, simulation rules, mission assessment, and persistence remain unchanged.
+- Production build and 36 simulation tests pass; Chromium desktop/mobile suite passes all 32 tests, including Chapters 2–4 regression flows. Doctor reports 20 passes, zero failures, and two expected external-font warnings; Vite intentionally replaces optional font CSS with local system-font fallbacks.
+- Browser screenshots in `/workspace/artifacts/stone-chapter1` cover light/dark introduction and experiment, plus mobile experiment. No runtime errors or horizontal overflow observed.

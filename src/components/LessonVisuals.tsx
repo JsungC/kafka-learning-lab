@@ -1,3 +1,4 @@
+import { ChapterButton } from "./ChapterButton";
 import { useState } from "react";
 import { visualCopy as copy } from "../content/lessonVisuals";
 import { bookmarkState, outageSnapshots } from "../simulation/illustrations";
@@ -127,7 +128,7 @@ export function ReaderBookmarks() {
         </span>
       </div>
       <div className="controls">
-        <button
+        <ChapterButton
           disabled={finished}
           title={finished ? c.done : undefined}
           onClick={() =>
@@ -139,8 +140,8 @@ export function ReaderBookmarks() {
           }
         >
           {c.read}
-        </button>
-        <button onClick={() => setState(bookmarkState())}>{c.reset}</button>
+        </ChapterButton>
+        <ChapterButton onClick={() => setState(bookmarkState())}>{c.reset}</ChapterButton>
       </div>
       <div className="visual-takeaway" role="status">
         {state.analytics.length === 0
@@ -165,14 +166,14 @@ export function OutageTimeline() {
         aria-label="Outage snapshots"
       >
         {c.stages.map((s, i) => (
-          <button
+          <ChapterButton
             key={s.name}
             aria-pressed={stage === i}
             onClick={() => setStage(i)}
           >
             <span>{String(i + 1).padStart(2, "0")}</span>
             {s.name}
-          </button>
+          </ChapterButton>
         ))}
       </div>
       <div className="snapshot-metrics">
@@ -227,13 +228,13 @@ export function DesignChoices() {
         aria-label="Design requirements"
       >
         {c.options.map((o, i) => (
-          <button
+          <ChapterButton
             key={o.name}
             aria-pressed={choice === i}
             onClick={() => setChoice(i)}
           >
             {o.name}
-          </button>
+          </ChapterButton>
         ))}
       </div>
       <div className="design-result" aria-live="polite">

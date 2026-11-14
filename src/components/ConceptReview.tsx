@@ -1,3 +1,9 @@
+import { RadioList, RadioListItem } from "@astryxdesign/core/RadioList";
+import { VStack } from "@astryxdesign/core/VStack";
+import { HStack } from "@astryxdesign/core/HStack";
+import { Text } from "@astryxdesign/core/Text";
+import { Heading } from "@astryxdesign/core/Heading";
+import { ChapterButton } from "./ChapterButton";
 import { reviewItems } from "../content/review";
 import type { Progress } from "../persistence/progress";
 import { localJump } from "./navigation";
@@ -15,24 +21,24 @@ export function ConceptReview({
     }));
   }
   return (
-    <div className="concept-review">
-      <p>
+    <VStack gap={3} className="concept-review">
+      <Text as="p" type="body">
         Recall the idea before revealing the explanation. Choose an answer,
         check the reasoning, and retry any concept you want to revisit. Your
         selections and checked answers are saved on this browser with your
         learning progress when storage is available.
-      </p>
-      <p className="review-note">
+      </Text>
+      <Text as="p" type="body" className="review-note">
         This is a practice check, not a score or a chapter-completion
         requirement.
-      </p>
+      </Text>
       {reviewItems.map((item, index) => {
         const state = progress.review?.[item.id];
         const selected = item.options.find((o) => o.id === state?.choice);
         const checked = Boolean(state?.checked && selected);
         return (
-          <div className="review-card" key={item.id}>
-            <div className="review-heading">
+          <VStack gap={3} className="review-card" key={item.id}>
+            <HStack gap={3} wrap="wrap" className="review-heading">
               <span className="eyebrow">
                 RECALL / {String(index + 1).padStart(2, "0")}
               </span>
@@ -45,46 +51,46 @@ export function ConceptReview({
                     : "Worth revisiting"
                   : "Think it through"}
               </span>
-            </div>
-            <h3>{item.title}</h3>
-            <p className="review-scenario">{item.scenario}</p>
-            <fieldset
-              className="review-options"
-              aria-describedby={`${item.id}-feedback`}
+            </HStack>
+            <Heading level={3}>{item.title}</Heading>
+            <Text as="p" type="body" className="review-scenario">
+              {item.scenario}
+            </Text>
+            <RadioList
+              label={item.question}
+              value={state?.choice ?? ""}
+              htmlName={item.id}
+              isDisabled={checked}
+              onChange={(value) => save(item.id, value, false)}
             >
-              <legend>{item.question}</legend>
               {item.options.map((option) => (
-                <label className="review-option" key={option.id}>
-                  <input
-                    type="radio"
-                    name={item.id}
-                    value={option.id}
-                    checked={state?.choice === option.id}
-                    disabled={checked}
-                    onChange={() => save(item.id, option.id, false)}
-                  />
-                  <span>{option.text}</span>
-                </label>
+                <RadioListItem
+                  key={option.id}
+                  value={option.id}
+                  label={option.text}
+                  align="first-line"
+                />
               ))}
-            </fieldset>
-            <div className="controls">
-              <button
+            </RadioList>
+            <HStack gap={3} wrap="wrap" className="chapter-actions">
+              <ChapterButton
                 className="primary"
                 disabled={!selected || checked}
                 onClick={() => save(item.id, selected!.id, true)}
               >
                 Check reasoning
-              </button>
-              <button
+              </ChapterButton>
+              <ChapterButton
                 disabled={!selected}
                 onClick={() => save(item.id, "", false)}
               >
                 Try again
-              </button>
-            </div>
-            <div id={`${item.id}-feedback`} aria-live="polite">
+              </ChapterButton>
+            </HStack>
+            <VStack gap={3} id={`${item.id}-feedback`} aria-live="polite">
               {checked && (
-                <div
+                <VStack
+                  gap={3}
                   className={`feedback ${selected?.correct ? "success" : "partial"}`}
                 >
                   <strong>
@@ -92,18 +98,20 @@ export function ConceptReview({
                       ? "That reasoning fits."
                       : "Let’s look at the assumption."}
                   </strong>
-                  <p>{selected?.feedback}</p>
+                  <Text as="p" type="body">
+                    {selected?.feedback}
+                  </Text>
                   {!selected?.correct && (
                     <a href={item.link} onClick={localJump}>
                       {item.linkText} →
                     </a>
                   )}
-                </div>
+                </VStack>
               )}
-            </div>
-          </div>
+            </VStack>
+          </VStack>
         );
       })}
-    </div>
+    </VStack>
   );
 }

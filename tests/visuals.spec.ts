@@ -35,9 +35,9 @@ test("lesson visuals explain independent reading, recovery, and design choices",
   await expect(
     readers.getByRole("button", { name: "Read next analytics event" }),
   ).toBeDisabled();
-  await expect(readers.getByRole("status")).toContainText(
-    "All 6 records remain",
-  );
+  await expect(
+    readers.getByRole("status").filter({ hasText: "All 6 records remain" }),
+  ).toContainText("All 6 records remain");
   await readers.getByRole("button", { name: "Reset bookmarks" }).click();
   await expect(
     readers.getByRole("cell", {
@@ -49,11 +49,13 @@ test("lesson visuals explain independent reading, recovery, and design choices",
     name: "An outage changes the reader, not the record.",
   });
   await outage.getByRole("button", { name: "02 Analytics paused" }).click();
-  await expect(outage.getByRole("status")).toContainText("two pending events");
+  await expect(
+    outage.locator(".snapshot-explanation[role=status]"),
+  ).toContainText("two pending events");
   await outage.getByRole("button", { name: "04 Caught up" }).click();
-  await expect(outage.getByRole("status")).toContainText(
-    "Both consumers processed all six",
-  );
+  await expect(
+    outage.locator(".snapshot-explanation[role=status]"),
+  ).toContainText("Both consumers processed all six");
   const choices = page.getByRole("figure", {
     name: "Choose for the job, not the technology.",
   });

@@ -5,23 +5,30 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host 0.0.0.0",
-    "build": "tsc -b && vite build",
+    "build": "npm run astryx:theme && tsc -b && vite build",
     "preview": "vite preview --host 0.0.0.0",
     "test": "vitest run",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "astryx": "node node_modules/@astryxdesign/cli/clients/cli/bin/astryx.mjs",
+    "astryx:theme": "node node_modules/@astryxdesign/cli/clients/cli/bin/astryx.mjs theme build src/themes/reading.ts --out src/themes/reading.css"
   },
   "dependencies": {
+    "@astryxdesign/core": "0.7.15",
+    "@astryxdesign/theme-neutral": "0.7.15",
+    "@astryxdesign/theme-stone": "0.7.15",
+    "@stylexjs/stylex": "0.19.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
   },
   "devDependencies": {
+    "@astryxdesign/cli": "0.7.15",
+    "@playwright/test": "^1.56.0",
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
     "@vitejs/plugin-react": "^5.0.4",
     "typescript": "~5.9.3",
     "vite": "^7.1.10",
-    "vitest": "^3.2.4",
-    "@playwright/test": "^1.56.0"
+    "vitest": "^3.2.4"
   },
   "license": "MIT"
 }
