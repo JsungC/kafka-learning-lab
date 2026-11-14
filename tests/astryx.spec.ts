@@ -12,6 +12,19 @@ test("Astryx chapter keeps all lesson prose, keyboard selection, and local theme
   for (const section of lesson)
     for (const paragraph of section.paragraphs)
       await expect(page.getByText(paragraph, { exact: true })).toBeVisible();
+  const contents = page.getByRole("navigation", { name: "Chapter contents" });
+  await page
+    .getByRole("link", { name: "Jump to experiment", exact: true })
+    .click();
+  await expect(
+    contents.getByRole("link", { name: "02 · Try it yourself" }),
+  ).toHaveAttribute("aria-current", "location");
+  await page
+    .getByRole("heading", { name: lesson[0].title, exact: true })
+    .scrollIntoViewIfNeeded();
+  await expect(
+    contents.getByRole("link", { name: "01 · The problem" }),
+  ).toHaveAttribute("aria-current", "location");
   const combo = page.getByRole("combobox", {
     name: "Your prediction",
     exact: true,

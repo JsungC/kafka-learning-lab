@@ -86,72 +86,72 @@
 
 @scope ([data-astryx-theme="kafka-reading"]) to ([data-astryx-theme]) {
   :scope {
-    --_scaled-font-size-4xs: min(calc(0.3125rem * var(--_dynamic-type-caption2, 1)), var(--_scaled-font-size-3xs));
+    --_scaled-font-size-4xs: min(calc(0.375rem * var(--_dynamic-type-caption2, 1)), var(--_scaled-font-size-3xs));
     --font-size-4xs: var(--_scaled-font-size-4xs);
-    --_scaled-font-size-3xs: min(calc(0.375rem * var(--_dynamic-type-caption2, 1)), var(--_scaled-font-size-2xs));
+    --_scaled-font-size-3xs: min(calc(0.5rem * var(--_dynamic-type-caption2, 1)), var(--_scaled-font-size-2xs));
     --font-size-3xs: var(--_scaled-font-size-3xs);
-    --_scaled-font-size-2xs: min(calc(0.4375rem * var(--_dynamic-type-caption2, 1)), var(--_scaled-font-size-xs));
+    --_scaled-font-size-2xs: min(calc(0.5625rem * var(--_dynamic-type-caption2, 1)), var(--_scaled-font-size-xs));
     --font-size-2xs: var(--_scaled-font-size-2xs);
-    --_scaled-font-size-xs: min(calc(0.5625rem * var(--_dynamic-type-caption1, 1)), var(--_scaled-font-size-sm));
+    --_scaled-font-size-xs: min(calc(0.6875rem * var(--_dynamic-type-caption1, 1)), var(--_scaled-font-size-sm));
     --font-size-xs: var(--_scaled-font-size-xs);
-    --_scaled-font-size-sm: min(calc(0.6875rem * var(--_dynamic-type-footnote, 1)), var(--_scaled-font-size-base));
+    --_scaled-font-size-sm: min(calc(0.8125rem * var(--_dynamic-type-footnote, 1)), var(--_scaled-font-size-base));
     --font-size-sm: var(--_scaled-font-size-sm);
-    --_scaled-font-size-base: min(calc(0.875rem * var(--_dynamic-type-body, 1)), var(--_scaled-font-size-lg));
+    --_scaled-font-size-base: min(calc(1rem * var(--_dynamic-type-body, 1)), var(--_scaled-font-size-lg));
     --font-size-base: var(--_scaled-font-size-base);
-    --_scaled-font-size-lg: min(calc(1.125rem * var(--_dynamic-type-title3, 1)), var(--_scaled-font-size-xl));
+    --_scaled-font-size-lg: min(calc(1.1875rem * var(--_dynamic-type-title3, 1)), var(--_scaled-font-size-xl));
     --font-size-lg: var(--_scaled-font-size-lg);
-    --_scaled-font-size-xl: min(calc(1.375rem * var(--_dynamic-type-title2, 1)), var(--_scaled-font-size-2xl));
+    --_scaled-font-size-xl: min(calc(1.4375rem * var(--_dynamic-type-title2, 1)), var(--_scaled-font-size-2xl));
     --font-size-xl: var(--_scaled-font-size-xl);
-    --_scaled-font-size-2xl: min(calc(1.6875rem * var(--_dynamic-type-title1, 1)), var(--_scaled-font-size-3xl));
+    --_scaled-font-size-2xl: min(calc(1.75rem * var(--_dynamic-type-title1, 1)), var(--_scaled-font-size-3xl));
     --font-size-2xl: var(--_scaled-font-size-2xl);
-    --_scaled-font-size-3xl: min(calc(2.125rem * var(--_dynamic-type-title1, 1)), var(--_scaled-font-size-4xl));
+    --_scaled-font-size-3xl: min(calc(2.0625rem * var(--_dynamic-type-title1, 1)), var(--_scaled-font-size-4xl));
     --font-size-3xl: var(--_scaled-font-size-3xl);
-    --_scaled-font-size-4xl: min(calc(2.6875rem * var(--_dynamic-type-large-title, 1)), var(--_scaled-font-size-5xl));
+    --_scaled-font-size-4xl: min(calc(2.5rem * var(--_dynamic-type-large-title, 1)), var(--_scaled-font-size-5xl));
     --font-size-4xl: var(--_scaled-font-size-4xl);
-    --_scaled-font-size-5xl: calc(3.3125rem * var(--_dynamic-type-large-title, 1));
+    --_scaled-font-size-5xl: calc(3rem * var(--_dynamic-type-large-title, 1));
     --font-size-5xl: var(--_scaled-font-size-5xl);
-    --text-heading-1-size: calc(3rem * var(--_dynamic-type-title1, 1));
+    --text-heading-1-size: calc(3.25rem * var(--_dynamic-type-title1, 1));
     --text-heading-1-weight: var(--font-weight-semibold);
     --text-heading-1-leading: 1.15;
     --text-heading-2-size: calc(2rem * var(--_dynamic-type-title2, 1));
     --text-heading-2-weight: var(--font-weight-semibold);
-    --text-heading-2-leading: 1.4545;
+    --text-heading-2-leading: 1.3913;
     --text-heading-3-size: calc(1.625rem * var(--_dynamic-type-title3, 1));
-    --text-heading-3-weight: var(--font-weight-bold);
-    --text-heading-3-leading: 1.5556;
+    --text-heading-3-weight: var(--font-weight-semibold);
+    --text-heading-3-leading: 1.4737;
     --text-heading-4-size: calc(1.375rem * var(--_dynamic-type-body, 1));
-    --text-heading-4-weight: var(--font-weight-bold);
-    --text-heading-4-leading: 1.4286;
+    --text-heading-4-weight: var(--font-weight-semibold);
+    --text-heading-4-leading: 1.5;
     --text-heading-5-size: calc(1.125rem * var(--_dynamic-type-footnote, 1));
     --text-heading-5-weight: var(--font-weight-semibold);
-    --text-heading-5-leading: 1.4545;
+    --text-heading-5-leading: 1.5385;
     --text-heading-6-size: var(--font-size-xs);
     --text-heading-6-weight: var(--font-weight-semibold);
-    --text-heading-6-leading: 1.7778;
+    --text-heading-6-leading: 1.4545;
     --text-body-size: calc(1rem * var(--_dynamic-type-body, 1));
     --text-body-weight: var(--font-weight-normal);
-    --text-body-leading: 1.85;
+    --text-body-leading: 1.8;
     --text-large-size: var(--font-size-lg);
-    --text-large-weight: var(--font-weight-semibold);
-    --text-large-leading: 1.5556;
+    --text-large-weight: 400;
+    --text-large-leading: 1.4737;
     --text-label-size: var(--font-size-base);
     --text-label-weight: var(--font-weight-medium);
-    --text-label-leading: 1.4286;
+    --text-label-leading: 1.5;
     --text-code-size: var(--font-size-base);
     --text-code-weight: var(--font-weight-normal);
-    --text-code-leading: 1.4286;
-    --text-supporting-size: calc(0.75rem * var(--_dynamic-type-footnote, 1));
+    --text-code-leading: 1.5;
+    --text-supporting-size: calc(0.8125rem * var(--_dynamic-type-footnote, 1));
     --text-supporting-weight: var(--font-weight-normal);
-    --text-supporting-leading: 1.4545;
+    --text-supporting-leading: 1.5385;
     --text-display-1-size: var(--font-size-5xl);
     --text-display-1-weight: var(--font-weight-normal);
-    --text-display-1-leading: 1.283;
+    --text-display-1-leading: 1.25;
     --text-display-2-size: var(--font-size-4xl);
     --text-display-2-weight: var(--font-weight-normal);
-    --text-display-2-leading: 1.2093;
+    --text-display-2-leading: 1.3;
     --text-display-3-size: var(--font-size-3xl);
     --text-display-3-weight: var(--font-weight-normal);
-    --text-display-3-leading: 1.2941;
+    --text-display-3-leading: 1.2121;
     --duration-fast-min: 95ms;
     --duration-fast: 125ms;
     --duration-fast-max: 165ms;
@@ -173,7 +173,7 @@
     --_astryx-motion-tempo: 1;
     --font-family-body: system-ui;
     --font-family-heading: system-ui;
-    --font-family-code: ui-monospace;
+    --font-family-code: ui-monospace, monospace;
     --color-syntax-keyword: light-dark(#635a70, #b0a5c0);
     --color-syntax-string: light-dark(#40675c, #90ba8a);
     --color-syntax-comment: light-dark(#5f5f64, #ababb3);
@@ -193,8 +193,8 @@
     --color-syntax-diff-header: transparent;
     --color-syntax-added-marker: light-dark(#354f31, #d5e9d2);
     --color-syntax-removed-marker: light-dark(#603c37, #f7dbd7);
-    --color-accent: light-dark(#25252a, #f0f0f9);
-    --color-accent-muted: light-dark(#25252a14, #f0f0f920);
+    --color-accent: light-dark(#0f766e, #72d5c1);
+    --color-accent-muted: light-dark(#e5f3ef, #173a35);
     --color-neutral: light-dark(#25252a0f, #f0f0f91a);
     --color-background-surface: light-dark(#ffffff, #1b1b21);
     --color-background-body: light-dark(#f0f0f7, #101018);
@@ -205,10 +205,10 @@
     --color-text-primary: light-dark(#25252a, #f0f0f9);
     --color-text-secondary: light-dark(#5f5f64, #ababb3);
     --color-text-disabled: light-dark(#d4d3dd, #5e5e64);
-    --color-text-accent: light-dark(#25252a, #f0f0f9);
+    --color-text-accent: light-dark(#0f655d, #8bdfcd);
     --color-on-dark: #ffffff;
     --color-on-light: light-dark(#25252a, #25252a);
-    --color-on-accent: light-dark(#ffffff, #25252a);
+    --color-on-accent: light-dark(#ffffff, #102824);
     --color-on-success: light-dark(#ffffff, #1b1b21);
     --color-on-error: light-dark(#ffffff, #1b1b21);
     --color-on-warning: light-dark(#ffffff, #1b1b21);
@@ -216,14 +216,14 @@
     --color-info-muted: light-dark(#d3e4fc, #2c3c52);
     --color-on-info: light-dark(#ffffff, #25252a);
     --color-text-info: light-dark(#344861, #d5e4f8);
-    --color-text-success: light-dark(#354f31, #d5e9d2);
-    --color-text-warning: light-dark(#524818, #f1e1b9);
+    --color-text-success: light-dark(#0f655d, #8bdfcd);
+    --color-text-warning: light-dark(#854d0e, #f3cf91);
     --color-text-error: light-dark(#603c37, #f7dbd7);
     --color-on-info-muted: light-dark(#344861, #d5e4f8);
     --color-on-success-muted: light-dark(#354f31, #2f412c);
-    --color-on-warning-muted: light-dark(#524818, #433b1b);
+    --color-on-warning-muted: light-dark(#854d0e, #f3cf91);
     --color-on-error-muted: light-dark(#603c37, #50332e);
-    --color-icon-accent: light-dark(#25252a, #f0f0f9);
+    --color-icon-accent: light-dark(#0f766e, #72d5c1);
     --color-icon-primary: light-dark(#25252a, #f0f0f9);
     --color-icon-secondary: light-dark(#848489, #9d9ea5);
     --color-icon-disabled: light-dark(#d4d3dd, #5e5e64);
@@ -234,8 +234,8 @@
     --color-success-muted: light-dark(#d2eccf, #b3d0af);
     --color-error: light-dark(#603c37, #e0bdb8);
     --color-error-muted: light-dark(#fbdad4, #e0bdb8);
-    --color-warning: light-dark(#524818, #d9c794);
-    --color-warning-muted: light-dark(#f4e1b7, #d9c794);
+    --color-warning: light-dark(#a16207, #edbd68);
+    --color-warning-muted: light-dark(#fef3cf, #372c1a);
     --color-border: light-dark(#e2e2e8, #f0f0f91a);
     --color-border-emphasized: light-dark(#848489, #5e5e64);
     --color-skeleton: light-dark(#d4d3dd, #5e5e64);
@@ -295,13 +295,13 @@
     --shadow-inset-success: inset 0 0 0 2px #84848930;
     --shadow-inset-warning: inset 0 0 0 2px #84848930;
     --shadow-inset-error: inset 0 0 0 2px #84848930;
+    --color-border-warning: light-dark(#b7791f, #9c7338);
     --color-icon-info: var(--color-text-info);
     --color-icon-success: var(--color-text-success);
     --color-icon-warning: var(--color-text-warning);
     --color-icon-error: var(--color-text-error);
     --color-border-info: var(--color-text-info);
     --color-border-success: var(--color-text-success);
-    --color-border-warning: var(--color-text-warning);
     --color-border-error: var(--color-text-error);
     --duration-exit: var(--duration-fast);
   }
@@ -437,6 +437,16 @@
   .astryx-button[data-variant="destructive"] {
     background-color: var(--color-background-red);
     color: var(--color-text-red);
+  }
+
+  .astryx-button[data-variant="primary"] {
+    background-color: var(--color-accent);
+    color: var(--color-on-accent);
+    border-color: var(--color-accent);
+  }
+
+  .astryx-button[data-variant="primary"]:hover:not(:disabled, [aria-disabled='true']) {
+    background-color: color-mix(in srgb, var(--color-accent) 88%, var(--color-text-primary));
   }
 
   .astryx-badge[data-variant="info"] {
@@ -715,6 +725,12 @@
     --astryx-section-padding: var(--spacing-3);
   }
 
+  .astryx-segmented-control-item[data-selected="selected"] {
+    background-color: var(--color-accent-muted);
+    color: var(--color-text-accent);
+    box-shadow: inset 0 0 0 1px var(--color-accent);
+  }
+
   .astryx-text[data-color="primary"] { color: var(--color-text-primary); }
 
   .astryx-heading[data-color="primary"] { color: var(--color-text-primary); }
@@ -806,10 +822,10 @@
     --text-heading-2-weight: var(--font-weight-semibold);
     --text-heading-2-leading: 1.3333;
     --text-heading-3-size: var(--font-size-lg);
-    --text-heading-3-weight: var(--font-weight-bold);
+    --text-heading-3-weight: var(--font-weight-semibold);
     --text-heading-3-leading: 1.4;
     --text-heading-4-size: var(--font-size-base);
-    --text-heading-4-weight: var(--font-weight-bold);
+    --text-heading-4-weight: var(--font-weight-semibold);
     --text-heading-4-leading: 1.5;
     --text-heading-5-size: var(--font-size-sm);
     --text-heading-5-weight: var(--font-weight-semibold);
@@ -843,7 +859,7 @@
     --text-display-3-leading: 1.2222;
     --font-family-body: system-ui;
     --font-family-heading: system-ui;
-    --font-family-code: ui-monospace;
+    --font-family-code: ui-monospace, monospace;
   }
   }
 }

@@ -1,77 +1,135 @@
-import type { State } from "../simulation/core";
+import { Grid } from "@astryxdesign/core/Grid";
+import { VStack } from "@astryxdesign/core/VStack";
+import { HStack } from "@astryxdesign/core/HStack";
+import { Text } from "@astryxdesign/core/Text";
+import { orderInputs, type State } from "../simulation/core";
+
 export function Simulation({ state }: { state: State }) {
+  const pending =
+    state.mode === "log"
+      ? state.retained.length - state.analytics.length
+      : state.missed.length;
   return (
-    <div className="simulation" aria-label="Order event delivery state">
-      <div className="simulation-heading">
-        <span>DELIVERY MODEL</span>
-        <span>
+    <VStack
+      as="figure"
+      gap={5}
+      className="simulation"
+      aria-label="Order event delivery state"
+    >
+      <HStack
+        className="simulation-heading"
+        gap={3}
+        hAlign="between"
+        wrap="wrap"
+      >
+        <Text type="label">Live event state</Text>
+        <Text type="code">
           Step {state.tick} ·{" "}
           {state.mode === "log" ? "Retained log" : "Direct delivery"}
-        </span>
-      </div>
-      <div className="flow">
-        <div className="node">
-          <span className="eyebrow">PRODUCER</span>
-          <strong>Order service</strong>
-          <span>{state.orders.length} / 6 produced</span>
-        </div>
-        <span className="arrow" aria-hidden="true">
-          →
-        </span>
-        <div className="node log">
-          <span className="eyebrow">
-            {state.mode === "log" ? "TOPIC" : "CONNECTION"}
-          </span>
-          <strong>{state.mode === "log" ? "orders" : "Direct calls"}</strong>
-          <span>
-            {state.mode === "log"
-              ? `${state.retained.length} retained records`
-              : "No retry storage"}
-          </span>
-        </div>
-        <span className="arrow" aria-hidden="true">
-          →
-        </span>
-        <div className="readers">
-          <div className="node">
-            <span className="eyebrow">CONSUMER · ACTIVE</span>
-            <strong>Notifications</strong>
-            <span>{state.notification.length} delivered</span>
-          </div>
-          <div className={`node ${state.analyticsPaused ? "paused" : ""}`}>
-            <span className="eyebrow">
-              CONSUMER · {state.analyticsPaused ? "PAUSED" : "ACTIVE"}
-            </span>
-            <strong>Analytics</strong>
-            <span>
-              {state.analytics.length} processed ·{" "}
+        </Text>
+      </HStack>
+      <VStack gap={3} className="delivery-diagram">
+        <Text type="supporting">PRODUCER → DELIVERY → CONSUMERS</Text>
+        <Grid columns={{ minWidth: 112, max: 2 }} gap={3}>
+          <VStack gap={2} className="delivery-node">
+            <Text type="supporting">Producer</Text>
+            <Text type="label">Order service</Text>
+            <Text type="body" hasTabularNumbers>
+              {state.orders.length} <Text type="supporting">/ 6 produced</Text>
+            </Text>
+          </VStack>
+          <VStack gap={2} className="delivery-node delivery-transport">
+            <Text type="supporting">
+              {state.mode === "log" ? "Topic" : "Connection"}
+            </Text>
+            <Text type="label">
+              {state.mode === "log" ? "orders" : "Direct calls"}
+            </Text>
+            <Text type="supporting">
               {state.mode === "log"
-                ? state.retained.length - state.analytics.length
-                : state.missed.length}{" "}
+                ? `${state.retained.length} retained records`
+                : "No retry storage"}
+            </Text>
+          </VStack>
+        </Grid>
+        <Grid columns={{ minWidth: 112, max: 2 }} gap={3}>
+          <VStack gap={2} className="delivery-node">
+            <HStack gap={2} className="reader-indicator">
+              <Text className="delivery-status-mark" aria-hidden="true">
+                ●
+              </Text>
+              <Text type="supporting">Consumer · Active</Text>
+            </HStack>
+            <Text type="label">Notifications</Text>
+            <Text type="body" hasTabularNumbers>
+              {state.notification.length}{" "}
+              <Text type="supporting">delivered</Text>
+            </Text>
+          </VStack>
+          <VStack
+            gap={2}
+            className={`delivery-node ${state.analyticsPaused ? "reader-paused" : ""}`}
+          >
+            <HStack gap={2} className="reader-indicator">
+              <Text className="delivery-status-mark" aria-hidden="true">
+                {state.analyticsPaused ? "Ⅱ" : "●"}
+              </Text>
+              <Text type="supporting">
+                Consumer · {state.analyticsPaused ? "Paused" : "Active"}
+              </Text>
+            </HStack>
+            <Text type="label">Analytics</Text>
+            <Text type="supporting" hasTabularNumbers>
+              {state.analytics.length} processed · {pending}{" "}
               {state.mode === "log" ? "pending" : "missed"}
-            </span>
-          </div>
-        </div>
-      </div>
-      <div className="records" aria-label="Produced events">
-        {state.orders.length === 0 ? (
-          <span>No events yet. Advance one step to place an order.</span>
-        ) : (
-          state.orders.map((order) => (
-            <div className="record" key={order.id}>
-              <strong>{order.name}</strong>
-              <span>Notification ✓</span>
-              <span>
-                {state.analytics.includes(order.id)
-                  ? "Analytics ✓"
-                  : state.missed.includes(order.id)
-                    ? "Analytics missed"
-                    : "Analytics pending"}
-              </span>
-            </div>
-          ))
+            </Text>
+          </VStack>
+        </Grid>
+      </VStack>
+      <VStack gap={3} className="event-ledger" aria-label="Produced events">
+        <HStack gap={2} hAlign="between">
+          <Text type="label">Event ledger</Text>
+          <Text type="supporting">{state.orders.length} of 6 events</Text>
+        </HStack>
+        <Grid columns={{ minWidth: 104, max: 3 }} gap={2}>
+          {orderInputs.map((order) => {
+            const produced = state.orders.some((o) => o.id === order.id);
+            const missed = state.missed.includes(order.id);
+            const processed = state.analytics.includes(order.id);
+            return (
+              <VStack
+                gap={2}
+                key={order.id}
+                className={`event-slot ${produced ? "event-produced" : "event-empty"}`}
+              >
+                <Text type="code">{order.name}</Text>
+                {produced ? (
+                  <>
+                    <Text type="supporting">Notification ✓</Text>
+                    <Text
+                      type="supporting"
+                      className={missed ? "event-missed" : ""}
+                    >
+                      {processed
+                        ? "Analytics ✓"
+                        : missed
+                          ? "Analytics missed"
+                          : "Analytics pending"}
+                    </Text>
+                  </>
+                ) : (
+                  <Text type="supporting">Not produced</Text>
+                )}
+              </VStack>
+            );
+          })}
+        </Grid>
+        {state.orders.length === 0 && (
+          <Text type="supporting">
+            No events yet. Advance one step to place an order.
+          </Text>
         )}
-      </div>
+      </VStack>
       <details>
         <summary>Execution log · {state.history.length} entries</summary>
         <ol className="event-log">
@@ -80,6 +138,6 @@ export function Simulation({ state }: { state: State }) {
           ))}
         </ol>
       </details>
-    </div>
+    </VStack>
   );
 }

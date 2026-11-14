@@ -87,3 +87,15 @@ The theme switch is now a 36px icon-only control with an accessible toggle name,
 - Followed installed CLI guidance for layout, theme nesting, typography, and RadioList. Chapter 1 uses Stack layout/spacing, semantic Text/Heading, flat section groupings, and library recall/transfer controls. Content, simulation rules, mission assessment, and persistence remain unchanged.
 - Production build and 36 simulation tests pass; Chromium desktop/mobile suite passes all 32 tests, including Chapters 2–4 regression flows. Doctor reports 20 passes, zero failures, and two expected external-font warnings; Vite intentionally replaces optional font CSS with local system-font fallbacks.
 - Browser screenshots in `/workspace/artifacts/stone-chapter1` cover light/dark introduction and experiment, plus mobile experiment. No runtime errors or horizontal overflow observed.
+
+### Chapter 1 reading and experiment redesign
+
+- Redesigned the opening, learning goals, conceptual overview, chapter navigation, reading surface, and experiment workspace. Chapter 1 chrome follows Stone; leaving the chapter restores the existing route theme.
+- Body text measures 16px at desktop and mobile viewports. The live state uses six reserved event positions; actual simulation history appears in a stable observation panel. The domain simulation and assessment functions are unchanged.
+- Production build, 36 domain tests, and all 32 Chromium desktop/mobile tests passed. Relevant learning, recall, appearance and keyboard tests were rechecked after workspace layout changes. Additional browser review covers 320, 390, 768, 1024 and 1440px widths, keyboard jump navigation, text clipping and observation-panel stability during playback.
+- Final screenshots and review gallery are under `/workspace/artifacts/chapter1-final`. The branch preview workflow publishes this iteration on push.
+
+### Stone accent palette
+
+- Added teal interaction/selection accents and amber paused/warning states in the reading theme, with separate light/dark values. Kept primary surfaces and long-form text neutral.
+- Checked actual primary-action foreground/background contrast in light and dark mode, including hover, and corrected legacy CSS overrides affecting solid action colors. Rechecked production build, all 36 domain tests, and all 32 Chromium desktop/mobile tests. Theme doctor retains zero failures and the documented optional-font warnings.

@@ -1,4 +1,4 @@
-export function localJump(e: React.MouseEvent<HTMLAnchorElement>) {
+export function localJump(e: React.MouseEvent<HTMLElement>) {
   e.preventDefault();
   const target = document.querySelector(e.currentTarget.getAttribute("href")!);
   if (target instanceof HTMLElement) {

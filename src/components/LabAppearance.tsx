@@ -6,6 +6,15 @@ import "@astryxdesign/core/astryx.css";
 import "@astryxdesign/theme-neutral/theme.css";
 // Keep the existing saved/system preference as the single source of appearance.
 export function LabAppearance({ children }: { children: ReactNode }) {
+  const [chapterOne, setChapterOne] = useState(
+    () => window.location.hash === "#/chapter/1",
+  );
+  useEffect(() => {
+    const syncRoute = () =>
+      setChapterOne(window.location.hash === "#/chapter/1");
+    window.addEventListener("hashchange", syncRoute);
+    return () => window.removeEventListener("hashchange", syncRoute);
+  }, []);
   const [mode, setMode] = useState<"light" | "dark">(() =>
     document.documentElement.dataset.theme === "dark" ? "dark" : "light",
   );
@@ -22,7 +31,7 @@ export function LabAppearance({ children }: { children: ReactNode }) {
     return () => observer.disconnect();
   }, []);
   return (
-    <Theme theme={themes.neutral} mode={mode}>
+    <Theme theme={chapterOne ? themes.stone : themes.neutral} mode={mode}>
       {children}
     </Theme>
   );

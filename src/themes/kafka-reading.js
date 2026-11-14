@@ -19,60 +19,60 @@ export const kafkaReadingTheme = {
   name: 'kafka-reading',
   __built: true,
   tokens: {
-    "--font-size-4xs": "0.3125rem",
-    "--font-size-3xs": "0.375rem",
-    "--font-size-2xs": "0.4375rem",
-    "--font-size-xs": "0.5625rem",
-    "--font-size-sm": "0.6875rem",
-    "--font-size-base": "0.875rem",
-    "--font-size-lg": "1.125rem",
-    "--font-size-xl": "1.375rem",
-    "--font-size-2xl": "1.6875rem",
-    "--font-size-3xl": "2.125rem",
-    "--font-size-4xl": "2.6875rem",
-    "--font-size-5xl": "3.3125rem",
-    "--text-heading-1-size": "3rem",
+    "--font-size-4xs": "0.375rem",
+    "--font-size-3xs": "0.5rem",
+    "--font-size-2xs": "0.5625rem",
+    "--font-size-xs": "0.6875rem",
+    "--font-size-sm": "0.8125rem",
+    "--font-size-base": "1rem",
+    "--font-size-lg": "1.1875rem",
+    "--font-size-xl": "1.4375rem",
+    "--font-size-2xl": "1.75rem",
+    "--font-size-3xl": "2.0625rem",
+    "--font-size-4xl": "2.5rem",
+    "--font-size-5xl": "3rem",
+    "--text-heading-1-size": "3.25rem",
     "--text-heading-1-weight": "var(--font-weight-semibold)",
     "--text-heading-1-leading": "1.15",
     "--text-heading-2-size": "2rem",
     "--text-heading-2-weight": "var(--font-weight-semibold)",
-    "--text-heading-2-leading": "1.4545",
+    "--text-heading-2-leading": "1.3913",
     "--text-heading-3-size": "1.625rem",
-    "--text-heading-3-weight": "var(--font-weight-bold)",
-    "--text-heading-3-leading": "1.5556",
+    "--text-heading-3-weight": "var(--font-weight-semibold)",
+    "--text-heading-3-leading": "1.4737",
     "--text-heading-4-size": "1.375rem",
-    "--text-heading-4-weight": "var(--font-weight-bold)",
-    "--text-heading-4-leading": "1.4286",
+    "--text-heading-4-weight": "var(--font-weight-semibold)",
+    "--text-heading-4-leading": "1.5",
     "--text-heading-5-size": "1.125rem",
     "--text-heading-5-weight": "var(--font-weight-semibold)",
-    "--text-heading-5-leading": "1.4545",
+    "--text-heading-5-leading": "1.5385",
     "--text-heading-6-size": "var(--font-size-xs)",
     "--text-heading-6-weight": "var(--font-weight-semibold)",
-    "--text-heading-6-leading": "1.7778",
+    "--text-heading-6-leading": "1.4545",
     "--text-body-size": "1rem",
     "--text-body-weight": "var(--font-weight-normal)",
-    "--text-body-leading": "1.85",
+    "--text-body-leading": "1.8",
     "--text-large-size": "var(--font-size-lg)",
-    "--text-large-weight": "var(--font-weight-semibold)",
-    "--text-large-leading": "1.5556",
+    "--text-large-weight": "400",
+    "--text-large-leading": "1.4737",
     "--text-label-size": "var(--font-size-base)",
     "--text-label-weight": "var(--font-weight-medium)",
-    "--text-label-leading": "1.4286",
+    "--text-label-leading": "1.5",
     "--text-code-size": "var(--font-size-base)",
     "--text-code-weight": "var(--font-weight-normal)",
-    "--text-code-leading": "1.4286",
-    "--text-supporting-size": "0.75rem",
+    "--text-code-leading": "1.5",
+    "--text-supporting-size": "0.8125rem",
     "--text-supporting-weight": "var(--font-weight-normal)",
-    "--text-supporting-leading": "1.4545",
+    "--text-supporting-leading": "1.5385",
     "--text-display-1-size": "var(--font-size-5xl)",
     "--text-display-1-weight": "var(--font-weight-normal)",
-    "--text-display-1-leading": "1.283",
+    "--text-display-1-leading": "1.25",
     "--text-display-2-size": "var(--font-size-4xl)",
     "--text-display-2-weight": "var(--font-weight-normal)",
-    "--text-display-2-leading": "1.2093",
+    "--text-display-2-leading": "1.3",
     "--text-display-3-size": "var(--font-size-3xl)",
     "--text-display-3-weight": "var(--font-weight-normal)",
-    "--text-display-3-leading": "1.2941",
+    "--text-display-3-leading": "1.2121",
     "--duration-fast-min": "95ms",
     "--duration-fast": "125ms",
     "--duration-fast-max": "165ms",
@@ -94,7 +94,7 @@ export const kafkaReadingTheme = {
     "--_astryx-motion-tempo": "1",
     "--font-family-body": "system-ui",
     "--font-family-heading": "system-ui",
-    "--font-family-code": "ui-monospace",
+    "--font-family-code": "ui-monospace, monospace",
     "--color-syntax-keyword": "light-dark(#635a70, #b0a5c0)",
     "--color-syntax-string": "light-dark(#40675c, #90ba8a)",
     "--color-syntax-comment": "light-dark(#5f5f64, #ababb3)",
@@ -114,8 +114,8 @@ export const kafkaReadingTheme = {
     "--color-syntax-diff-header": "transparent",
     "--color-syntax-added-marker": "light-dark(#354f31, #d5e9d2)",
     "--color-syntax-removed-marker": "light-dark(#603c37, #f7dbd7)",
-    "--color-accent": "light-dark(#25252a, #f0f0f9)",
-    "--color-accent-muted": "light-dark(#25252a14, #f0f0f920)",
+    "--color-accent": "light-dark(#0f766e, #72d5c1)",
+    "--color-accent-muted": "light-dark(#e5f3ef, #173a35)",
     "--color-neutral": "light-dark(#25252a0f, #f0f0f91a)",
     "--color-background-surface": "light-dark(#ffffff, #1b1b21)",
     "--color-background-body": "light-dark(#f0f0f7, #101018)",
@@ -126,10 +126,10 @@ export const kafkaReadingTheme = {
     "--color-text-primary": "light-dark(#25252a, #f0f0f9)",
     "--color-text-secondary": "light-dark(#5f5f64, #ababb3)",
     "--color-text-disabled": "light-dark(#d4d3dd, #5e5e64)",
-    "--color-text-accent": "light-dark(#25252a, #f0f0f9)",
+    "--color-text-accent": "light-dark(#0f655d, #8bdfcd)",
     "--color-on-dark": "#ffffff",
     "--color-on-light": "light-dark(#25252a, #25252a)",
-    "--color-on-accent": "light-dark(#ffffff, #25252a)",
+    "--color-on-accent": "light-dark(#ffffff, #102824)",
     "--color-on-success": "light-dark(#ffffff, #1b1b21)",
     "--color-on-error": "light-dark(#ffffff, #1b1b21)",
     "--color-on-warning": "light-dark(#ffffff, #1b1b21)",
@@ -137,14 +137,14 @@ export const kafkaReadingTheme = {
     "--color-info-muted": "light-dark(#d3e4fc, #2c3c52)",
     "--color-on-info": "light-dark(#ffffff, #25252a)",
     "--color-text-info": "light-dark(#344861, #d5e4f8)",
-    "--color-text-success": "light-dark(#354f31, #d5e9d2)",
-    "--color-text-warning": "light-dark(#524818, #f1e1b9)",
+    "--color-text-success": "light-dark(#0f655d, #8bdfcd)",
+    "--color-text-warning": "light-dark(#854d0e, #f3cf91)",
     "--color-text-error": "light-dark(#603c37, #f7dbd7)",
     "--color-on-info-muted": "light-dark(#344861, #d5e4f8)",
     "--color-on-success-muted": "light-dark(#354f31, #2f412c)",
-    "--color-on-warning-muted": "light-dark(#524818, #433b1b)",
+    "--color-on-warning-muted": "light-dark(#854d0e, #f3cf91)",
     "--color-on-error-muted": "light-dark(#603c37, #50332e)",
-    "--color-icon-accent": "light-dark(#25252a, #f0f0f9)",
+    "--color-icon-accent": "light-dark(#0f766e, #72d5c1)",
     "--color-icon-primary": "light-dark(#25252a, #f0f0f9)",
     "--color-icon-secondary": "light-dark(#848489, #9d9ea5)",
     "--color-icon-disabled": "light-dark(#d4d3dd, #5e5e64)",
@@ -155,8 +155,8 @@ export const kafkaReadingTheme = {
     "--color-success-muted": "light-dark(#d2eccf, #b3d0af)",
     "--color-error": "light-dark(#603c37, #e0bdb8)",
     "--color-error-muted": "light-dark(#fbdad4, #e0bdb8)",
-    "--color-warning": "light-dark(#524818, #d9c794)",
-    "--color-warning-muted": "light-dark(#f4e1b7, #d9c794)",
+    "--color-warning": "light-dark(#a16207, #edbd68)",
+    "--color-warning-muted": "light-dark(#fef3cf, #372c1a)",
     "--color-border": "light-dark(#e2e2e8, #f0f0f91a)",
     "--color-border-emphasized": "light-dark(#848489, #5e5e64)",
     "--color-skeleton": "light-dark(#d4d3dd, #5e5e64)",
@@ -215,7 +215,8 @@ export const kafkaReadingTheme = {
     "--shadow-inset-selected": "inset 0 0 0 2px #25252a50",
     "--shadow-inset-success": "inset 0 0 0 2px #84848930",
     "--shadow-inset-warning": "inset 0 0 0 2px #84848930",
-    "--shadow-inset-error": "inset 0 0 0 2px #84848930"
+    "--shadow-inset-error": "inset 0 0 0 2px #84848930",
+    "--color-border-warning": "light-dark(#b7791f, #9c7338)"
   },
   components: {
     "heading": {
@@ -329,6 +330,14 @@ export const kafkaReadingTheme = {
       "variant:destructive": {
         "backgroundColor": "var(--color-background-red)",
         "color": "var(--color-text-red)"
+      },
+      "variant:primary": {
+        "backgroundColor": "var(--color-accent)",
+        "color": "var(--color-on-accent)",
+        "borderColor": "var(--color-accent)",
+        ":hover:not(:disabled, [aria-disabled='true'])": {
+          "backgroundColor": "color-mix(in srgb, var(--color-accent) 88%, var(--color-text-primary))"
+        }
       }
     },
     "badge": {
@@ -591,6 +600,13 @@ export const kafkaReadingTheme = {
       "base": {
         "padding": "var(--spacing-3)"
       }
+    },
+    "segmented-control-item": {
+      "selected": {
+        "backgroundColor": "var(--color-accent-muted)",
+        "color": "var(--color-text-accent)",
+        "boxShadow": "inset 0 0 0 1px var(--color-accent)"
+      }
     }
   },
   __onDark: {
@@ -639,21 +655,18 @@ export const kafkaReadingTheme = {
   __axes: {
     "typography": {
       "scale": {
-        "base": 14,
-        "ratio": 1.25
+        "base": 16,
+        "ratio": 1.2
       },
       "body": {
         "family": "system-ui"
       },
       "heading": {
-        "family": "system-ui",
-        "weights": {
-          "3": "bold",
-          "4": "bold"
-        }
+        "family": "system-ui"
       },
       "code": {
-        "family": "ui-monospace"
+        "family": "ui-monospace",
+        "fallbacks": "monospace"
       }
     },
     "motion": {

@@ -2402,79 +2402,270 @@ section:focus {
 /* Existing chapters retain their native prose list semantics after the library reset. */
 .chapter-body ul { list-style: disc; padding-inline-start: 1.4em; }
 .chapter-body ol { list-style: decimal; padding-inline-start: 1.4em; }
-/* Chapter 1: Stone owns visual tokens; Stack props own UI spacing. */
+/* Chapter 1: a reading surface and a distinct, bounded experiment workspace. */
+[data-astryx-theme="stone"]:has(.astryx-chapter-one) {
+ --bg: var(--color-background-body); --surface: var(--color-background-surface);
+ --subtle: var(--color-background-card); --text: var(--color-text-primary);
+ --muted: var(--color-text-secondary); --faint: var(--color-text-secondary);
+ --border: var(--color-border); --accent: var(--color-accent);
+ --accent-strong: var(--color-text-primary); --accent-soft: var(--color-accent-muted);
+ --primary: var(--color-accent); --on-primary: var(--color-on-accent);
+ background: var(--color-background-body); color: var(--color-text-primary);
+ min-height: 100vh;
+}
+[data-astryx-theme="stone"]:has(.astryx-chapter-one) > header {
+ max-width: none; padding-inline: max(var(--spacing-6), calc((100% - 76rem) / 2));
+ background: var(--color-background-surface); border-color: var(--color-border);
+}
+[data-astryx-theme="stone"]:has(.astryx-chapter-one) .brand-icon {
+ background: var(--color-accent); color: var(--color-on-accent); background-color: var(--color-accent);
+ border-color: var(--color-accent);
+}
+[data-astryx-theme="stone"]:has(.astryx-chapter-one) .theme-toggle {
+ background: var(--color-background-body); color: var(--color-text-primary);
+}
 .astryx-chapter-one {
- --chapter-nav-width: 13rem;
+ --chapter-nav-width: 11.5rem;
  --bg: var(--color-background-body); --surface: var(--color-background-surface);
  --subtle: var(--color-background-card); --text: var(--color-text-primary);
  --muted: var(--color-text-secondary); --faint: var(--color-text-secondary);
  --border: var(--color-border); --accent: var(--color-accent);
  --accent-soft: var(--color-accent-muted); --amber: var(--color-text-warning);
- color: var(--color-text-primary); background: var(--color-background-body);
- margin-inline: auto; min-width: 0;
+ --amber-soft: var(--color-warning-muted);
+ color: var(--color-text-primary); margin-inline: auto; min-width: 0;
 }
-.astryx-chapter-one .chapter-body { min-width: 0; }
+.astryx-chapter-one .chapter-body {
+ min-width: 0; max-width: none; padding: var(--spacing-8);
+ background: var(--color-background-surface); border: 1px solid var(--color-border);
+ border-radius: var(--radius-container);
+}
 .astryx-chapter-one .chapter-body > section,
-.astryx-chapter-one .chapter-body > section > section { margin: 0; }
+.astryx-chapter-one .chapter-body > section > section { margin: 0; scroll-margin-top: var(--spacing-6); }
 .astryx-chapter-one .astryx-text,
 .astryx-chapter-one .astryx-heading { margin: 0; }
-.astryx-chapter-one .eyebrow { color: var(--color-text-secondary); }
-.astryx-chapter-one .learning-goals {
- border: 0; border-block: 1px solid var(--color-border); border-radius: 0;
- background: transparent; margin: 0; padding: var(--spacing-6) 0;
-}
-.astryx-chapter-one .lesson-visual {
- box-shadow: none; background: transparent; border: 0;
- border-block-start: 1px solid var(--color-border); border-radius: 0;
- padding: var(--spacing-6) 0; margin-block: var(--spacing-4);
-}
-.astryx-chapter-one #experiment,
-.astryx-chapter-one #mission {
- border: 0; border-block-start: 1px solid var(--color-border);
- border-radius: 0; box-shadow: none; background: transparent;
- padding: var(--spacing-8) 0;
-}
-.astryx-chapter-one .chapter-nav { top: var(--spacing-6); }
-.astryx-chapter-one .chapter-nav nav { margin: 0; }
+.astryx-chapter-one .chapter-body p[data-type="body"] { color: var(--color-text-primary); }
+.astryx-chapter-one .eyebrow,
+.astryx-chapter-one .lesson-index { color: var(--color-text-secondary); font-size: var(--text-supporting-size); }
+.astryx-chapter-one .chapter-nav { top: var(--spacing-8); padding-block: var(--spacing-3); }
+.astryx-chapter-one .chapter-nav > strong { font-size: var(--text-label-size); }
+.astryx-chapter-one .chapter-nav > .eyebrow { margin: var(--spacing-3) 0 0; }
+.astryx-chapter-one .chapter-nav nav { margin-block: var(--spacing-3); }
 .astryx-chapter-one .chapter-nav nav a {
- padding: var(--spacing-3); font-size: var(--text-supporting-size);
- border-radius: var(--radius-element);
+ padding: var(--spacing-3); font-size: var(--text-supporting-size); line-height: 1.6;
+ border-inline-start: 2px solid var(--color-border); border-radius: 0 var(--radius-element) var(--radius-element) 0;
+}
+.astryx-chapter-one .chapter-nav nav a[aria-current] {
+ background: var(--color-accent-muted); border-color: var(--color-accent); color: var(--color-text-primary);
 }
 .astryx-chapter-one .progress-panel {
  background: transparent; border: 0; border-block-start: 1px solid var(--color-border);
- border-radius: 0; padding: var(--spacing-4) 0;
+ border-radius: 0; padding: var(--spacing-5) 0; font-size: var(--text-supporting-size);
 }
+.astryx-chapter-one .chapter-opening { align-items: stretch; }
+.astryx-chapter-one .chapter-heading { flex: 1 1 24rem; min-width: 0; }
+.astryx-chapter-one .chapter-heading h1 { max-width: 16ch; letter-spacing: -.045em; }
+.astryx-chapter-one .chapter-heading .lede { max-width: 42ch; color: var(--color-text-secondary); font-weight: 400; }
+.astryx-chapter-one .chapter-heading > a { align-self: start; }
+.astryx-chapter-one .learning-goals { flex: 1 1 14rem; min-width: 0; border: 0; padding: 0; margin: 0; background: transparent; }
+.astryx-chapter-one .learning-goals .astryx-section {
+ height: 100%; border: 1px solid var(--color-border); border-radius: var(--radius-container);
+ background: var(--color-background-body);
+}
+.astryx-chapter-one .learning-goals ul {
+ display: grid; gap: var(--spacing-3); margin: 0; color: var(--color-text-primary);
+ font-size: var(--text-supporting-size); line-height: 1.8;
+}
+.astryx-chapter-one .learning-goals p { font-size: var(--text-supporting-size); }
+.astryx-chapter-one .chapter-overview {
+ padding: var(--spacing-6); margin: 0;
+ border: 1px solid var(--color-border); border-radius: var(--radius-container);
+ background: var(--color-background-body);
+}
+.astryx-chapter-one .overview-origin { flex: 1 1 16rem; }
+.astryx-chapter-one .overview-reactions { flex: 1 1 16rem; }
+.astryx-chapter-one .overview-reaction {
+ padding: var(--spacing-3); border-radius: var(--radius-element); background: var(--color-background-surface);
+}
+.astryx-chapter-one .service-mark {
+ display: grid; place-items: center; width: 2.25rem; height: 2.25rem;
+ border: 1px solid var(--color-border); border-radius: var(--radius-element); font-weight: 700;
+}
+.astryx-chapter-one .overview-arrow { font-size: var(--text-heading-3-size); color: var(--color-text-secondary); }
+.astryx-chapter-one .chapter-overview figcaption {
+ border-block-start: 1px solid var(--color-border); padding-block-start: var(--spacing-4);
+ font-size: var(--text-label-size); color: var(--color-text-primary);
+}
+.astryx-chapter-one .reading-section { padding-block-start: var(--spacing-8); border-block-start: 1px solid var(--color-border); }
+.astryx-chapter-one .reading-section > h2 { max-width: 32ch; }
+.astryx-chapter-one .reading-section > p { max-width: 68ch; }
+.astryx-chapter-one .lesson-visual {
+ padding: var(--spacing-6); margin: var(--spacing-3) 0;
+ background: var(--color-background-body); border: 1px solid var(--color-border);
+ border-radius: var(--radius-container); box-shadow: none;
+}
+.astryx-chapter-one .lesson-visual h3 { font-size: var(--text-heading-4-size); line-height: 1.4; margin-block: var(--spacing-3); }
+.astryx-chapter-one .lesson-visual p { font-size: var(--text-body-size); color: var(--color-text-primary); }
+.astryx-chapter-one .lesson-visual figcaption { font-size: var(--text-supporting-size); color: var(--color-text-secondary); }
+.astryx-chapter-one .concept-node,
+.astryx-chapter-one .fact-card,
+.astryx-chapter-one .runtime-broker { background: var(--color-background-surface); border-color: var(--color-border); box-shadow: none; }
+.astryx-chapter-one .runtime-broker { border-block-start: 3px solid var(--color-accent); }
+.astryx-chapter-one .concept-node strong { font-size: var(--text-label-size); }
+.astryx-chapter-one .concept-kicker { font-size: var(--text-supporting-size); letter-spacing: .03em; }
+.astryx-chapter-one .visual-takeaway { background: var(--color-background-surface); border-color: var(--color-accent); }
+.astryx-chapter-one #experiment,
+.astryx-chapter-one #mission,
+.astryx-chapter-one #wrap-up { padding-block-start: var(--spacing-8); border-block-start: 1px solid var(--color-border); }
+.astryx-chapter-one #experiment > p,
+.astryx-chapter-one #mission > p,
+.astryx-chapter-one #wrap-up > p { max-width: 70ch; }
+.astryx-chapter-one .lab-workspace {
+ background: var(--color-background-body); border: 1px solid var(--color-border);
+ border-radius: var(--radius-container); overflow: visible;
+}
+.astryx-chapter-one .lab-workspace-heading {
+ padding: var(--spacing-4) var(--spacing-5); border-block-end: 1px solid var(--color-border);
+}
+.astryx-chapter-one .lab-controls { padding-inline: var(--spacing-5); }
+.astryx-chapter-one .experiment-settings { gap: var(--spacing-5); }
 .astryx-chapter-one .chapter-actions { margin: 0; }
+.astryx-chapter-one .lab-observation { padding: 0 var(--spacing-5) var(--spacing-5); }
+.astryx-chapter-one .lab-state { flex: 1 1 26rem; min-width: 0; }
 .astryx-chapter-one .chapter-explanation {
+ flex: 1 1 15rem; min-width: 0; min-height: 26rem;
  padding: var(--spacing-5); background: var(--color-background-surface);
  border: 1px solid var(--color-border); border-radius: var(--radius-container);
- min-height: 20em;
+ border-block-start: 3px solid var(--color-accent);
 }
-.astryx-chapter-one .chapter-step-note {
- padding: 0; border: 0; background: none; min-height: 3.5em;
-}
+.astryx-chapter-one .chapter-explanation p[data-type="body"] { font-size: var(--text-label-size); line-height: 1.8; }
+.astryx-chapter-one .chapter-step-note { min-height: 5em; padding: 0; border: 0; background: transparent; }
 .astryx-chapter-one .simulation {
- padding: var(--spacing-5); background: var(--color-background-surface);
- border-radius: var(--radius-container);
+ background: var(--color-background-surface); border: 1px solid var(--color-border);
+ border-radius: var(--radius-container); padding: var(--spacing-5); margin: 0;
 }
-.astryx-chapter-one .feedback {
- background: var(--color-background-surface); border-left-color: var(--color-accent);
- padding: var(--spacing-5); margin: 0;
+.astryx-chapter-one .simulation-heading { padding-block-end: var(--spacing-3); margin: 0; }
+.astryx-chapter-one .simulation-heading span { font-family: inherit; letter-spacing: 0; }
+.astryx-chapter-one .delivery-node {
+ padding: var(--spacing-4); background: var(--color-background-body);
+ border: 1px solid var(--color-border); border-radius: var(--radius-element);
 }
+.astryx-chapter-one .delivery-transport { border-block-start: 2px solid var(--color-accent); }
+.astryx-chapter-one .delivery-status-mark { color: var(--color-text-success); }
+.astryx-chapter-one .reader-paused { background: var(--color-warning-muted); border-style: dashed; border-color: var(--color-border-warning); }
+.astryx-chapter-one .reader-paused .delivery-status-mark { color: var(--color-text-warning); }
+.astryx-chapter-one .event-ledger { padding-block-start: var(--spacing-4); border-block-start: 1px solid var(--color-border); }
+.astryx-chapter-one .event-slot {
+ padding: var(--spacing-3); border: 1px solid var(--color-border); border-radius: var(--radius-element);
+ min-height: 8rem;
+}
+.astryx-chapter-one .event-empty { background: var(--color-background-body); border-style: dashed; }
+.astryx-chapter-one .event-produced { border-block-start: 2px solid var(--color-accent); }
+.astryx-chapter-one .event-missed { color: var(--color-text-error); }
+.astryx-chapter-one .simulation details { margin: 0; }
+.astryx-chapter-one .simulation summary { font-size: var(--text-supporting-size); }
+.astryx-chapter-one .event-log { font-size: var(--text-supporting-size); }
+.astryx-chapter-one .feedback { padding: var(--spacing-5); margin: 0; background: var(--color-background-body); border-color: var(--color-accent); }
+.astryx-chapter-one .concept-review { gap: var(--spacing-6); }
 .astryx-chapter-one .review-card {
- padding: var(--spacing-6) 0; margin: 0; border: 0;
- border-block-start: 1px solid var(--color-border); border-radius: 0; background: transparent;
+ background: var(--color-background-body); border: 1px solid var(--color-border);
+ border-radius: var(--radius-container); padding: var(--spacing-6); margin: 0;
 }
 .astryx-chapter-one .review-heading { justify-content: space-between; }
-.astryx-chapter-one .learning-emphasis { text-decoration: none; font-weight: 750; }
+.astryx-chapter-one .learning-emphasis { text-decoration: none; font-weight: 750; color: var(--color-text-primary); }
 .astryx-chapter-one .callout {
- padding: var(--spacing-6) 0; margin: 0; background: transparent;
- border: 0; border-block-start: 1px solid var(--color-border); border-radius: 0;
+ padding: var(--spacing-6); margin: 0; background: var(--color-background-body);
+ border: 1px solid var(--color-border); border-radius: var(--radius-container);
 }
-@media(max-width:1100px) {
+@media(max-width: 1200px) {
  .astryx-chapter-one { --chapter-nav-width: 100%; }
  .astryx-chapter-one .chapter-nav { position: static; margin: 0; padding: 0; border: 0; }
+ .astryx-chapter-one .chapter-nav > strong,
+ .astryx-chapter-one .chapter-nav > .eyebrow,
+ .astryx-chapter-one .progress-panel { display: none; }
+ .astryx-chapter-one .chapter-nav nav { flex-direction: row; flex-wrap: wrap; margin: 0; }
+ .astryx-chapter-one .chapter-nav nav a { border-inline-start: 0; border-block-end: 2px solid var(--color-border); border-radius: 0; }
+}
+@media(max-width: 700px) {
+ .astryx-chapter-one { padding: var(--spacing-4); gap: var(--spacing-5); }
+ .astryx-chapter-one .chapter-body { padding: var(--spacing-5); border-radius: var(--radius-container); }
+ .astryx-chapter-one .chapter-opening { gap: var(--spacing-6); }
+ .astryx-chapter-one .chapter-heading h1 { font-size: var(--text-heading-2-size); max-width: 16ch; }
+ .astryx-chapter-one .chapter-nav nav { display: flex; gap: var(--spacing-2); }
+ .astryx-chapter-one .chapter-nav nav a { flex: 1 1 40%; }
+ .astryx-chapter-one .overview-arrow { display: none; }
+ .astryx-chapter-one .chapter-overview,
+ .astryx-chapter-one .lesson-visual,
+ .astryx-chapter-one .review-card,
+ .astryx-chapter-one .callout { padding: var(--spacing-4); }
+ .astryx-chapter-one .chapter-actions .chapter-action { flex: 1 1 auto; min-width: max-content; max-width: 100%; }
+ .astryx-chapter-one .lab-workspace-heading { padding: var(--spacing-4); }
+ .astryx-chapter-one .lab-controls { padding-inline: var(--spacing-3); }
+ .astryx-chapter-one .lab-observation { padding-inline: var(--spacing-3); padding-block-end: var(--spacing-3); }
+ .astryx-chapter-one .simulation,
+ .astryx-chapter-one .chapter-explanation { padding: var(--spacing-4); }
+ .astryx-chapter-one .chapter-explanation { min-height: 25rem; }
+ .astryx-chapter-one .delivery-node { padding: var(--spacing-3); }
+}
+
+/* Keep legacy prose rules from overriding the reading theme's semantic types. */
+.astryx-chapter-one .astryx-text[data-type="body"] {
+ font-family: var(--font-family-body); font-size: var(--text-body-size);
+ line-height: var(--text-body-leading); font-weight: var(--text-body-weight);
+}
+.astryx-chapter-one .astryx-text[data-type="large"] {
+ font-family: var(--font-family-body); font-size: var(--text-large-size);
+ line-height: var(--text-large-leading); font-weight: var(--text-large-weight);
+}
+.astryx-chapter-one .astryx-text[data-type="label"] {
+ font-family: var(--font-family-body); font-size: var(--text-label-size);
+ line-height: var(--text-label-leading); font-weight: var(--font-weight-semibold);
+}
+.astryx-chapter-one .astryx-text[data-type="supporting"] {
+ font-family: var(--font-family-body); font-size: var(--text-supporting-size);
+ line-height: var(--text-supporting-leading); color: var(--color-text-secondary);
+}
+.astryx-chapter-one .astryx-text[data-type="code"] {
+ font-family: var(--font-family-code); font-size: var(--text-code-size); line-height: var(--text-code-leading);
+}
+.astryx-chapter-one .astryx-heading[data-level="1"] {
+ font-size: var(--text-heading-1-size); line-height: var(--text-heading-1-leading);
+}
+.astryx-chapter-one .astryx-heading[data-level="2"] {
+ font-size: var(--text-heading-2-size); line-height: var(--text-heading-2-leading);
+}
+.astryx-chapter-one .astryx-heading[data-level="3"] {
+ font-size: var(--text-heading-3-size); line-height: var(--text-heading-3-leading);
+}
+.astryx-chapter-one #experiment {
+ padding: var(--spacing-8) 0 0; border: 0; border-block-start: 1px solid var(--color-border);
+ background: transparent; border-radius: 0;
 }
 @media(max-width:700px) {
- .astryx-chapter-one .chapter-actions .chapter-action { flex: 1 1 45%; min-width: 0; }
+ .astryx-chapter-one .chapter-heading .astryx-heading[data-level="1"] { font-size: var(--text-heading-2-size); }
+ .astryx-chapter-one .chapter-explanation .astryx-text[data-type="body"] { font-size: var(--text-label-size); }
+}
+
+.astryx-chapter-one .prediction-field { flex: 1 1 22rem; min-width: 0; }
+.astryx-chapter-one .delivery-model-field { flex: 1 1 20rem; min-width: 0; }
+.astryx-chapter-one .progress-panel > p { font-size: var(--text-supporting-size); }
+.astryx-chapter-one .learning-goals p { font-size: var(--text-supporting-size); }
+@media(max-width:360px) {
+ .astryx-chapter-one .chapter-actions .chapter-action { flex-basis: 100%; }
+}
+
+.astryx-chapter-one .event-slot .astryx-text.event-missed { color: var(--color-text-error); }
+
+/* Accent only interactive cues and selected ideas; long-form copy stays neutral. */
+.astryx-chapter-one .lesson-index { color: var(--color-text-accent); }
+.astryx-chapter-one .learning-goals li::marker { color: var(--color-text-accent); }
+.astryx-chapter-one .service-mark {
+ color: var(--color-text-accent); background: var(--color-accent-muted);
+ border-color: var(--color-accent-muted);
+}
+.astryx-chapter-one .learning-emphasis { box-shadow: inset 0 -.35em var(--color-accent-muted); }
+.astryx-chapter-one .chapter-nav nav a[aria-current] { color: var(--color-text-accent); }
+/* Legacy link/button colors must not replace a solid action's theme foreground. */
+.astryx-chapter-one .astryx-button[data-variant="primary"] {
+ color: var(--color-on-accent); background-color: var(--color-accent);
+ border-color: var(--color-accent);
 }

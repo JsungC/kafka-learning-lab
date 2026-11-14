@@ -1,4 +1,5 @@
 import { Button } from "@astryxdesign/core/Button";
+import { Text } from "@astryxdesign/core/Text";
 import {
   Children,
   isValidElement,
@@ -34,6 +35,10 @@ export function ChapterButton({
       size="md"
       tooltip={title}
       className="chapter-action"
-    />
+    >
+      <Text type="inherit" color="inherit" textWrap="wrap" display="block">
+        {labelText(children)}
+      </Text>
+    </Button>
   );
 }
