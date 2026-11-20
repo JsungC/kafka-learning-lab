@@ -1,6 +1,8 @@
 import type { TransferCondition } from "../simulation/transfer";
+
 export const transferCases: {
   id: TransferCondition;
+  answerKey: string;
   label: string;
   scenario: string;
   question: string;
@@ -9,44 +11,51 @@ export const transferCases: {
 }[] = [
   {
     id: "expired",
-    label: "Records expire",
+    answerKey: "transfer-expired",
+    label: "A longer outage",
     scenario:
-      "Analytics returns only after all three needed records have expired. The services still have independent subscriptions.",
-    question: "Can analytics recover these records from this log?",
+      "Rewind to the same confirmation for 002. This time analytics stays offline until the shop’s retention window has passed. Its bookmark still points to 002.",
+    question: "Can the report recover this sale from the orders log?",
     options: [
-      { id: "yes", label: "Yes, separate subscriptions guarantee recovery." },
-      { id: "no", label: "No, the needed history is no longer retained." },
+      { id: "no", label: "No. There is no copy of 002 left to fetch." },
+      { id: "yes", label: "Yes. The bookmark keeps a copy for analytics." },
     ],
     correct: "no",
   },
   {
     id: "durable-direct",
-    label: "Direct delivery gains durable retries",
+    answerKey: "transfer-retry-status",
+    label: "A saved retry",
     scenario:
-      "Change the original direct-delivery assumption: failed deliveries are now stored durably, the store survives the outage, and all three retries later succeed.",
-    question: "Must this direct design still lose the three analytics events?",
+      "Try the direct path again. This time the shop writes the failed call for 002 to durable storage. The shop restarts. Analytics is still offline.",
+    question: "What should the shop show for this sale?",
     options: [
-      { id: "yes", label: "Yes, direct designs always lose events." },
       {
-        id: "no",
-        label: "No, durable recording and successful retries can recover them.",
+        id: "finished",
+        label: "Report updated. The retry survived the restart.",
       },
+      { id: "waiting", label: "Update pending. A worker can send 002 again." },
     ],
-    correct: "no",
+    correct: "waiting",
   },
   {
     id: "published-only",
-    label: "Publication is not processing",
+    answerKey: "transfer-report-evidence",
+    label: "A support call",
     scenario:
-      "The producer successfully writes an order event. Analytics is paused and has not processed it.",
-    question: "Which status can the UI justify from this evidence?",
+      "The customer asks whether the sale is in the report. Support can see that Kafka accepted 002 and the confirmation reached the phone.",
+    question: "What else should support check before saying yes?",
     options: [
-      { id: "yes", label: "The analytics report is already updated." },
+      { id: "write", label: "Whether Kafka still stores 002." },
       {
-        id: "no",
-        label: "The event was accepted; analytics processing is still pending.",
+        id: "mail",
+        label: "Whether the confirmation contains the right order number.",
+      },
+      {
+        id: "report",
+        label: "Whether analytics applied 002 to the sales total.",
       },
     ],
-    correct: "no",
+    correct: "report",
   },
 ];

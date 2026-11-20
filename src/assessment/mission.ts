@@ -10,6 +10,8 @@ export type Result = {
   continuity: boolean;
   recovery: boolean;
   state: State;
+  beforeRestart: State;
+  firstStep: State;
   firstAfterResume: number;
   feedback: string;
 };
@@ -19,8 +21,10 @@ export function assess(mode: Mode): Result {
   for (let i = 0; i < 3; i++) state = step(state, { type: "step" });
   const continuity =
     state.notification.length === 3 && state.analytics.length === 0;
+  const beforeRestart = state;
   state = step(state, { type: "analytics", paused: false });
   state = step(state, { type: "step" });
+  const firstStep = state;
   const firstAfterResume = state.analytics[0];
   for (let i = 0; i < 8; i++) state = step(state, { type: "step" });
   const recovery = state.analytics.length === orderInputs.length;
@@ -29,6 +33,8 @@ export function assess(mode: Mode): Result {
     continuity,
     recovery,
     state,
+    beforeRestart,
+    firstStep,
     firstAfterResume,
     feedback: recovery
       ? "Both requirements passed. Notifications continued during the outage. Analytics later read all six retained events using its independent subscription."

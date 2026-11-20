@@ -10,6 +10,10 @@ export type State = {
   missed: number[];
   outageOrders: number[];
   analyticsPaused: boolean;
+  lastDelivery: {
+    arrived?: Order;
+    processed?: Order;
+  } | null;
   history: string[];
 };
 export type Action =
@@ -29,6 +33,7 @@ export function initialState(mode: Mode): State {
     missed: [],
     outageOrders: [],
     analyticsPaused: false,
+    lastDelivery: null,
     history: [
       `Configured ${mode === "log" ? "retained event log with independent subscriptions" : "direct delivery without retry storage"}.`,
     ],
@@ -39,6 +44,7 @@ export function step(previous: State, action: Action): State {
     return {
       ...previous,
       analyticsPaused: action.paused,
+      lastDelivery: null,
       history: [
         ...previous.history,
         `Analytics ${action.paused ? "paused" : "resumed"}.`,
@@ -80,6 +86,14 @@ export function step(previous: State, action: Action): State {
       );
     }
   }
+  const processed =
+    state.analytics.length > previous.analytics.length
+      ? state.orders.find((event) => event.id === state.analytics.at(-1))
+      : undefined;
+  state.lastDelivery = {
+    arrived: order,
+    processed,
+  };
   state.history.push(
     `Step ${state.tick}: ${messages.join(" ") || (state.analyticsPaused ? "Analytics remains paused." : "No pending events.")}`,
   );

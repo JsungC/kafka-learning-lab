@@ -66,15 +66,22 @@ it("accepts multiple valid retention designs and explains independent failure ca
   expect(assessLog(24, "end").feedback).toContain("skips");
 });
 it("changed assumptions produce explicit retained, retry, and processing evidence", () => {
-  expect(transferEvidence("expired").metrics).toContainEqual(["Retained", 0]);
-  expect(transferEvidence("durable-direct").metrics).toContainEqual([
-    "Delivered on retry",
-    3,
-  ]);
-  expect(transferEvidence("published-only").metrics).toContainEqual([
-    "Analytics processed",
-    0,
-  ]);
+  expect(transferEvidence("expired")).toMatchObject({
+    retained: false,
+    lastRead: 1,
+  });
+  expect(transferEvidence("durable-direct")).toMatchObject({
+    rows: [
+      ["Retry storage", "Empty", "002"],
+      ["Report total", "1 sale", "1 sale"],
+    ],
+  });
+  expect(transferEvidence("published-only")).toMatchObject({
+    rows: [
+      ["Orders log", "001", "001, 002"],
+      ["Report total", "1 sale", "1 sale"],
+    ],
+  });
 });
 it("preserves older progress, restores independent chapter 2 data and drops corrupt chapter 2 only", () => {
   const old = { ...emptyProgress(), missionPassed: true };

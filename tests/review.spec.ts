@@ -10,17 +10,23 @@ test("recall practice gives specific feedback, supports retry, persists, and res
   ).toBeDisabled();
   await card
     .getByRole("radio", {
-      name: "Put both services in one group so each receives every event.",
+      name: "No. Notifications used up the ticket for 002.",
     })
     .check();
   await card.getByRole("button", { name: "Check reasoning" }).click();
   await expect(
     card.getByText("Worth revisiting", { exact: true }),
   ).toBeVisible();
-  await expect(card.locator(".feedback")).toContainText("share partition work");
+  await expect(card.locator(".feedback")).toContainText(
+    "ticket stayed on file",
+  );
+  await card.getByRole("link", { name: /Compare a retained ticket/ }).click();
+  await expect(page.locator("#retention-boundary")).toBeFocused();
+  await page.getByRole("link", { name: /Return to your question/ }).click();
+  await expect(card).toBeFocused();
   await card.getByRole("button", { name: "Try again" }).click();
   const radio = card.getByRole("radio", {
-    name: "Give each service independent reading progress.",
+    name: "Yes. Its next ticket is 002, and the shop still has it.",
   });
   await radio.focus();
   await page.keyboard.press("Space");
@@ -34,7 +40,7 @@ test("recall practice gives specific feedback, supports retry, persists, and res
   ).toBeVisible();
   await expect(
     card.getByRole("radio", {
-      name: "Give each service independent reading progress.",
+      name: "Yes. Its next ticket is 002, and the shop still has it.",
     }),
   ).toBeChecked();
   const progress = await page.evaluate(() =>

@@ -1,9 +1,9 @@
 export const reviewItems = [
   {
     id: "independent-readers",
-    title: "Keep one reader moving",
+    title: "Who gets the next order?",
     scenario:
-      "Analytics goes offline after order 1. Orders 2 and 3 are still retained, and notifications must continue.",
+      "Analytics stops after 001. The next two orders arrive. Customers are still waiting for their confirmations.",
     question:
       "Which design lets notifications continue and analytics catch up later?",
     options: [
@@ -29,46 +29,46 @@ export const reviewItems = [
           "Waiting couples the two services and violates the requirement that notifications continue. A retained log with separate reading positions lets each service work at its own pace.",
       },
     ],
-    link: "#experiment",
+    link: "#reader-bookmarks",
     linkText: "Revisit the independent-consumption experiment",
   },
   {
     id: "retained-records",
-    title: "Reading is not deleting",
+    title: "Where will analytics pick up?",
     scenario:
-      "Notifications have processed order 2. Analytics has not read it yet. The record is still within the topic’s retention window.",
-    question: "Can analytics still read order 2?",
+      "The customer has the confirmation for 002. Analytics stopped after 001 and is just coming back. The shop keeps orders until tomorrow.",
+    question: "Can analytics use 002 to update the report?",
     options: [
       {
         id: "deleted",
-        text: "No. Notifications removed the record by reading it.",
+        text: "No. Notifications used up the ticket for 002.",
         correct: false,
         feedback:
-          "Consumption does not itself remove a Kafka record. Record availability is controlled by retention and cleanup policies, independently of this reader finishing its work.",
+          "Look at the log copy in both columns. Sending the confirmation moved the notification reader past 002. The ticket stayed on file for analytics.",
       },
       {
         id: "retained",
-        text: "Yes. Its own reading progress can still reach the retained record.",
+        text: "Yes. Its next ticket is 002, and the shop still has it.",
         correct: true,
         feedback:
-          "The record remains available while the retention policy keeps it. Each independent reader has its own position. If the needed record expires before analytics catches up, this recovery path no longer works.",
+          "Analytics finished 001 last time. It can open 002 now because the ticket is still on file. Only the last sale counted changes as the report catches up.",
       },
       {
         id: "forever",
-        text: "Yes. Kafka keeps every event forever.",
+        text: "Yes. Its bookmark will keep 002 available for as long as it needs.",
         correct: false,
         feedback:
-          "The answer is yes in this scenario, but not because storage is unlimited. Retention can remove old records. Independent reading does not promise an infinite recovery window.",
+          "Today the shop still has 002. A bookmark holds a place, not a second copy. Try the longer outage below to see what happens tomorrow.",
       },
     ],
-    link: "#chapter-intro",
-    linkText: "Revisit events and retention",
+    link: "#retention-boundary",
+    linkText: "Compare a retained ticket with an expired ticket",
   },
   {
     id: "design-fit",
-    title: "Choose for the requirement",
+    title: "What should checkout wait for?",
     scenario:
-      "A small service must return an immediate answer to a customer. It does not need independent replayable subscriptions.",
+      "At checkout a customer asks whether their payment went through. The shop needs the payment result before it can answer.",
     question: "What is a reasonable starting point?",
     options: [
       {
@@ -90,10 +90,10 @@ export const reviewItems = [
         text: "Consider direct request/response and handle failures explicitly.",
         correct: true,
         feedback:
-          "A direct call may meet this immediate-response requirement with less complexity. It still needs timeout and failure handling. Reconsider a retained stream when independent readers, replay, or recovery justify it.",
+          "A direct call may meet this immediate-response requirement with less complexity. If the call times out, the shop still has to find out what happened before it confirms payment.",
       },
     ],
-    link: "#chapter-intro",
+    link: "#design-choices",
     linkText: "Revisit the design trade-offs",
   },
 ];

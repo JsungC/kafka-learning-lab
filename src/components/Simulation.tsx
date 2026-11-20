@@ -4,7 +4,13 @@ import { HStack } from "@astryxdesign/core/HStack";
 import { Text } from "@astryxdesign/core/Text";
 import { orderInputs, type State } from "../simulation/core";
 
-export function Simulation({ state }: { state: State }) {
+export function Simulation({
+  state,
+  showChanges = false,
+}: {
+  state: State;
+  showChanges?: boolean;
+}) {
   const pending =
     state.mode === "log"
       ? state.retained.length - state.analytics.length
@@ -96,25 +102,35 @@ export function Simulation({ state }: { state: State }) {
             const produced = state.orders.some((o) => o.id === order.id);
             const missed = state.missed.includes(order.id);
             const processed = state.analytics.includes(order.id);
+            const arrived =
+              showChanges && state.lastDelivery?.arrived?.id === order.id;
+            const justRead =
+              showChanges && state.lastDelivery?.processed?.id === order.id;
             return (
               <VStack
                 gap={2}
                 key={order.id}
-                className={`event-slot ${produced ? "event-produced" : "event-empty"}`}
+                className={`event-slot ${produced ? "event-produced" : "event-empty"} ${arrived || justRead ? "event-changed" : ""}`}
               >
                 <Text type="code">{order.name}</Text>
                 {produced ? (
                   <>
-                    <Text type="supporting">Notification ✓</Text>
+                    <Text type="supporting">
+                      {arrived
+                        ? "Just arrived · notification ✓"
+                        : "Notification ✓"}
+                    </Text>
                     <Text
                       type="supporting"
                       className={missed ? "event-missed" : ""}
                     >
-                      {processed
-                        ? "Analytics ✓"
-                        : missed
-                          ? "Analytics missed"
-                          : "Analytics pending"}
+                      {justRead
+                        ? "Just read by analytics"
+                        : processed
+                          ? "Analytics ✓"
+                          : missed
+                            ? "Analytics missed"
+                            : "Analytics pending"}
                     </Text>
                   </>
                 ) : (

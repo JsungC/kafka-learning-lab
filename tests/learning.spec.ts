@@ -36,7 +36,16 @@ test("complete both experiments and mission, restore progress, reset it", async 
   await page
     .getByRole("button", { name: "Resume analytics", exact: true })
     .click();
-  for (let i = 0; i < 6; i++)
+  await page
+    .getByRole("button", { name: "Send Order 004", exact: true })
+    .click();
+  const observation = page.getByLabel("Experiment step explanation");
+  await expect(observation).toContainText(
+    "Order 004 arrived. Analytics read Order 001. Next unread: Order 002.",
+  );
+  await expect(observation).toContainText("backlog stayed at 3");
+  await expect(page.locator(".event-changed")).toHaveCount(2);
+  for (let i = 0; i < 5; i++)
     await page
       .getByRole("button", { name: /^(Send Order|Read next pending order)/ })
       .click();
@@ -56,6 +65,11 @@ test("complete both experiments and mission, restore progress, reset it", async 
   await expect(
     page.getByRole("heading", { name: "Requirements met" }),
   ).toBeVisible();
+  await expect(
+    page
+      .getByRole("table", { name: "The first read after the outage" })
+      .getByRole("row", { name: /Analytics last read/ }),
+  ).toContainText("Order 001");
   await expect(
     page.getByRole("heading", { name: "Chapter 1 complete", exact: true }),
   ).toBeVisible();

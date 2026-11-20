@@ -106,6 +106,15 @@ test("changed-condition prediction reveals evidence without completing the chapt
   page,
 }) => {
   await page.goto("./#/chapter/1");
+  await page.evaluate(() => {
+    const key = "kafka-lab-progress";
+    const saved = JSON.parse(localStorage.getItem(key)!);
+    saved.review = {
+      "transfer-durable-direct": { choice: "no", checked: true },
+    };
+    localStorage.setItem(key, JSON.stringify(saved));
+  });
+  await page.reload();
   await page
     .getByText("See the applications and broker behind the drawing", {
       exact: true,
@@ -119,37 +128,40 @@ test("changed-condition prediction reveals evidence without completing the chapt
   });
   await transfer
     .getByRole("radio", {
-      name: "No, the needed history is no longer retained.",
+      name: "No. There is no copy of 002 left to fetch.",
     })
     .check();
   await transfer.getByRole("button", { name: "Reveal model evidence" }).click();
   await expect(transfer.locator(".feedback")).toContainText(
-    "All three records expired",
+    "the ticket at that place has expired",
   );
   await transfer
     .getByRole("button", {
-      name: "Direct delivery gains durable retries",
+      name: "A saved retry",
       exact: true,
     })
     .click();
+  await expect(
+    transfer.getByRole("button", { name: "Reveal model evidence" }),
+  ).toBeDisabled();
   await transfer
     .getByRole("radio", {
-      name: "No, durable recording and successful retries can recover them.",
+      name: "Update pending. A worker can send 002 again.",
     })
     .check();
   await transfer.getByRole("button", { name: "Reveal model evidence" }).click();
   await expect(transfer.locator(".feedback")).toContainText(
-    "Direct delivery can now recover",
+    "retry worker can pick up the saved call",
   );
   await page.reload();
   await transfer
     .getByRole("button", {
-      name: "Direct delivery gains durable retries",
+      name: "A saved retry",
       exact: true,
     })
     .click();
   await expect(transfer.locator(".feedback")).toContainText(
-    "Direct delivery can now recover",
+    "retry worker can pick up the saved call",
   );
 });
 

@@ -28,35 +28,43 @@ export const chapters = [
 ];
 export const lesson = [
   {
-    title: "Start with an order, not a broker",
+    title: "Why does the dashboard still show one order?",
     paragraphs: [
-      "Imagine a small shop. A customer places an order, and the shop needs to send a confirmation and update a sales dashboard. An event is a record that something happened: “Order 001 was placed.” It describes a fact, rather than asking another service to do something.",
-      "A service is a program responsible for a particular job. With direct connections, the order service contacts notification and analytics services itself. HTTP (Hypertext Transfer Protocol) is a common way for programs to make requests and receive responses. If the order service waits for every response, a slow analytics service can delay the customer. Even if it does not wait, failed deliveries need an explicit recovery strategy.",
-      "In this lesson, direct delivery is deliberately a simple model: notifications work, analytics may be unavailable, and failed analytics deliveries are not stored or retried. Real applications can add retries and durable storage. Kafka is one way to separate recording an event from processing it later—not the only way.",
+      "The first customer places Order 001. A confirmation lands on their phone, and the sales dashboard ticks up to one. Then a second customer places Order 002. Their confirmation arrives too. The dashboard still says one. Where did the second order go?",
+      "Start with what the shop knows. “Order 002 was placed” is a fact the shop can record. That record is an event. Sending a confirmation and updating the sales total are two jobs that follow from the same fact. Each job belongs to a different program, or service.",
+      "Suppose the order service calls each of those programs directly. The notification service answers. The analytics service is offline. If checkout waits for both replies, a slow service makes the customer wait too. If the shop moves on, what will remind it to send 002 again? In our direct-delivery experiment the shop keeps no retry copy. Follow the same order through a design that keeps one shared log.",
     ],
   },
   {
-    title: "Keep the fact. Let each reader work.",
+    title: "Where can the report find Order 002?",
     paragraphs: [
-      "A producer is a program that writes events. A topic is a named stream of records, such as orders. A consumer is a program that reads records and does useful work with them. Kafka stores topic records in an event log: a sequence to which new records are appended.",
-      "Instead of contacting every downstream service, the order producer writes to the orders topic. Notification and analytics consumers read independently. Asynchronous processing means that the producer and downstream work do not need to finish together. Publishing successfully does not mean a confirmation has already been sent or a dashboard updated.",
-      "Think of a shared notebook with a separate bookmark for each reader. Reading a page does not tear it out, and one reader can stop without moving the other reader’s bookmark. The analogy explains independent reading, but Kafka is a distributed system with partitions, replication, and explicit retention policies—not an endless notebook.",
+      "Look at the middle of the log diagram. The order service wrote 001, then 002, to a stream named orders. Kafka calls a named stream a topic. Here it has one partition, so you can picture it as a single log with each new record added at the end.",
+      "Follow 002 from the order service to the log. The program writing those tickets is the producer. Each program reading them is a consumer. As soon as Kafka accepts 002, the shop knows the event was recorded. The dashboard changes only when analytics does its own work. That gap between the write and the work is what asynchronous processing looks like here.",
+      "Picture two people reading the same notebook. Each has a bookmark. Reading a page does not tear it out. Notifications can turn the page while analytics keeps its place. Try moving the analytics bookmark below and watch what happens to the row of tickets.",
     ],
   },
   {
-    title: "What happens when analytics stops?",
+    title: "How long can analytics wait?",
+    note: {
+      title: "What changes with shared groups or compaction?",
+      text: "Members of one consumer group divide the partition work. The shop needs a separate group for each service that reads the whole stream. Chapter 4 explores this. A compacted log can keep the latest value for each key, so it may no longer contain every sale you want to replay.",
+    },
     paragraphs: [
-      "First, the producer appends an order event. Next, notifications read it and send a confirmation. Analytics can be paused while notifications continue. After analytics resumes, it reads the retained events it has not processed. Consuming a record does not itself delete it.",
-      "This experiment uses one ordered log and a separate read position for each service. In real Kafka, independent subscriptions are normally implemented using distinct consumer groups. Members of the same group share work rather than each receiving every record. Chapter 4 introduces that mechanism; you do not need to configure it here.",
-      "Retention determines how long records remain available, independently of whether consumers have read them. If analytics stays offline beyond retention, recovery can fail. Our six-event model never expires records. Kafka also supports compaction, a different cleanup policy that we cover later. Neither policy promises infinite history.",
+      "Analytics finished 001 before it went offline. Its next read starts with 002. Notifications has already used 002 to send the confirmation, but its bookmark belongs to notifications. The shop gives the two services separate Kafka consumer groups so each can follow the full stream.",
+      "Now leave analytics offline for longer. Its bookmark still points to the same place. Is the page still there? Kafka keeps records according to the topic’s retention policy. A bookmark can point to a record that has expired. Once 002 is gone, analytics cannot rebuild that sale from this log.",
+      "In the six-order experiment every order stays in the log. Use the snapshots below to follow a reader through that short outage, then compare the two possible endings underneath.",
     ],
   },
   {
-    title: "When is Kafka worth the complexity?",
+    title: "Would the shop choose Kafka for every job?",
+    note: {
+      title: "What would the shop have to operate?",
+      text: "A team running Kafka needs enough storage, monitoring and an event format its readers understand. It must handle duplicate work and decide how to recover if a database update succeeds but publication fails. A retry queue needs monitoring and duplicate handling too.",
+    },
     paragraphs: [
-      "Kafka can be useful when several independent systems need the same event stream, readers need to recover after interruptions, or events need to be read again. A retained stream decouples processing schedules, but teams still need monitoring, capacity planning, and clear event contracts.",
-      "A simple request that must return an immediate result may be clearer as a direct call. A small application with one background task may be well served by a job queue. Adding Kafka does not automatically make a system faster, eliminate duplicate processing, or make database changes atomic. Choose based on requirements and operating cost.",
-      "By the end of this chapter, you should be able to identify producers, topics, and consumers; explain why a paused reader need not stop another; and choose a delivery model that lets a recovering reader catch up. No prior Kafka knowledge or local software installation is required.",
+      "Imagine the customer is still at checkout asking, “Did my payment go through?” A payment service can answer a direct request as soon as it knows the result. The shop needs to handle a timeout, but a ticket saying it received the request would leave the customer’s question open.",
+      "Printing a packing slip later is a different job. One worker can take it from a job queue. For the sales dashboard, the shop wanted several readers to use the same history and catch up at different times. Keeping one log gives both services a place to come back to.",
+      "There are other ways to recover a missed delivery. The shop could save each failed call and retry it when analytics returns.Which would the shop need to keep for tomorrow: a single unfinished job, or a history that several services can read again?",
     ],
   },
 ];
@@ -64,6 +72,10 @@ export const glossary = [
   [
     "Event",
     "A record of something that happened, such as an order being placed.",
+  ],
+  [
+    "HTTP",
+    "Hypertext Transfer Protocol. A service can use HTTP to send a request to another program and receive its response.",
   ],
   ["Producer", "A program that writes records to a Kafka topic."],
   [

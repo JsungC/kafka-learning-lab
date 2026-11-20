@@ -2721,3 +2721,26 @@ section:focus {
 @media (max-width: 44rem) {
  .astryx-chapter-one .guided-delivery { margin-inline: calc(-1 * var(--spacing-4)); }
 }
+
+.astryx-chapter-one .order-evidence {
+ width: 100%; table-layout: fixed; border-collapse: collapse; color: var(--color-text-primary);
+}
+.astryx-chapter-one .order-evidence :is(th, td) {
+ padding: var(--spacing-2); border-block-end: 1px solid var(--color-border);
+ text-align: start; vertical-align: top; overflow-wrap: anywhere;
+ font-size: var(--text-supporting-size); line-height: 1.55;
+}
+.astryx-chapter-one .order-evidence thead { background: var(--color-background-body); }
+.astryx-chapter-one .event-slot.event-changed { background: var(--color-accent-muted); }
+.astryx-chapter-one .trace-ticket {
+ display: inline-block; padding: var(--spacing-1) var(--spacing-2);
+ color: var(--color-text-accent); background: var(--color-accent-muted);
+ border-inline-start: .2rem solid var(--color-accent);
+}
+.astryx-chapter-one .trace-ticket.expired {
+ background: var(--color-warning-muted); color: var(--color-text-warning);
+ border-inline-start: .2rem dashed var(--color-text-warning);
+}
+@media (max-width: 44rem) {
+ .astryx-chapter-one .free-delivery .chapter-explanation { order: -1; flex-basis: 100%; min-height: auto; }
+}

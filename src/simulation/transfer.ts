@@ -1,48 +1,45 @@
-import { initialLog, transitionLog, retainedCount } from "./log";
+import { initialLog, transitionLog } from "./log";
 import { initialState, step } from "./core";
 export type TransferCondition = "expired" | "durable-direct" | "published-only";
+
 export function transferEvidence(condition: TransferCondition) {
   if (condition === "expired") {
-    let s = initialLog(1, 3);
-    for (let i = 0; i < 3; i++)
-      s = transitionLog(s, { type: "append", partition: 0 });
-    for (let i = 0; i < 3; i++) s = transitionLog(s, { type: "wait" });
+    let log = initialLog(1, 6);
+    log = transitionLog(log, { type: "append", partition: 0 });
+    log = transitionLog(log, { type: "read", partition: 0 });
+    log = transitionLog(log, { type: "append", partition: 0 });
+    for (let i = 0; i < log.retention; i++)
+      log = transitionLog(log, { type: "wait" });
+    log = transitionLog(log, { type: "read", partition: 0 });
     return {
-      metrics: [
-        ["Produced", s.produced],
-        ["Retained", retainedCount(s)],
-        ["Expired", s.expired],
-      ] as [string, number][],
+      kind: "expired" as const,
+      retained: log.partitions[0].records.some(
+        (record) => record.eventId === 2,
+      ),
+      lastRead: log.reads.at(-1)?.eventId,
       explanation:
-        "All three records expired in this model before the reader resumed. Seeking cannot recreate deleted history. Independent subscriptions only help while the needed records remain available.",
+        "The last sale counted is still 001. Analytics needs 002. Its bookmark remembers a place, but the ticket at that place has expired. The confirmation remains valid even though the report cannot fetch the sale here.",
     };
   }
-  if (condition === "durable-direct") {
-    let s = step(initialState("direct"), { type: "analytics", paused: true });
-    for (let i = 0; i < 3; i++) s = step(s, { type: "step" });
-    const stored = [...s.missed];
-    const delivered = [...stored];
-    return {
-      metrics: [
-        ["Initially unavailable", s.missed.length],
-        ["Durably pending", stored.length],
-        ["Delivered on retry", delivered.length],
-      ] as [string, number][],
-      explanation:
-        "Under this changed assumption, every failed analytics delivery was durably recorded and later retried successfully. Direct delivery can now recover these events too. This is an illustrative retry queue, not a Kafka guarantee or a simulation of database atomicity; a real design must make recording and retrying reliable and handle duplicates.",
-    };
-  }
-  const s = step(
-    step(initialState("log"), { type: "analytics", paused: true }),
-    { type: "step" },
-  );
+  const retry = condition === "durable-direct";
+  let state = step(initialState(retry ? "direct" : "log"), { type: "step" });
+  state = step(state, { type: "analytics", paused: true });
+  state = step(state, { type: "step" });
+  const counted = state.analytics.includes(2);
   return {
-    metrics: [
-      ["Published", s.orders.length],
-      ["Retained", s.retained.length],
-      ["Analytics processed", s.analytics.length],
-    ] as [string, number][],
-    explanation:
-      "The log accepted one event while analytics was paused. Publication success does not mean the downstream report is updated. Show an accepted or pending status unless you have evidence that the required business work finished.",
+    kind: "status" as const,
+    rows: [
+      [
+        retry ? "Retry storage" : "Orders log",
+        retry ? "Empty" : "001",
+        retry
+          ? state.missed.map((id) => String(id).padStart(3, "0")).join(", ")
+          : state.retained.map((o) => o.name.slice(-3)).join(", "),
+      ],
+      ["Report total", "1 sale", counted ? "2 sales" : "1 sale"],
+    ] as [string, string, string][],
+    explanation: retry
+      ? "In this version the retry worker can pick up the saved call for 002 after restart. It still has to reach analytics and update the report. A durable retry can recover a missed call when delivery later succeeds."
+      : "The extra ticket tells support the shop recorded 002. The confirmation tells them notifications acted on it. Only evidence of the report update lets support say that the sales total includes 002.",
   };
 }

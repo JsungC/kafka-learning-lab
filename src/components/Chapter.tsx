@@ -7,6 +7,7 @@ import { Heading } from "@astryxdesign/core/Heading";
 import { Section } from "@astryxdesign/core/Section";
 import { Button } from "@astryxdesign/core/Button";
 import { DeliveryWalkthrough } from "./DeliveryWalkthrough";
+import { EvidenceTable } from "./EvidenceTable";
 import { ChapterOverview } from "./ChapterOverview";
 import { HStack } from "@astryxdesign/core/HStack";
 import { VStack } from "@astryxdesign/core/VStack";
@@ -24,17 +25,25 @@ import {
   step,
   orderInputs,
   type Mode,
+  type State,
 } from "../simulation/core";
 import { assess, type Result } from "../assessment/mission";
 import { complete, type Progress } from "../persistence/progress";
 import { Simulation } from "./Simulation";
 import { localJump } from "./navigation";
 import { lessonVisuals } from "./LessonVisuals";
+import { reviewItems } from "../content/review";
 import { ConceptReview } from "./ConceptReview";
 import { RuntimeMap } from "./RuntimeMap";
 import { TransferLab } from "./TransferLab";
 
-function ReadingSection({ index }: { index: number }) {
+function ReadingSection({
+  index,
+  returnId,
+}: {
+  index: number;
+  returnId?: string;
+}) {
   const section = lesson[index];
   const Visual = lessonVisuals[index];
   return (
@@ -52,6 +61,17 @@ function ReadingSection({ index }: { index: number }) {
         <LessonParagraph key={p} text={p} themed />
       ))}
       {Visual && <Visual />}
+      {section.note && (
+        <details>
+          <summary>{section.note.title}</summary>
+          <Text as="p">{section.note.text}</Text>
+        </details>
+      )}
+      {returnId && (
+        <a href={`#review-${returnId}`} onClick={localJump}>
+          Return to your question →
+        </a>
+      )}
       {index === 1 && (
         <details>
           <summary>See the applications and broker behind the drawing</summary>
@@ -60,6 +80,22 @@ function ReadingSection({ index }: { index: number }) {
       )}
     </VStack>
   );
+}
+
+function outageObservation(state: State, waiting: number) {
+  if (state.mode === "direct") {
+    const firstMissed = state.orders.find((o) => state.missed.includes(o.id));
+    return firstMissed
+      ? `Analytics missed ${state.missed.length} of ${state.orders.length} orders. Its first gap is ${firstMissed.name}. The shop has no copy to resend.`
+      : "Pause analytics and send an order. Which service can still receive it?";
+  }
+  if (waiting === 0)
+    return `Analytics is caught up. The log still holds ${state.retained.length} records.`;
+  if (state.lastDelivery?.arrived && state.lastDelivery.processed)
+    return `One new order arrived while analytics read an older one. The backlog stayed at ${waiting}.`;
+  return state.analyticsPaused
+    ? `Analytics has ${waiting} waiting. Resume the reader to let it fetch again.`
+    : `Analytics has ${waiting} waiting. Its next read starts with the oldest waiting order.`;
 }
 
 export function Chapter({
@@ -76,6 +112,7 @@ export function Chapter({
   const [firstOrder, setFirstOrder] = useState("");
   const [choice, setChoice] = useState<Mode>("direct");
   const [result, setResult] = useState<Result | null>(null);
+  const [reviewReturn, setReviewReturn] = useState("");
   const [hint, setHint] = useState(0);
   const [announcement, setAnnouncement] = useState(
     "Ready. Pause analytics before sending the first order to create an outage.",
@@ -87,6 +124,12 @@ export function Chapter({
   const unread = state.retained.filter(
     (order) => !state.analytics.includes(order.id),
   );
+  const change = state.lastDelivery;
+  const arrival = change?.arrived?.name ?? "No new order";
+  const reading = change?.processed?.name;
+  const remainingModels = (["direct", "log"] as const)
+    .filter((m) => !progress.experiments.includes(m))
+    .map((m) => (m === "direct" ? "direct delivery" : "retained log"));
   const predictionMatches =
     result && Number(firstOrder) === result.firstAfterResume;
   const [activeSection, setActiveSection] = useState("chapter-intro");
@@ -279,8 +322,8 @@ export function Chapter({
                 </Text>
                 <Heading level={1}>Events and why Kafka exists.</Heading>
                 <Text as="p" type="large" className="lede">
-                  An order is placed. Two services need to know. What should
-                  happen if one stops?
+                  Two customers have their confirmations. The sales dashboard
+                  shows one order. Follow Order 002 to find out why.
                 </Text>
                 <Button
                   label="Jump to experiment"
@@ -341,7 +384,16 @@ export function Chapter({
                 if (!e.currentTarget.open) setPlaying(false);
               }}
             >
-              <summary>Run your own six-order experiment</summary>
+              <summary>
+                <Text type="label">Run your own six-order experiment</Text>
+                {" · For chapter completion · "}
+                {progress.experiments.length}/2 models tried
+              </summary>
+              <Text as="p" type="label">
+                {remainingModels.length
+                  ? `Still to try: ${remainingModels.join(" and ")}.`
+                  : "You have tried both outage models."}
+              </Text>
               <Text as="p">
                 Try a longer outage. Pause analytics, send three orders, then
                 resume. Compare how many orders analytics can recover in each
@@ -446,7 +498,7 @@ export function Chapter({
                   vAlign="start"
                 >
                   <VStack className="lab-state" gap={3}>
-                    <Simulation state={state} />
+                    <Simulation state={state} showChanges />
                   </VStack>
                   <VStack
                     gap={3}
@@ -465,21 +517,17 @@ export function Chapter({
                       role="status"
                       className="chapter-step-note"
                     >
-                      {state.tick === 0
-                        ? announcement
-                        : state.history[state.history.length - 1]}
+                      {change
+                        ? `${arrival}${change.arrived ? " arrived" : ""}. ${reading ? `Analytics read ${reading}.` : "Analytics read nothing this step."}${unread[0] ? ` Next unread: ${unread[0].name}.` : ""}`
+                        : state.tick === 0
+                          ? announcement
+                          : state.history.at(-1)}
                     </Text>
                     <Text as="p" type="label" className="field-label">
                       What to observe
                     </Text>
                     <Text as="p" type="body">
-                      {mode === "log"
-                        ? unread.length
-                          ? `${unread[0].name} is the oldest unread record. Analytics has ${unread.length} pending. ${state.analyticsPaused ? "Resume the reader to let it fetch again." : "Its next read will start here."}`
-                          : `Analytics is caught up. The log still holds ${state.retained.length} records.`
-                        : state.missed.length
-                          ? `Analytics missed ${state.missed.length} of ${state.orders.length} orders. Its first gap is ${orderInputs[state.missed[0] - 1].name}. This connection has no copy to resend.`
-                          : "There are no missed orders yet. Pause analytics and send an order to see which reader still receives it."}
+                      {outageObservation(state, unread.length)}
                     </Text>
                   </VStack>
                 </HStack>
@@ -493,7 +541,13 @@ export function Chapter({
               </Text>
             </details>
             {lesson.slice(1).map((section, i) => (
-              <ReadingSection key={section.title} index={i + 1} />
+              <ReadingSection
+                key={section.title}
+                index={i + 1}
+                returnId={
+                  reviewItems[i].id === reviewReturn ? reviewReturn : undefined
+                }
+              />
             ))}
           </VStack>
           <VStack as="section" gap={5} id="mission">
@@ -586,6 +640,31 @@ export function Chapter({
                         ? "Requirements met"
                         : "Trace the first read again"}
                   </Heading>
+                  <EvidenceTable
+                    label="The first read after the outage"
+                    columns={["During the outage", "When 004 arrives"]}
+                    rows={[
+                      [
+                        "Newest order",
+                        result.beforeRestart.orders.at(-1)!.name,
+                        result.firstStep.orders.at(-1)!.name,
+                      ],
+                      [
+                        "Analytics last read",
+                        "None",
+                        orderInputs[result.firstAfterResume - 1].name,
+                      ],
+                      [
+                        "Available to read again",
+                        result.beforeRestart.retained
+                          .map((o) => o.name.slice(-3))
+                          .join(", ") || "No retry copy",
+                        result.firstStep.retained
+                          .map((o) => o.name.slice(-3))
+                          .join(", ") || "No retry copy",
+                      ],
+                    ]}
+                  />
                   <ul>
                     <li>
                       {result.continuity ? "PASS" : "FAIL"} · All first three
@@ -612,7 +691,10 @@ export function Chapter({
             </VStack>
             {result && (
               <>
-                <Simulation state={result.state} />
+                <details>
+                  <summary>Inspect all six orders at the end</summary>
+                  <Simulation state={result.state} />
+                </details>
                 <details>
                   <summary>Reference design & trade-offs</summary>
                   <Text as="p" type="body">
@@ -633,17 +715,32 @@ export function Chapter({
             <Text as="p" type="supporting" className="eyebrow">
               REFLECT & CONNECT
             </Text>
-            <Heading level={2}>
-              The record and the reaction are different things.
-            </Heading>
-            <Text as="p" type="body">
-              An event captures a fact. Keeping that fact lets independent
-              readers process it at different times. A successful write is not
-              proof that every consumer has completed its work, and reading does
-              not erase a retained event.
+            <Heading level={2}>Back to the second customer’s order</Heading>
+            <Text as="p">
+              Picture the two bookmarks before you choose. You can revisit these
+              questions on this device.
             </Text>
+            <ConceptReview
+              item={reviewItems[1]}
+              progress={progress}
+              update={update}
+              onRevisit={setReviewReturn}
+            />
             <TransferLab progress={progress} update={update} />
-            <ConceptReview progress={progress} update={update} />
+            <details>
+              <summary>Two more decisions for the shop</summary>
+              <VStack gap={4}>
+                {[reviewItems[0], reviewItems[2]].map((item) => (
+                  <ConceptReview
+                    key={item.id}
+                    item={item}
+                    progress={progress}
+                    update={update}
+                    onRevisit={setReviewReturn}
+                  />
+                ))}
+              </VStack>
+            </details>
             <VStack className="callout" gap={5}>
               <Heading level={3}>
                 {complete(progress)
@@ -662,9 +759,9 @@ export function Chapter({
                 after recovery.
               </Text>
               <Text as="p" type="body">
-                Next: Chapter 2 unpacks the event log—records, partition-local
-                offsets, replay, and retention. Reading positions are introduced
-                there; commits and restart behavior are reserved for Chapter 5.
+                A bookmark tells analytics where to look. What will it find
+                there tomorrow? In Chapter 2, read a record, rewind to its
+                offset and try again after the record expires.
               </Text>
               <Button
                 label="Continue to chapter 2 →"

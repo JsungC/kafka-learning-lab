@@ -7,13 +7,11 @@ export function RuntimeMap() {
       <span className="eyebrow">BRIDGE / WHAT ACTUALLY RUNS?</span>
       <h3>Applications talk to a running Kafka server.</h3>
       <p>
-        Kafka is an event-streaming platform. For this first mental model, a
-        broker is a server process that stores partition logs and handles client
-        requests. A partition is one ordered log within a topic. Your producer
-        and consumer code runs in applications; Kafka clients provide the APIs
-        those applications use to communicate with brokers. One application can
-        both produce and consume; these boxes show responsibilities, not a
-        requirement for separate computers.
+        Where does 002 live when the shop closes its app? Follow the write to
+        the broker below. That server runs Kafka, stores the log and answers
+        requests to read it. The shop calls Kafka through a client library in
+        its application. One application can both write and read. The drawing
+        shows the jobs each program does.
       </p>
       <div className="runtime-map">
         <div className="runtime-clients">
@@ -46,11 +44,9 @@ export function RuntimeMap() {
         </div>
       </div>
       <figcaption>
-        In a real cluster, partitions can be distributed and replicated across
-        brokers. Kafka also needs metadata management; this introductory view
-        omits controllers, replication, storage protocols, and network failures.
-        Chapter 6 will study reliability rather than introduce the broker’s
-        existence for the first time.
+        Here the orders topic has one partition, a single ordered log. A
+        larger cluster can spread partitions and their replicas across brokers.
+        Chapter 6 follows what happens when a broker fails.
       </figcaption>
       <div className="visual-takeaway">
         <strong>Where this website fits</strong>

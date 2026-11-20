@@ -107,7 +107,7 @@ export function ReaderBookmarks() {
   const [state, setState] = useState(bookmarkState);
   const finished = state.analytics.length === 6;
   return (
-    <figure className="lesson-visual" aria-label={c.title}>
+    <figure id="reader-bookmarks" className="lesson-visual" aria-label={c.title}>
       <VisualHeader label={c.label} title={c.title} />
       <p>{c.caption}</p>
       <ReaderGrid state={state} />
@@ -198,7 +198,7 @@ export function OutageTimeline() {
         <strong>{c.stages[stage].name}</strong>
         <p>{c.stages[stage].why}</p>
       </div>
-      <div className="retention-boundary">
+      <div id="retention-boundary" className="retention-boundary">
         <h4>{c.retentionTitle}</h4>
         <div>
           {c.retention.map(([title, detail], i) => (
@@ -219,7 +219,7 @@ export function DesignChoices() {
   const [choice, setChoice] = useState(0);
   const selected = c.options[choice];
   return (
-    <figure className="lesson-visual" aria-label={c.title}>
+    <figure id="design-choices" className="lesson-visual" aria-label={c.title}>
       <VisualHeader label={c.label} title={c.title} />
       <p>{c.caption}</p>
       <div
