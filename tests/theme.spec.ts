@@ -1,4 +1,4 @@
-import { predictLog, chooseLog } from "./chapterOneControls";
+import { predictFirstRead, chooseLog } from "./chapterOneControls";
 import { test, expect } from "@playwright/test";
 
 test("theme follows the system, toggles by keyboard and persists across routes and refresh", async ({
@@ -22,6 +22,7 @@ test("theme follows the system, toggles by keyboard and persists across routes a
   await expect(toggle).toHaveAttribute("aria-pressed", "true");
   await page.goto("./#/chapter/1");
   await chooseLog(page, "Your design");
+  await predictFirstRead(page, "001");
   await page.getByRole("button", { name: "Validate design" }).click();
   await expect(
     page.getByRole("heading", { name: "Requirements met" }),
@@ -47,6 +48,7 @@ test("theme and learning remain usable when browser storage is unavailable", asy
     page.getByText("Theme will not persist after refresh."),
   ).toBeVisible();
   await chooseLog(page, "Your design");
+  await predictFirstRead(page, "001");
   await page.getByRole("button", { name: "Validate design" }).click();
   await expect(
     page.getByRole("heading", { name: "Requirements met" }),

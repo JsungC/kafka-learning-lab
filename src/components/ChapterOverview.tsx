@@ -1,55 +1,56 @@
 import { VStack } from "@astryxdesign/core/VStack";
-import { HStack } from "@astryxdesign/core/HStack";
-import { Text } from "@astryxdesign/core/Text";
 import { Heading } from "@astryxdesign/core/Heading";
 
-/** An overview of the question; implementation details come in the lesson. */
 export function ChapterOverview() {
   return (
     <VStack
       as="figure"
-      gap={5}
+      gap={4}
       className="chapter-overview"
       aria-label="One order, two independent reactions"
     >
-      <HStack gap={3} hAlign="between" wrap="wrap">
-        <Text type="supporting" className="eyebrow">
-          THE QUESTION WE WILL EXPLORE
-        </Text>
-        <Text type="code">OrderPlaced</Text>
-      </HStack>
-      <HStack className="overview-flow" gap={5} wrap="wrap" vAlign="center">
-        <VStack gap={2} className="overview-origin">
-          <Text type="supporting">01 / A fact happens</Text>
-          <Heading level={3}>An order is placed.</Heading>
-          <Text type="supporting">The order service publishes an event.</Text>
-        </VStack>
-        <Text className="overview-arrow" aria-hidden="true">
-          →
-        </Text>
-        <VStack gap={3} className="overview-reactions">
-          <HStack gap={3} className="overview-reaction">
-            <Text className="service-mark" aria-hidden="true">
-              N
-            </Text>
-            <VStack gap={0.5}>
-              <Text type="label">Notifications</Text>
-              <Text type="supporting">Send the customer a confirmation.</Text>
-            </VStack>
-          </HStack>
-          <HStack gap={3} className="overview-reaction">
-            <Text className="service-mark" aria-hidden="true">
-              A
-            </Text>
-            <VStack gap={0.5}>
-              <Text type="label">Analytics</Text>
-              <Text type="supporting">Update the order report.</Text>
-            </VStack>
-          </HStack>
-        </VStack>
-      </HStack>
+      <Heading level={2}>One order, two reactions</Heading>
+      <svg
+        viewBox="0 0 360 146"
+        className="order-illustration"
+        role="img"
+        aria-label="One OrderPlaced ticket branches to a customer confirmation and an entry in a sales report."
+      >
+        <g className="path-node">
+          <path d="M10 18 H97 L116 37 V126 L106 121 L96 126 L86 121 L76 126 L66 121 L56 126 L46 121 L36 126 L26 121 L10 126 Z M97 18 V37 H116" />
+          <text className="path-caption" x="21" y="51">
+            OrderPlaced
+          </text>
+          <text className="receipt-id" x="21" y="82">
+            #001
+          </text>
+          <path className="path-wire" d="M22 99 H91 M22 106 H68" />
+        </g>
+        <g className="path-wire" fill="none">
+          <path d="M117 74 H134 Q144 74 144 64 V45 Q144 36 154 36 H177 M171 31 L177 36 L171 41" />
+          <path d="M134 74 Q144 74 144 84 V102 Q144 111 154 111 H177 M171 106 L177 111 L171 116" />
+        </g>
+        <g className="path-node">
+          <rect x="184" y="23" width="36" height="26" rx="3" />
+          <path d="M185 25 L202 38 L219 25" fill="none" />
+          <path d="M184 124 H220 M188 120 V112 H194 V120 Z M199 120 V105 H205 V120 Z M210 120 V97 H216 V120 Z" />
+        </g>
+        <text className="path-label" x="230" y="34">
+          Notifications
+        </text>
+        <text className="path-caption" x="230" y="53">
+          Send confirmation
+        </text>
+        <text className="path-label" x="230" y="106">
+          Analytics
+        </text>
+        <text className="path-caption" x="230" y="125">
+          Update sales report
+        </text>
+      </svg>
       <figcaption>
-        What should happen to notifications when analytics stops?
+        Order 001 has happened. Its confirmation and sales entry are two
+        separate pieces of work.
       </figcaption>
     </VStack>
   );

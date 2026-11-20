@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test";
+import { openFreeExperiment } from "./chapterOneControls";
 import { lesson } from "../src/content/course";
 test("Astryx chapter keeps all lesson prose, keyboard selection, and local theme without remote fonts", async ({
   page,
@@ -25,18 +26,7 @@ test("Astryx chapter keeps all lesson prose, keyboard selection, and local theme
   await expect(
     contents.getByRole("link", { name: "01 · The problem" }),
   ).toHaveAttribute("aria-current", "location");
-  const combo = page.getByRole("combobox", {
-    name: "Your prediction",
-    exact: true,
-  });
-  await combo.focus();
-  await page.keyboard.press("Enter");
-  await expect(page.getByRole("option").first()).toBeVisible();
-  await page.keyboard.press("ArrowDown");
-  await page.keyboard.press("Enter");
-  await expect(
-    page.getByRole("button", { name: "Single step", exact: true }),
-  ).toBeEnabled();
+  await openFreeExperiment(page);
   const group = page.getByRole("radiogroup", {
     name: "Delivery model (changing it resets the experiment)",
     exact: true,

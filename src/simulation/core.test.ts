@@ -94,3 +94,18 @@ it("drops malformed review data without erasing valid chapter progress", () => {
     }),
   ).toEqual(base);
 });
+
+it("lets a resumed reader catch up while the producer stays idle", () => {
+  for (const mode of ["log", "direct"] as const) {
+    let state = step(initialState(mode), { type: "step" });
+    state = step(state, { type: "analytics", paused: true });
+    state = step(state, { type: "step" });
+    expect(step(state, { type: "read" }).analytics).toEqual([1]);
+    state = step(state, { type: "analytics", paused: false });
+    const after = step(state, { type: "read" });
+    expect(after.orders).toEqual(state.orders);
+    expect(after.notification).toEqual([1, 2]);
+    expect(after.retained).toEqual(state.retained);
+    expect(after.analytics).toEqual(mode === "log" ? [1, 2] : [1]);
+  }
+});

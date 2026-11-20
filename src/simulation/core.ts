@@ -12,7 +12,8 @@ export type State = {
   analyticsPaused: boolean;
   history: string[];
 };
-export type Action = { type: "step" } | { type: "analytics"; paused: boolean };
+export type Action =
+  { type: "step" } | { type: "read" } | { type: "analytics"; paused: boolean };
 export const orderInputs: Order[] = [1, 2, 3, 4, 5, 6].map((id) => ({
   id,
   name: `Order ${String(id).padStart(3, "0")}`,
@@ -54,7 +55,8 @@ export function step(previous: State, action: Action): State {
     outageOrders: [...previous.outageOrders],
     history: [...previous.history],
   };
-  const order = orderInputs[previous.orders.length];
+  const order =
+    action.type === "step" ? orderInputs[previous.orders.length] : undefined;
   const messages: string[] = [];
   if (order) {
     state.orders.push(order);

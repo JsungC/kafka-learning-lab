@@ -2669,3 +2669,55 @@ section:focus {
  color: var(--color-on-accent); background-color: var(--color-accent);
  border-color: var(--color-accent);
 }
+
+/* The receipt stays recognizable from the opening sketch to the recovery experiment. */
+.astryx-chapter-one .order-illustration {
+ display: block; width: min(100%, 36rem); margin-inline: auto;
+}
+.astryx-chapter-one .guided-delivery {
+ margin: 0; padding: var(--spacing-5); background: var(--color-background-body);
+ border: 1px solid var(--color-border); border-radius: var(--radius-container);
+}
+.astryx-chapter-one .delivery-path {
+ flex: 1 1 18rem; min-width: 0; padding: var(--spacing-3);
+ border-block-start: 1px solid var(--color-border); background: var(--color-background-surface);
+}
+.astryx-chapter-one .delivery-path svg { display: block; width: 100%; }
+.astryx-chapter-one .path-wire {
+ stroke: var(--color-text-secondary); stroke-width: 1.6; fill: none;
+}
+.astryx-chapter-one .path-node {
+ fill: var(--color-background-surface); stroke: var(--color-text-secondary); stroke-width: 1.5;
+}
+.astryx-chapter-one .path-node text,
+.astryx-chapter-one .path-label,
+.astryx-chapter-one .path-caption {
+ stroke: none; fill: var(--color-text-primary); font: 600 14px var(--font-family-body);
+}
+.astryx-chapter-one .path-caption, .astryx-chapter-one .path-node .path-caption {
+ fill: var(--color-text-secondary); font-weight: 400;
+}
+.astryx-chapter-one .order-illustration .receipt-id {
+ font: 700 27px var(--font-family-code); fill: var(--color-text-accent);
+}
+.astryx-chapter-one .path-highlight, .astryx-chapter-one .order-illustration .path-node {
+ fill: var(--color-accent-muted); stroke: var(--color-text-accent);
+}
+.astryx-chapter-one .wire-interrupted { stroke: var(--color-text-warning); stroke-dasharray: 4 3; }
+.astryx-chapter-one .path-warning { stroke: var(--color-text-warning); stroke-width: 2.5; }
+.astryx-chapter-one .path-node .path-warning-label { fill: var(--color-text-warning); }
+.astryx-chapter-one .walkthrough-note {
+ border-inline-start: .2rem solid var(--color-accent); padding: var(--spacing-4);
+ background: var(--color-background-surface); margin: 0;
+}
+.astryx-chapter-one .free-delivery { margin: 0; }
+.astryx-chapter-one .free-delivery > summary { font-size: var(--text-label-size); }
+.astryx-chapter-one .free-delivery > p { margin-block: var(--spacing-4); }
+@media (max-width: 44rem) {
+ .astryx-chapter-one .guided-delivery { padding: var(--spacing-3); }
+ .astryx-chapter-one .delivery-pair { gap: var(--spacing-2); }
+ .astryx-chapter-one .delivery-path { padding: var(--spacing-2); }
+}
+@media (max-width: 44rem) {
+ .astryx-chapter-one .guided-delivery { margin-inline: calc(-1 * var(--spacing-4)); }
+}

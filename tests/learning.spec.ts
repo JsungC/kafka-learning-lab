@@ -1,4 +1,8 @@
-import { predictLog, chooseLog } from "./chapterOneControls";
+import {
+  openFreeExperiment,
+  chooseLog,
+  predictFirstRead,
+} from "./chapterOneControls";
 import { test, expect } from "@playwright/test";
 test("complete both experiments and mission, restore progress, reset it", async ({
   page,
@@ -7,16 +11,14 @@ test("complete both experiments and mission, restore progress, reset it", async 
   await expect(
     page.getByRole("heading", { name: /Events and why/ }),
   ).toBeVisible();
-  await expect(
-    page.getByRole("button", { name: "Single step", exact: true }),
-  ).toBeDisabled();
-  await predictLog(page);
+  await openFreeExperiment(page);
   await page
+    .locator(".free-delivery")
     .getByRole("button", { name: "Pause analytics", exact: true })
     .click();
   for (let i = 0; i < 3; i++)
     await page
-      .getByRole("button", { name: "Single step", exact: true })
+      .getByRole("button", { name: /^(Send Order|Read next pending order)/ })
       .click();
   await expect(page.getByText("3 missed", { exact: false })).toBeVisible();
   await page
@@ -24,20 +26,22 @@ test("complete both experiments and mission, restore progress, reset it", async 
     .click();
   await chooseLog(page);
   await page
+    .locator(".free-delivery")
     .getByRole("button", { name: "Pause analytics", exact: true })
     .click();
   for (let i = 0; i < 3; i++)
     await page
-      .getByRole("button", { name: "Single step", exact: true })
+      .getByRole("button", { name: /^(Send Order|Read next pending order)/ })
       .click();
   await page
     .getByRole("button", { name: "Resume analytics", exact: true })
     .click();
   for (let i = 0; i < 6; i++)
     await page
-      .getByRole("button", { name: "Single step", exact: true })
+      .getByRole("button", { name: /^(Send Order|Read next pending order)/ })
       .click();
   await expect(page.getByText("6 processed · 0 pending")).toBeVisible();
+  await predictFirstRead(page, "004");
   await page
     .getByRole("button", { name: "Validate design", exact: true })
     .click();
@@ -45,6 +49,7 @@ test("complete both experiments and mission, restore progress, reset it", async 
     page.getByRole("heading", { name: "One requirement still needs work" }),
   ).toBeVisible();
   await chooseLog(page, "Your design");
+  await predictFirstRead(page, "001");
   await page
     .getByRole("button", { name: "Validate design", exact: true })
     .click();
@@ -80,7 +85,7 @@ test("playback pause and reset; keyboard steps; corrupt storage and subpath refr
   );
   await page.goto("./#/chapter/1");
   await page.reload();
-  await predictLog(page);
+  await openFreeExperiment(page);
   await page.getByRole("button", { name: "Start playback" }).click();
   await expect(page.getByText("1 / 6 produced")).toBeVisible();
   await page.getByRole("button", { name: "Pause playback" }).click();
@@ -95,15 +100,19 @@ test("playback pause and reset; keyboard steps; corrupt storage and subpath refr
     .getByRole("button", { name: "Reset experiment", exact: true })
     .click();
   await expect(page.getByText("0 / 6 produced")).toBeVisible();
-  await page.getByRole("button", { name: "Single step", exact: true }).focus();
+  await page
+    .getByRole("button", { name: /^(Send Order|Read next pending order)/ })
+    .focus();
   await page.keyboard.press("Enter");
   await expect(page.getByText("1 / 6 produced")).toBeVisible();
+  await predictFirstRead(page, "004");
   await page.getByRole("button", { name: "Validate design" }).focus();
   await page.keyboard.press("Enter");
   await expect(
     page.getByRole("heading", { name: "One requirement still needs work" }),
   ).toBeVisible();
   await chooseLog(page, "Your design");
+  await predictFirstRead(page, "001");
   await page.getByRole("button", { name: "Validate design" }).focus();
   await page.keyboard.press("Enter");
   await expect(
@@ -123,4 +132,71 @@ test("home, roadmap and glossary links are functional", async ({ page }) => {
   await expect(
     page.getByRole("heading", { name: "Kafka glossary" }),
   ).toBeVisible();
+});
+
+test("trace one outage, predict a read, and rewind the evidence", async ({
+  page,
+}) => {
+  await page.goto("./#/chapter/1");
+  const guide = page.getByRole("figure", {
+    name: "Follow one order through both designs",
+  });
+  await guide.getByRole("button", { name: "Pause analytics" }).click();
+  await guide.getByRole("button", { name: "Send Order 002" }).click();
+  await expect(
+    guide.getByRole("img", {
+      name: /Direct delivery.*Notifications received 002.*paused, 002 missed/,
+    }),
+  ).toBeVisible();
+  await expect(
+    guide.getByRole("img", {
+      name: /Retained log.*2 records retained.*paused, 002 pending/,
+    }),
+  ).toBeVisible();
+  await guide.getByRole("button", { name: "Resume analytics" }).click();
+  await guide.getByRole("combobox").click();
+  await page.getByRole("option", { name: "Both designs", exact: true }).click();
+  await guide.getByRole("button", { name: "Try reading Order 002" }).click();
+  await expect(
+    guide.getByRole("status", { name: "Step explanation" }),
+  ).toContainText("It has no copy of 002");
+  await expect(
+    guide.getByRole("img", {
+      name: /Retained log.*2 records retained.*active, 002 read/,
+    }),
+  ).toBeVisible();
+  const timeline = guide.getByRole("slider");
+  await timeline.focus();
+  await page.keyboard.press("Home");
+  await expect(
+    guide.getByRole("status", { name: "Step explanation" }),
+  ).toContainText("Step 1 of 5");
+  await page.keyboard.press("ArrowRight");
+  await expect(
+    guide.getByRole("status", { name: "Step explanation" }),
+  ).toContainText("Step 2 of 5");
+  await expect(
+    guide.getByRole("img", {
+      name: /Retained log.*1 record retained.*001 read/,
+    }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Your chapter checklist" }),
+  ).toBeVisible();
+
+  await chooseLog(page, "Your design");
+  await predictFirstRead(page, "004");
+  await page.getByRole("button", { name: "Validate design" }).click();
+  await expect(
+    page.getByRole("heading", { name: "Trace the first read again" }),
+  ).toBeVisible();
+  await expect(page.locator("#mission .feedback")).toContainText(
+    "first analytics entry after restart was Order 001",
+  );
+  expect(
+    await page.evaluate(
+      () =>
+        JSON.parse(localStorage.getItem("kafka-lab-progress")!).missionPassed,
+    ),
+  ).toBe(false);
 });

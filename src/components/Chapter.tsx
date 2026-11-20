@@ -6,6 +6,7 @@ import { Text } from "@astryxdesign/core/Text";
 import { Heading } from "@astryxdesign/core/Heading";
 import { Section } from "@astryxdesign/core/Section";
 import { Button } from "@astryxdesign/core/Button";
+import { DeliveryWalkthrough } from "./DeliveryWalkthrough";
 import { ChapterOverview } from "./ChapterOverview";
 import { HStack } from "@astryxdesign/core/HStack";
 import { VStack } from "@astryxdesign/core/VStack";
@@ -17,7 +18,13 @@ import {
 import { LessonParagraph } from "./LessonParagraph";
 import { useEffect, useState } from "react";
 import { hints, lesson, ui } from "../content/course";
-import { initialState, isSettled, step, type Mode } from "../simulation/core";
+import {
+  initialState,
+  isSettled,
+  step,
+  orderInputs,
+  type Mode,
+} from "../simulation/core";
 import { assess, type Result } from "../assessment/mission";
 import { complete, type Progress } from "../persistence/progress";
 import { Simulation } from "./Simulation";
@@ -26,6 +33,34 @@ import { lessonVisuals } from "./LessonVisuals";
 import { ConceptReview } from "./ConceptReview";
 import { RuntimeMap } from "./RuntimeMap";
 import { TransferLab } from "./TransferLab";
+
+function ReadingSection({ index }: { index: number }) {
+  const section = lesson[index];
+  const Visual = lessonVisuals[index];
+  return (
+    <VStack
+      as="section"
+      gap={5}
+      className="reading-section"
+      key={section.title}
+    >
+      <Text type="supporting" className="lesson-index">
+        01.{String(index + 1).padStart(2, "0")} / CONCEPT
+      </Text>
+      <Heading level={2}>{section.title}</Heading>
+      {section.paragraphs.map((p) => (
+        <LessonParagraph key={p} text={p} themed />
+      ))}
+      {Visual && <Visual />}
+      {index === 1 && (
+        <details>
+          <summary>See the applications and broker behind the drawing</summary>
+          <RuntimeMap />
+        </details>
+      )}
+    </VStack>
+  );
+}
 
 export function Chapter({
   progress,
@@ -38,14 +73,22 @@ export function Chapter({
   const [mode, setMode] = useState<Mode>("direct");
   const [state, setState] = useState(() => initialState("direct"));
   const [playing, setPlaying] = useState(false);
-  const [prediction, setPrediction] = useState("");
+  const [firstOrder, setFirstOrder] = useState("");
   const [choice, setChoice] = useState<Mode>("direct");
   const [result, setResult] = useState<Result | null>(null);
   const [hint, setHint] = useState(0);
   const [announcement, setAnnouncement] = useState(
-    "Ready. Choose a prediction, then advance the simulation.",
+    "Ready. Pause analytics before sending the first order to create an outage.",
   );
   const settled = isSettled(state);
+  const canStep =
+    !settled &&
+    !(state.analyticsPaused && state.orders.length === orderInputs.length);
+  const unread = state.retained.filter(
+    (order) => !state.analytics.includes(order.id),
+  );
+  const predictionMatches =
+    result && Number(firstOrder) === result.firstAfterResume;
   const [activeSection, setActiveSection] = useState("chapter-intro");
   useEffect(() => {
     const sections = ["chapter-intro", "experiment", "mission", "wrap-up"]
@@ -81,11 +124,11 @@ export function Chapter({
     return () => clearInterval(timer);
   }, [playing]);
   useEffect(() => {
-    if (settled && playing) {
+    if (!canStep && playing) {
       setPlaying(false);
       setAnnouncement("Playback finished. Review the event results.");
     }
-  }, [settled, playing]);
+  }, [canStep, playing]);
   useEffect(() => {
     if (
       state.orders.length >= 3 &&
@@ -117,7 +160,9 @@ export function Chapter({
     update((p) => ({
       ...p,
       attempts: p.attempts + 1,
-      missionPassed: p.missionPassed || next.passed,
+      missionPassed:
+        p.missionPassed ||
+        (next.passed && Number(firstOrder) === next.firstAfterResume),
     }));
   }
   return (
@@ -270,27 +315,7 @@ export function Chapter({
               </VStack>
             </HStack>
             <ChapterOverview />
-            <RuntimeMap />
-            {lesson.map((section, index) => (
-              <VStack
-                as="section"
-                gap={5}
-                className="reading-section"
-                key={section.title}
-              >
-                <Text type="supporting" className="lesson-index">
-                  01.{String(index + 1).padStart(2, "0")} / CONCEPT
-                </Text>
-                <Heading level={2}>{section.title}</Heading>
-                {section.paragraphs.map((p) => (
-                  <LessonParagraph key={p} text={p} themed />
-                ))}
-                {(() => {
-                  const Visual = lessonVisuals[index];
-                  return Visual ? <Visual /> : null;
-                })()}
-              </VStack>
-            ))}
+            <ReadingSection index={0} />
           </VStack>
           <VStack
             as="section"
@@ -302,195 +327,174 @@ export function Chapter({
               PREDICT → OBSERVE → EXPLAIN
             </Text>
             <Heading level={2}>
-              Can one reader stop without stopping the other?
+              Can analytics recover an order it missed?
             </Heading>
             <Text as="p" type="body">
-              Before running: predict what happens to orders sent while
-              analytics is paused. Then try both models, pause analytics,
-              advance three steps, resume it, and keep stepping. Six orders are
-              produced; extra steps let a recovering reader drain its backlog.
+              Compare a direct call with no retry storage and a log that keeps
+              records for independent readers. Move one step at a time, or drag
+              the timeline back to inspect a change.
             </Text>
-            <VStack gap={6} className="lab-workspace">
-              <HStack
-                className="lab-workspace-heading"
-                gap={3}
-                hAlign="between"
-                wrap="wrap"
-              >
-                <Text type="label">Order delivery experiment</Text>
-                <Text type="supporting">6 events · 2 independent readers</Text>
-              </HStack>
-              <VStack gap={6} className="lab-controls">
+            <DeliveryWalkthrough />
+            <details
+              className="free-delivery"
+              onToggle={(e) => {
+                if (!e.currentTarget.open) setPlaying(false);
+              }}
+            >
+              <summary>Run your own six-order experiment</summary>
+              <Text as="p">
+                Try a longer outage. Pause analytics, send three orders, then
+                resume. Compare how many orders analytics can recover in each
+                model.
+              </Text>
+              <VStack gap={6} className="lab-workspace">
                 <HStack
-                  gap={5}
+                  className="lab-workspace-heading"
+                  gap={3}
+                  hAlign="between"
+                  wrap="wrap"
+                >
+                  <Text type="label">Order delivery experiment</Text>
+                  <Text type="supporting">
+                    6 events · 2 independent readers
+                  </Text>
+                </HStack>
+                <VStack gap={6} className="lab-controls">
+                  <HStack
+                    gap={5}
+                    wrap="wrap"
+                    vAlign="start"
+                    className="experiment-settings"
+                  >
+                    <VStack gap={2} className="delivery-model-field">
+                      <Text as="p" type="label" className="field-label">
+                        Delivery model
+                      </Text>
+                      <SegmentedControl
+                        label="Delivery model (changing it resets the experiment)"
+                        value={mode}
+                        onChange={(value) => reset(value as Mode)}
+                        layout="fill"
+                      >
+                        <SegmentedControlItem
+                          value="direct"
+                          label="Direct delivery"
+                        />
+                        <SegmentedControlItem
+                          value="log"
+                          label="Retained log"
+                        />
+                      </SegmentedControl>
+                      <Text as="p" type="supporting" className="caption">
+                        Changing the model resets the experiment. Direct
+                        delivery has no retry storage; the log provides
+                        independent subscriptions.
+                      </Text>
+                    </VStack>
+                  </HStack>
+                  <HStack className="chapter-actions" gap={3} wrap="wrap">
+                    <ChapterButton
+                      className="primary"
+                      disabled={!canStep}
+                      title={settled ? "Reset to run again" : undefined}
+                      onClick={() => {
+                        setPlaying((p) => !p);
+                        setAnnouncement(
+                          playing ? "Playback paused." : "Playback started.",
+                        );
+                      }}
+                    >
+                      {playing ? "Pause playback" : "Start playback"}
+                    </ChapterButton>
+                    <ChapterButton
+                      disabled={playing || !canStep}
+                      onClick={advance}
+                    >
+                      {orderInputs[state.orders.length]
+                        ? `Send ${orderInputs[state.orders.length].name}`
+                        : "Read next pending order"}
+                    </ChapterButton>
+                    <ChapterButton onClick={() => reset()}>
+                      Reset experiment
+                    </ChapterButton>
+                    <ChapterButton
+                      aria-pressed={state.analyticsPaused}
+                      onClick={() => {
+                        setState((s) =>
+                          step(s, {
+                            type: "analytics",
+                            paused: !s.analyticsPaused,
+                          }),
+                        );
+                        setAnnouncement(
+                          state.analyticsPaused
+                            ? "Analytics resumed. Advance steps to process pending events."
+                            : "Analytics paused. Notifications remain active.",
+                        );
+                      }}
+                    >
+                      {state.analyticsPaused
+                        ? "Resume analytics"
+                        : "Pause analytics"}
+                    </ChapterButton>
+                  </HStack>
+                </VStack>
+                <HStack
+                  className="lab-observation"
+                  gap={6}
                   wrap="wrap"
                   vAlign="start"
-                  className="experiment-settings"
                 >
-                  <VStack gap={2} className="prediction-field">
-                    <Selector
-                      label="Your prediction"
-                      placeholder="Choose a prediction"
-                      width="100%"
-                      value={prediction}
-                      onChange={setPrediction}
-                      renderValue={(option) => (
-                        <Text type="label" textWrap="wrap" maxLines={0}>
-                          {option.label}
-                        </Text>
-                      )}
-                      options={[
-                        {
-                          value: "both",
-                          label: "Both models recover every analytics event",
-                        },
-                        {
-                          value: "log",
-                          label:
-                            "Only the retained log recovers missed events in this model",
-                        },
-                        {
-                          value: "neither",
-                          label: "Neither model lets notifications continue",
-                        },
-                      ]}
-                    />
+                  <VStack className="lab-state" gap={3}>
+                    <Simulation state={state} />
                   </VStack>
-                  <VStack gap={2} className="delivery-model-field">
+                  <VStack
+                    gap={3}
+                    className="chapter-explanation"
+                    aria-label="Experiment step explanation"
+                  >
+                    <Text type="supporting" className="eyebrow">
+                      OBSERVATION NOTES
+                    </Text>
                     <Text as="p" type="label" className="field-label">
-                      Delivery model
+                      Current step
                     </Text>
-                    <SegmentedControl
-                      label="Delivery model (changing it resets the experiment)"
-                      value={mode}
-                      onChange={(value) => reset(value as Mode)}
-                      layout="fill"
+                    <Text
+                      as="p"
+                      type="body"
+                      role="status"
+                      className="chapter-step-note"
                     >
-                      <SegmentedControlItem
-                        value="direct"
-                        label="Direct delivery"
-                      />
-                      <SegmentedControlItem value="log" label="Retained log" />
-                    </SegmentedControl>
-                    <Text as="p" type="supporting" className="caption">
-                      Changing the model resets the experiment. Direct delivery
-                      has no retry storage; the log provides independent
-                      subscriptions.
+                      {state.tick === 0
+                        ? announcement
+                        : state.history[state.history.length - 1]}
+                    </Text>
+                    <Text as="p" type="label" className="field-label">
+                      What to observe
+                    </Text>
+                    <Text as="p" type="body">
+                      {mode === "log"
+                        ? unread.length
+                          ? `${unread[0].name} is the oldest unread record. Analytics has ${unread.length} pending. ${state.analyticsPaused ? "Resume the reader to let it fetch again." : "Its next read will start here."}`
+                          : `Analytics is caught up. The log still holds ${state.retained.length} records.`
+                        : state.missed.length
+                          ? `Analytics missed ${state.missed.length} of ${state.orders.length} orders. Its first gap is ${orderInputs[state.missed[0] - 1].name}. This connection has no copy to resend.`
+                          : "There are no missed orders yet. Pause analytics and send an order to see which reader still receives it."}
                     </Text>
                   </VStack>
                 </HStack>
-                <HStack className="chapter-actions" gap={3} wrap="wrap">
-                  <ChapterButton
-                    className="primary"
-                    disabled={!prediction || settled}
-                    title={
-                      !prediction
-                        ? "Choose a prediction first"
-                        : settled
-                          ? "Reset to run again"
-                          : undefined
-                    }
-                    onClick={() => {
-                      setPlaying((p) => !p);
-                      setAnnouncement(
-                        playing ? "Playback paused." : "Playback started.",
-                      );
-                    }}
-                  >
-                    {playing ? "Pause playback" : "Start playback"}
-                  </ChapterButton>
-                  <ChapterButton
-                    disabled={playing || !prediction || settled}
-                    onClick={advance}
-                  >
-                    Single step
-                  </ChapterButton>
-                  <ChapterButton onClick={() => reset()}>
-                    Reset experiment
-                  </ChapterButton>
-                  <ChapterButton
-                    aria-pressed={state.analyticsPaused}
-                    onClick={() => {
-                      setState((s) =>
-                        step(s, {
-                          type: "analytics",
-                          paused: !s.analyticsPaused,
-                        }),
-                      );
-                      setAnnouncement(
-                        state.analyticsPaused
-                          ? "Analytics resumed. Advance steps to process pending events."
-                          : "Analytics paused. Notifications remain active.",
-                      );
-                    }}
-                  >
-                    {state.analyticsPaused
-                      ? "Resume analytics"
-                      : "Pause analytics"}
-                  </ChapterButton>
-                </HStack>
-                {!prediction && (
-                  <Text as="p" type="supporting" className="muted">
-                    Choose a prediction to enable playback and single-step
-                    controls.
-                  </Text>
-                )}
               </VStack>
-              <HStack
-                className="lab-observation"
-                gap={6}
-                wrap="wrap"
-                vAlign="start"
-              >
-                <VStack className="lab-state" gap={3}>
-                  <Simulation state={state} />
-                </VStack>
-                <VStack
-                  gap={3}
-                  className="chapter-explanation"
-                  aria-label="Experiment step explanation"
-                >
-                  <Text type="supporting" className="eyebrow">
-                    OBSERVATION NOTES
-                  </Text>
-                  <Text as="p" type="label" className="field-label">
-                    Current step
-                  </Text>
-                  <Text
-                    as="p"
-                    type="body"
-                    role="status"
-                    className="chapter-step-note"
-                  >
-                    {state.tick === 0
-                      ? announcement
-                      : state.history[state.history.length - 1]}
-                  </Text>
-                  <Text as="p" type="label" className="field-label">
-                    What to observe
-                  </Text>
-                  <Text as="p" type="body">
-                    {mode === "log"
-                      ? "Records stay in the log after notifications read them. Pausing analytics increases its pending count; resuming and stepping lets it catch up."
-                      : "Notifications continue independently. If analytics is paused, direct delivery misses its events because this model has no durable retry storage."}
-                  </Text>
-                  <Text as="p" type="supporting" className="caption">
-                    {state.tick < 2
-                      ? "Advance the experiment to compare your prediction with the event outcomes."
-                      : prediction === "log"
-                        ? "Your prediction matches the model."
-                        : "Revisit your prediction: the retained log preserves events for the paused reader; direct delivery here does not."}
-                  </Text>
-                </VStack>
-              </HStack>
-            </VStack>
 
-            <Text as="p" type="supporting" className="caption">
-              {ui.assumptions} To record an experiment, produce at least three
-              orders, including one while analytics is paused, then resume
-              analytics. In the retained-log model, also step until analytics
-              has caught up. Attempts alone do not complete the chapter.
-            </Text>
+              <Text as="p" type="supporting" className="caption">
+                {ui.assumptions} To record an experiment, produce at least three
+                orders, including one while analytics is paused, then resume
+                analytics. In the retained-log model, also step until analytics
+                has caught up. Attempts alone do not complete the chapter.
+              </Text>
+            </details>
+            {lesson.slice(1).map((section, i) => (
+              <ReadingSection key={section.title} index={i + 1} />
+            ))}
           </VStack>
           <VStack as="section" gap={5} id="mission">
             <Text as="p" type="supporting" className="eyebrow">
@@ -501,10 +505,9 @@ export function Chapter({
               {ui.scenario}
             </Text>
             <Text as="p" type="body">
-              Use what you learned about producers, retained events, and
-              independent readers. The test starts fresh: pause analytics,
-              produce three orders, resume analytics, then produce the rest and
-              allow enough steps to catch up.
+              Your test starts with an empty system. Orders 001–003 arrive
+              during the outage. Analytics comes back just before Order 004
+              arrives.
             </Text>
             <VStack gap={2}>
               <Text as="p" type="label" className="field-label">
@@ -515,6 +518,7 @@ export function Chapter({
                 value={choice}
                 onChange={(value) => {
                   setChoice(value as Mode);
+                  setFirstOrder("");
                   setResult(null);
                 }}
                 layout="fill"
@@ -527,8 +531,26 @@ export function Chapter({
                 with independent subscriptions.
               </Text>
             </VStack>
+            <Selector
+              label="When analytics resumes and 004 arrives, which order will it process first?"
+              placeholder="Predict the first order"
+              value={firstOrder}
+              width="100%"
+              onChange={(value) => {
+                setFirstOrder(value);
+                setResult(null);
+              }}
+              options={["1", "3", "4"].map((value) => ({
+                value,
+                label: `Order ${value.padStart(3, "0")}`,
+              }))}
+            />
             <HStack className="chapter-actions" gap={3} wrap="wrap">
-              <ChapterButton className="primary" onClick={testMission}>
+              <ChapterButton
+                className="primary"
+                disabled={!firstOrder}
+                onClick={testMission}
+              >
                 Validate design
               </ChapterButton>
               <ChapterButton
@@ -541,6 +563,7 @@ export function Chapter({
                 onClick={() => {
                   setResult(null);
                   setHint(0);
+                  setFirstOrder("");
                 }}
               >
                 Retry mission
@@ -554,12 +577,14 @@ export function Chapter({
             <VStack aria-live="polite">
               {result && (
                 <VStack
-                  className={`feedback ${result.passed ? "success" : "partial"}`}
+                  className={`feedback ${result.passed && predictionMatches ? "success" : "partial"}`}
                 >
                   <Heading level={3}>
-                    {result.passed
-                      ? "Requirements met"
-                      : "One requirement still needs work"}
+                    {!result.passed
+                      ? "One requirement still needs work"
+                      : predictionMatches
+                        ? "Requirements met"
+                        : "Trace the first read again"}
                   </Heading>
                   <ul>
                     <li>
@@ -571,6 +596,14 @@ export function Chapter({
                       {result.state.analytics.length}/6 events after recovery.
                     </li>
                   </ul>
+                  <Text as="p" type="body">
+                    You predicted Order {firstOrder.padStart(3, "0")}. The first
+                    analytics entry after restart was Order{" "}
+                    {String(result.firstAfterResume).padStart(3, "0")}.{" "}
+                    {choice === "log"
+                      ? "Its reader started at the oldest unread record."
+                      : "With no stored retry, the first available order was the next live one."}
+                  </Text>
                   <Text as="p" type="body">
                     {result.feedback}
                   </Text>
@@ -588,8 +621,9 @@ export function Chapter({
                     readers sharing the work intended for both. A production
                     design would also need a suitable retention policy and error
                     handling. Durable retries could make a different design
-                    valid, but are outside these two configurations. The
-                    assessment grades delivery outcomes, not a click sequence.
+                    valid, but are outside these two configurations. Compare the
+                    first read with your prediction and the two delivery
+                    requirements.
                   </Text>
                 </details>
               </>
@@ -623,9 +657,9 @@ export function Chapter({
                   : "Mission still to pass"}
               </Text>
               <Text as="p" type="body">
-                Completion requires both experiments and a passing mission.
-                Reading or pressing a single button does not complete this
-                chapter.
+                To complete this chapter, run your own six-order experiment in
+                both models, then validate a design and predict its first read
+                after recovery.
               </Text>
               <Text as="p" type="body">
                 Next: Chapter 2 unpacks the event log—records, partition-local

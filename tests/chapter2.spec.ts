@@ -106,6 +106,11 @@ test("changed-condition prediction reveals evidence without completing the chapt
   page,
 }) => {
   await page.goto("./#/chapter/1");
+  await page
+    .getByText("See the applications and broker behind the drawing", {
+      exact: true,
+    })
+    .click();
   await expect(
     page.getByRole("figure", { name: "What actually runs in a Kafka system" }),
   ).toBeVisible();
